@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet } from "react-native";
-import PlayMusicPage from "../components/FeedScreen/PlayMusic";
+import PlayMusicPage from "@/components/FeedScreen/PlayMusic";
 
 const FeedScreen = () => <PlayMusicPage />;
 

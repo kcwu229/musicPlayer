@@ -7,7 +7,6 @@ import {
   ScrollView,
   Pressable,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 
 const mockSuggestionData = [
   {
@@ -65,6 +64,10 @@ const styles = StyleSheet.create({
   image: {
     height: 350,
     width: 200,
+    borderRadius: 20,
+    shadowColor: "black",
+    shadowOffset: { width: 1, height: -1 },
+    shadowRadius: 1,
   },
   spacing: {
     flexGrow: 2,
@@ -74,25 +77,30 @@ const styles = StyleSheet.create({
   },
   suggestItem: {
     flexDirection: "column",
-    margin: 10,
+    marginRight: 20,
+    marginTop: 20,
   },
   author: {
     fontSize: 20,
     color: "white",
-    margin: 10,
   },
   theme: {
     fontSize: 28,
     color: "white",
-    margin: 10,
     fontWeight: 10,
   },
   description: {
     position: "absolute",
     bottom: "0%",
     width: "100%",
-    backgroundColor: "black",
-    opacity: 0.78,
+    padding: 15,
+    backgroundColor: "rgba(0, 0, 0, 0.75)",
+    borderRadius: 20,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    shadowColor: "black",
+    shadowOffset: { width: 1, height: -1 },
+    shadowRadius: 1,
   },
 });
 

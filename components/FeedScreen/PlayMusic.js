@@ -6,12 +6,12 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
+  DrawerLayoutAndroid,
   Pressable,
-  Image,
+  Dimensions,
   ImageBackground,
 } from "react-native";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const songData = {
   title: "Flower",
@@ -26,6 +26,10 @@ const PlayMusicPage = () => {
   const [isLiked, setisLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(12000);
   const [commentCount, setCommentCount] = useState(200);
+  const [isCollasped, setIsCollasped] = useState(false);
+
+  const drawer = React.useRef(null);
+  const screenWidth = Dimensions.get("window").width;
 
   const handleShare = () => {
     console.log("share !");
@@ -47,6 +51,16 @@ const PlayMusicPage = () => {
     console.log("previous song");
   };
 
+  const handleCollapse = () => {
+    if (isCollasped === true) {
+      console.log("expand !");
+      setIsCollasped(!isCollasped);
+    } else {
+      console.log("collapse");
+      setIsCollasped(!isCollasped);
+    }
+  };
+
   const handleLike = () => {
     if (isLiked === true) {
       console.log("unlike");
@@ -63,81 +77,124 @@ const PlayMusicPage = () => {
     isPlaying === true ? console.log("now play") : console.log("paused !");
     setIsPlaying(!isPlaying);
   };
+
+  const navigationView = () => (
+    <View style={styles.drawerContainer}>
+      <Text style={styles.drawerText}>Drawer Content</Text>
+      {/* Add more drawer items here */}
+    </View>
+  );
+
+  const openDrawer = () => {
+    if (drawer.current) {
+      drawer.current.openDrawer();
+    }
+  };
+
+  const closeDrawer = () => {
+    if (drawer.current) {
+      drawer.current.closeDrawer();
+    }
+  };
+
   return (
-    <ImageBackground
-      source={songData.image}
-      resizeMethod="cover"
-      style={styles.image}
+    <DrawerLayoutAndroid
+      ref={drawer}
+      drawerWidth={screenWidth}
+      drawerPosition="left"
+      renderNavigationView={navigationView}
     >
-      <View style={styles.topBanner}>
-        <Pressable>
-          <Text style={styles.playText}>Play</Text>
-        </Pressable>
-        <Pressable onPress={handleRandomPlaying}>
-          <FontAwesome name="chevron-down" size={10} style={styles.btnColor} />
-        </Pressable>
-      </View>
+      <Pressable onPress={openDrawer}>
+        <Text>Open Drawer</Text>
+      </Pressable>
 
-      <View style={styles.space}></View>
-
-      <View style={styles.infoList}>
-        <Text style={styles.title}>{songData.title}</Text>
-        <Text style={styles.artist}>{songData.artist}</Text>
-      </View>
-
-      <View style={styles.musicControlList}>
-        <Pressable onPress={handleRandomPlaying}>
-          <FontAwesome name="random" size={25} style={styles.btnColor} />
-        </Pressable>
-
-        <Pressable onPress={handlePreviousSong}>
-          <FontAwesome name="step-backward" size={25} style={styles.btnColor} />
-        </Pressable>
-        <Pressable onPress={handlePlaying}>
-          {isPlaying === true ? (
-            <AntDesign name="play-circle" size={80} style={styles.btnColor} />
-          ) : (
-            <AntDesign name="pause-circle" size={80} style={styles.btnColor} />
-          )}
-        </Pressable>
-
-        <Pressable onPress={handleNextSong}>
-          <FontAwesome
-            name="step-forward"
-            size={25}
-            style={[styles.btnColor]}
-          />
-        </Pressable>
-
-        <Pressable onPress={handleMoreOption}>
-          <FontAwesome name="ellipsis-h" size={25} style={styles.btnColor} />
-        </Pressable>
-      </View>
-      <View style={styles.commentSection}>
-        {isLiked === true ? (
-          <Pressable onPress={handleLike}>
+      <ImageBackground
+        source={songData.image}
+        resizeMethod="cover"
+        style={styles.image}
+      >
+        <View style={styles.topBanner}>
+          <Pressable>
+            <Text style={styles.playText}>Play</Text>
+          </Pressable>
+          <Pressable onPress={handleCollapse}>
             <FontAwesome
-              name="heart"
-              size={22}
-              style={[styles.btnColor, { color: "red" }]}
+              name="chevron-down"
+              size={10}
+              style={styles.btnColor}
             />
           </Pressable>
-        ) : (
-          <Pressable onPress={handleLike}>
-            <FontAwesome name="heart-o" size={22} style={styles.btnColor} />
-          </Pressable>
-        )}
-        <Text style={styles.likeText}>{likeCount}</Text>
-        <Pressable onPress={handleShare}>
-          <FontAwesome name="comments" size={22} style={styles.btnColor} />
-        </Pressable>
-        <Text style={styles.commentText}> {commentCount}</Text>
+        </View>
+
         <View style={styles.space}></View>
-        <Pressable onPress={handleShare}>
-          <FontAwesome name="share-alt" size={22} style={styles.btnColor} />
-        </Pressable>
-      </View>
-    </ImageBackground>
+
+        <View style={styles.infoList}>
+          <Text style={styles.title}>{songData.title.toUpperCase()}</Text>
+          <Text style={styles.artist}>{songData.artist}</Text>
+        </View>
+
+        <View style={styles.musicControlList}>
+          <Pressable onPress={handleRandomPlaying}>
+            <FontAwesome name="random" size={25} style={styles.btnColor} />
+          </Pressable>
+
+          <Pressable onPress={handlePreviousSong}>
+            <FontAwesome
+              name="step-backward"
+              size={25}
+              style={styles.btnColor}
+            />
+          </Pressable>
+          <Pressable onPress={handlePlaying}>
+            {isPlaying === true ? (
+              <AntDesign name="play-circle" size={80} style={styles.btnColor} />
+            ) : (
+              <AntDesign
+                name="pause-circle"
+                size={80}
+                style={styles.btnColor}
+              />
+            )}
+          </Pressable>
+
+          <Pressable onPress={handleNextSong}>
+            <FontAwesome
+              name="step-forward"
+              size={25}
+              style={[styles.btnColor]}
+            />
+          </Pressable>
+
+          <Pressable onPress={handleMoreOption}>
+            <FontAwesome name="ellipsis-h" size={25} style={styles.btnColor} />
+          </Pressable>
+        </View>
+        <View style={styles.commentSection}>
+          {isLiked === true ? (
+            <Pressable onPress={handleLike}>
+              <FontAwesome
+                name="heart"
+                size={22}
+                style={[styles.btnColor, { color: "red" }]}
+              />
+            </Pressable>
+          ) : (
+            <Pressable onPress={handleLike}>
+              <FontAwesome name="heart-o" size={22} style={styles.btnColor} />
+            </Pressable>
+          )}
+          <Text style={styles.likeText}>{likeCount}</Text>
+          <Pressable onPress={handleShare}>
+            <FontAwesome name="comments" size={22} style={styles.btnColor} />
+          </Pressable>
+          <Text style={styles.commentText}> {commentCount}</Text>
+          <View style={styles.space}></View>
+          <Pressable onPress={handleShare}>
+            <FontAwesome name="share-alt" size={22} style={styles.btnColor} />
+          </Pressable>
+        </View>
+      </ImageBackground>
+    </DrawerLayoutAndroid>
   );
 };
 
@@ -151,8 +208,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   infoList: {
-    padding: 10,
-    flexGrow: 1,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
   container: {
     flex: 1,
@@ -173,14 +231,13 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     flexDirection: "row",
     alignItems: "center",
-    flexGrow: 1,
+    height: "10%",
   },
   musicControlList: {
     flexDirection: "row",
     backgroundColor: "rgba(0, 0, 0, 0.8)",
     alignItems: "center",
-    flexGrow: 1,
-    justifyContent: "center",
+    justifyContent: "space-evenly",
   },
   playBtn: {
     backgroundColor: "white",

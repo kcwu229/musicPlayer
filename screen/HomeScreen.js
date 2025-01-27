@@ -1,11 +1,11 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
-import TopBanner from "../components/HomeScreen/TopBanner";
-import SearchBar from "../components/HomeScreen/SearchBar";
-import SuggestionSection from "../components/HomeScreen/SuggectionSection";
-import ChartSection from "../components/HomeScreen/ChartSection";
-import TrendingAlbumSection from "../components/HomeScreen/TrendingAlbumSection";
-import PopularArtistSection from "../components/HomeScreen/PopularArtistSection";
+import TopBanner from "@/components/HomeScreen/TopBanner";
+import SearchBar from "@/components/HomeScreen/SearchBar";
+import SuggestionSection from "@/components/HomeScreen/SuggectionSection";
+import ChartSection from "@/components/HomeScreen/ChartSection";
+import TrendingAlbumSection from "@/components/HomeScreen/TrendingAlbumSection";
+import PopularArtistSection from "@/components/HomeScreen/PopularArtistSection";
 
 const name = "Sam";
 

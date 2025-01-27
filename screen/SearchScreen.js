@@ -1,19 +1,23 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet } from "react-native";
+import SearchBar from "@/components/HomeScreen/SearchBar";
+import SearchResultPage from "@/components/SearchScreen/SearchResultPage";
 
 const SearchScreen = () => (
   <View style={styles.container}>
-    <View style={styles.main}>
-      <Text style={styles.title}>Hello World</Text>
-      <Text style={styles.subtitle}>This is the first page of your app.</Text>
-    </View>
+    <Text style={styles.Search}>Search</Text>
+    <SearchBar />
+    <SearchResultPage />
   </View>
 );
 
 const styles = StyleSheet.create({
+  Search: {
+    fontSize: 35,
+    fontWeight: "bold",
+  },
   container: {
     flex: 1,
-    alignItems: "center",
     padding: 24,
   },
   main: {

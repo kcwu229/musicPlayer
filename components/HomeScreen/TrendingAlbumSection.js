@@ -7,6 +7,7 @@ import {
   Pressable,
   Image,
 } from "react-native";
+import AlbumItem from "@/components/AlbumItem";
 
 const trendingAlbumData = [
   {
@@ -44,17 +45,13 @@ const TrendingAlbumSection = () => (
     >
       {trendingAlbumData.map((data) => {
         return (
-          <View key={data.id} style={styles.albumItem}>
-            <Pressable onPress={() => console.log(data.title)}>
-              <View style={styles.albumImage}>
-                <Image source={data.image} style={styles.albumImage} />
-              </View>
-            </Pressable>
-            <View>
-              <Text style={styles.title}>{data.title}</Text>
-              <Text style={styles.artist}>{data.artist}</Text>
-            </View>
-          </View>
+          <AlbumItem
+            key={data.id}
+            albumData={data}
+            imageWidth={200}
+            imageHeight={200}
+            style={styles.albumItem}
+          />
         );
       })}
     </ScrollView>
@@ -86,14 +83,8 @@ const styles = StyleSheet.create({
   },
   albumItem: {
     flexDirection: "column",
-    margin: 10,
-  },
-  title: {
-    fontSize: 20,
-    color: "white",
-    shadowColor: "black",
-    shadowOffset: "2",
-    fontWeight: "bold",
+    marginTop: 20,
+    marginRight: 20,
   },
   albumImage: {
     width: 200,
@@ -101,7 +92,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    color: "gray",
+    color: "black",
+    marginTop: 10,
   },
   artist: {
     marginTop: 10,

@@ -8,7 +8,8 @@ import {
   Image,
   Button,
 } from "react-native";
-import RandomColor from "../RandomColor";
+
+import ArtistItem from "@/components/ArtistItem";
 
 const artistData = [
   {
@@ -43,16 +44,13 @@ const PopularArtistSection = () => (
     >
       {artistData.map((data) => {
         return (
-          <View style={styles.artistItem} key={data.id}>
-            <Pressable onPress={() => console.log(data.title)}>
-              <View style={styles.description}>
-                <Image source={data.image} style={styles.image} />
-              </View>
-            </Pressable>
-
-            <Text style={styles.name}>{data.name}</Text>
-            <Button title="Follow" style={styles.followBtn}></Button>
-          </View>
+          <ArtistItem
+            key={data.id}
+            artistData={data}
+            allowFollowButton={true}
+            imageWidth={180}
+            imageHeight={180}
+          />
         );
       })}
     </ScrollView>
@@ -94,7 +92,8 @@ const styles = StyleSheet.create({
   },
   artistItem: {
     flexDirection: "column",
-    margin: 10,
+    marginRight: 20,
+    marginTop: 20,
     alignItems: "center",
   },
   name: {

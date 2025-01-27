@@ -1,32 +1,36 @@
 import React from "react";
-import { SafeAreaView, View, Text, StyleSheet, Image } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, StyleSheet, Image, Pressable, Text } from "react-native";
 const userIcon = require("../../assets/images/icon.jpg");
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-const TopBanner = () => (
-  <View style={styles.topBannerContainer}>
-    <Ionicons name="mic" size={40} style={styles.logo} />
-    <View style={styles.spacing}></View>
-    <Ionicons name="mail" size={40} style={styles.notification} />
-    <Image source={userIcon} style={styles.userIcon} />
-  </View>
-);
+const TopBanner = () => {
+  const handleNotification = () => {
+    console.log("Check the notification");
+  };
+  return (
+    <View style={styles.topBannerContainer}>
+      <Text style={styles.Home}>Home</Text>
+      <View style={styles.spacing}></View>
+      <Pressable onPress={handleNotification}>
+        <FontAwesome name="bell-o" size={28} style={styles.notification} />
+      </Pressable>
+      <Image source={userIcon} style={styles.userIcon} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  logo: {
-    margin: 5,
+  Home: {
+    fontSize: 35,
+    fontWeight: "bold",
   },
   userIcon: {
-    width: 40,
-    height: 40,
+    width: 45,
+    height: 45,
     borderRadius: 100,
     margin: 5,
-  },
-  main: {
-    flex: 1,
-    justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
+    borderColor: "purple",
+    borderWidth: 2,
   },
   topBannerContainer: {
     flexDirection: "row",
@@ -34,9 +38,14 @@ const styles = StyleSheet.create({
   },
   notification: {
     margin: 15,
+    color: "grey",
   },
   spacing: {
     flexGrow: 2,
+  },
+  logo: {
+    width: 60,
+    height: 30,
   },
 });
 
