@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable, Image, Button } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useEffect, useState } from "react";
 
 const ArtistIcon = ({
   artistData,
@@ -10,8 +11,16 @@ const ArtistIcon = ({
   shownOnResultList = false,
 }) => {
   const { name, followerCount, image } = artistData;
-  const handleFollow = () => {
-    console.log("You Follow ");
+  const [hasFollowed, setHasFollow] = useState(false);
+
+  const handleFollow = (name) => {
+    if (hasFollowed === true) {
+      console.log(`You haved unfollow artist - ${name}`);
+      setHasFollow(!hasFollowed);
+    } else {
+      console.log(`You haved follow artist - ${name}`);
+      setHasFollow(!hasFollowed);
+    }
   };
   return (
     <View
@@ -38,10 +47,16 @@ const ArtistIcon = ({
       </View>
       {allowFollowButton ? <View style={styles.space}></View> : null}
       {allowFollowButton ? (
-        <Pressable onPress={handleFollow}>
-          <View style={styles.followBtn}>
-            <Text>Follow</Text>
-          </View>
+        <Pressable onPress={() => handleFollow(name)}>
+          {hasFollowed === true ? (
+            <View style={styles.unfollowBtn}>
+              <Text style={styles.unfollowText}>Unfollow</Text>
+            </View>
+          ) : (
+            <View style={styles.followBtn}>
+              <Text style={styles.followText}>Follow</Text>
+            </View>
+          )}
         </Pressable>
       ) : null}
     </View>
@@ -49,6 +64,12 @@ const ArtistIcon = ({
 };
 
 const styles = StyleSheet.create({
+  followText: {
+    color: "grey",
+  },
+  unfollowText: {
+    color: "red",
+  },
   space: {
     flexGrow: 2,
   },
@@ -72,6 +93,13 @@ const styles = StyleSheet.create({
   followBtn: {
     borderRadius: 20,
     borderColor: "grey",
+    borderWidth: 1,
+    padding: 10,
+    paddingHorizontal: 20,
+  },
+  unfollowBtn: {
+    borderRadius: 20,
+    borderColor: "red",
     borderWidth: 1,
     padding: 10,
     paddingHorizontal: 20,
