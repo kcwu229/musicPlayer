@@ -72,6 +72,7 @@ const TrendingAlbumSection = ({ setSelectedAlbum }) => {
                 albumData={data}
                 imageWidth={200}
                 imageHeight={200}
+                setSelectedAlbum={setSelectedAlbum}
                 style={styles.albumItem}
               />
             </Pressable>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,63 +7,63 @@ import {
   SafeAreaView,
   Pressable,
 } from "react-native";
-const { width, height } = Dimensions.get("window");
-import {
-  MinimizedMusicPlayerHeader,
-  FullScreenMusicPlayerHeader,
-} from "@/components/MusicPlayerPage/MusicPlayerHeader";
+const { height, width } = Dimensions.get("window");
+const screenHeight = Dimensions.get("window").height;
+console.log("height" + screenHeight);
+import { MinimizedMusicPlayerHeader } from "@/components/MusicPlayerPage/MusicPlayerHeader";
 import MusicPlayerContent from "@/components/MusicPlayerPage/MusicPlayerContent";
 import SlidingPanel from "react-native-sliding-up-down-panels";
 
-const MusicPlayerScreen = ({ albumData }) => {
-  const [panelPosition, setPanelPosition] = useState(0);
+const MusicPlayerScreen = ({
+  albumData,
+  isMinimized,
+  handleMinimizedScreen,
+}) => {
   const headerHeight = 80;
 
-  const handleDrag = (position) => {};
-
-  const handleEndReached = () => {
-    if (panelPosition <= 0) {
-      setPanelPosition(0);
-    }
-  };
-
-  const handleOnDragStart = () => {};
-
-  const handleOnDragStop = () => {};
-
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <SlidingPanel
-          onDrag={handleDrag}
-          onDragStart={handleOnDragStart}
-          onDragStop={handleOnDragStop}
-          onEndReached={handleEndReached}
-          headerLayoutHeight={headerHeight}
-          headerLayout={() => (
-            <View style={styles.headerLayoutStyle}>
-              <MinimizedMusicPlayerHeader albumData={albumData} />
-            </View>
-          )}
-          slidingPanelLayout={() => (
+    <View style={[styles.container]}>
+      <SlidingPanel
+        headerLayoutHeight={headerHeight}
+        headerLayout={() => {
+          return (
+            isMinimized && (
+              <Pressable
+                onPress={handleMinimizedScreen}
+                pointerEvents="box-none"
+              >
+                <View style={styles.headerLayoutStyle}>
+                  <MinimizedMusicPlayerHeader albumData={albumData} />
+                </View>
+              </Pressable>
+            )
+          );
+        }}
+        slidingPanelLayout={() => {
+          return isMinimized === true ? null : (
             <View
               style={
                 ([styles.slidingPanelLayoutStyle],
-                { height: height - headerHeight, width: width })
+                { height: height, width: width })
               }
             >
+              <Pressable
+                onPress={handleMinimizedScreen}
+                pointerEvents="box-none"
+              ></Pressable>
               <MusicPlayerContent albumData={albumData} />
             </View>
-          )}
-        />
-      </View>
-    </SafeAreaView>
+          );
+        }}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "absolute",
   },
   bodyViewStyle: {
     flex: 1,
@@ -74,8 +74,9 @@ const styles = StyleSheet.create({
     height: 80,
     width,
     backgroundColor: "black",
-    justifyContent: "center",
-    alignItems: "center",
+    position: "absolute",
+    top: 0,
+    zIndex: 2,
   },
   slidingPanelLayoutStyle: {
     flex: 1,

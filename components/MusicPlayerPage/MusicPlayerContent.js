@@ -5,20 +5,21 @@ import {
   ImageBackground,
   Dimensions,
 } from "react-native";
-import { useState } from "react";
 import AlbumInfo from "@/components/MusicPlayerPage/AlbumInfo";
 import ButtonGroup from "@/components/MusicPlayerPage/ButtonGroup";
 import CommentSection from "@/components/MusicPlayerPage/CommentSection";
-const screenHeight = Dimensions.get("window").height;
+import { FullScreenMusicPlayerHeader } from "@/components/MusicPlayerPage/MusicPlayerHeader";
+const { height, width } = Dimensions.get("window");
 
 const MusicPlayerContent = ({ albumData }) => {
   const { title, artist, likeCount, commentCount, image } = albumData;
   return (
     <View style={{ flex: 1 }}>
+      <FullScreenMusicPlayerHeader />
       <ImageBackground
         source={image}
         resizeMethod="cover"
-        style={([styles.image], { height: screenHeight - 150 })}
+        style={([styles.image], { height: height - 257 })}
       >
         <View style={styles.space}></View>
         <AlbumInfo title={title} artist={artist} />

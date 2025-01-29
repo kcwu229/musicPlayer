@@ -79,6 +79,7 @@ const SearchResultPage = ({ setSelectedAlbum }) => {
               imageWidth={60}
               imageHeight={60}
               shownOnResultList={true}
+              setSelectedAlbum={setSelectedAlbum}
               showViewAndDuration={true}
             />
           </Pressable>
