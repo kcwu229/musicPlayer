@@ -44,6 +44,16 @@ To learn more about developing your project with Expo, look at the following res
 
 ## Join the community
 
+
+![Simulator Screenshot - iPhone 15 Pro Max - 2025-01-27 at 22 13 45](https://github.com/user-attachments/assets/1982ffff-df14-48ce-b2b1-af3caa762146)
+
+Not develope yet
+![Simulator Screenshot - iPhone 15 Pro Max - 2025-01-27 at 22 13 10](https://github.com/user-attachments/assets/a88e9cc8-701b-4bb6-8b4a-577fde0dbef7)
+
+
+
+
+
 Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
