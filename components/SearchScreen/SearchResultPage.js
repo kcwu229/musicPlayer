@@ -1,17 +1,8 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  Image,
-  Button,
-} from "react-native";
+import React, { useState } from "react";
+import { View, Pressable, StyleSheet } from "react-native";
 
 import ArtistItem from "@/components/ArtistItem";
 import AlbumItem from "@/components/AlbumItem";
-
 const albumResultData = [
   {
     id: 1,
@@ -60,33 +51,55 @@ const artistResultData = [
   },
 ];
 
-const SearchResultPage = () => {
+const SearchResultPage = ({ setSelectedAlbum }) => {
+  const handleArtist = () => {
+    console.log(`Artist`);
+  };
   return (
-    <View>
+    <View style={styles.container}>
       {artistResultData &&
         artistResultData.map((artist) => (
-          <ArtistItem
-            key={artist.id}
-            artistData={artist}
-            imageWidth={60}
-            imageHeight={60}
-            shownOnResultList={true}
-            allowFollowButton={true}
-          />
+          <Pressable key={artist.id} onPress={handleArtist}>
+            <ArtistItem
+              artistData={artist}
+              imageWidth={60}
+              imageHeight={60}
+              shownOnResultList={true}
+              allowFollowButton={true}
+            />
+          </Pressable>
         ))}
 
       {albumResultData &&
         albumResultData.map((album) => (
-          <AlbumItem
-            key={album.id}
-            albumData={album}
-            imageWidth={60}
-            imageHeight={60}
-            shownOnResultList={true}
-          />
+          <Pressable key={album.id} onPress={() => setSelectedAlbum(album)}>
+            <AlbumItem
+              key={album.id}
+              albumData={album}
+              imageWidth={60}
+              imageHeight={60}
+              shownOnResultList={true}
+              showViewAndDuration={true}
+            />
+          </Pressable>
         ))}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  fullScreen: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1,
+    backgroundColor: "black",
+  },
+  container: {
+    flex: 1,
+  },
+});
 
 export default SearchResultPage;

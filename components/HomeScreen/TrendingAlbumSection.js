@@ -15,48 +15,72 @@ const trendingAlbumData = [
     title: "Future Nostalgia",
     artist: "Dua Lipa",
     image: require("../../assets/images/future_nostalgia.jpeg"),
+    viewCount: 20000,
+    duration: "3:03",
+    likeCount: 20000,
+    commentCount: 20000,
   },
   {
     id: 2,
     title: "After Hours",
     artist: "The Weeknd",
     image: require("../../assets/images/after_hour.jpeg"),
+    viewCount: 20000,
+    duration: "3:03",
+    likeCount: 20000,
+    commentCount: 20000,
   },
   {
     id: 3,
     title: "Fine Line",
     artist: "Harry Styles",
     image: require("../../assets/images/fine_line.jpg"),
+    viewCount: 20000,
+    duration: "3:03",
+    likeCount: 20000,
+    commentCount: 20000,
   },
 ];
 
-const TrendingAlbumSection = () => (
-  <View>
-    <View style={styles.topHeading}>
-      <Text style={styles.heading}>Trending albums</Text>
-      <Pressable onPress={() => console.log("See More")}>
-        <Text style={styles.seeAll}>See all</Text>
-      </Pressable>
+const TrendingAlbumSection = ({ setSelectedAlbum }) => {
+  const handlePlayMusic = (data) => {
+    setSelectedAlbum(data);
+  };
+  return (
+    <View>
+      <View style={styles.topHeading}>
+        <Text style={styles.heading}>Trending albums</Text>
+        <Pressable onPress={() => console.log("See All")}>
+          <Text style={styles.seeAll}>See all</Text>
+        </Pressable>
+      </View>
+      <ScrollView
+        style={([styles.albumList], { overflow: "visible" })}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      >
+        {trendingAlbumData.map((data) => {
+          return (
+            <Pressable
+              key={data.id}
+              onPress={() => {
+                console.log(`${data.artist - data.title}`);
+                handlePlayMusic(data);
+              }}
+            >
+              <AlbumItem
+                albumData={data}
+                imageWidth={200}
+                imageHeight={200}
+                style={styles.albumItem}
+              />
+            </Pressable>
+          );
+        })}
+      </ScrollView>
     </View>
-    <ScrollView
-      style={styles.albumList}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-    >
-      {trendingAlbumData.map((data) => {
-        return (
-          <AlbumItem
-            key={data.id}
-            albumData={data}
-            imageWidth={200}
-            imageHeight={200}
-            style={styles.albumItem}
-          />
-        );
-      })}
-    </ScrollView>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   topHeading: {
@@ -69,7 +93,7 @@ const styles = StyleSheet.create({
   seeAll: {
     color: "gray",
     marginTop: 10,
-    fontSize: 16,
+    fontSize: 22,
     fontWeight: "thin",
   },
   heading: {

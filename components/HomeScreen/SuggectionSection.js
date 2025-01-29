@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -11,48 +11,72 @@ import {
 const mockSuggestionData = [
   {
     id: 1,
-    author: "Taylor Swift",
-    theme: "Love Story",
+    artist: "Taylor Swift",
+    title: "Love Story",
     image: require("../../assets/images/taylor_swift.png"),
+    viewCount: 20000,
+    duration: "3:03",
+    likeCount: 20000,
+    commentCount: 20000,
   },
   {
     id: 2,
-    author: "Ed Sheeran",
-    theme: "Shape of You",
+    artist: "Ed Sheeran",
+    title: "Shape of You",
     image: require("../../assets/images/ed_sheeran.jpeg"),
+    viewCount: 20000,
+    duration: "3:03",
+    likeCount: 20000,
+    commentCount: 20000,
   },
   {
     id: 3,
-    author: "Adele",
-    theme: "Hello",
+    artist: "Adele",
+    title: "Hello",
     image: require("../../assets/images/adele.jpeg"),
+    viewCount: 20000,
+    duration: "3:03",
+    likeCount: 20000,
+    commentCount: 20000,
   },
 ];
 
-const SuggectionSection = () => (
-  <View>
-    <Text style={styles.heading}>Suggestions For You</Text>
-    <ScrollView
-      style={styles.suggestionList}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-    >
-      {mockSuggestionData.map((data) => {
-        return (
-          <Pressable onPress={() => console.log(data.author)} key={data.id}>
-            <View style={styles.suggestItem}>
-              <Image source={data.image} style={styles.image} />
-              <View style={styles.description}>
-                <Text style={styles.theme}>{data.theme}</Text>
-                <Text style={styles.author}>{data.author}</Text>
+const SuggectionSection = ({ setSelectedAlbum }) => {
+  const handlePlayMusic = (data) => {
+    setSelectedAlbum(data);
+  };
+
+  return (
+    <View>
+      <Text style={styles.heading}>Suggestions For You</Text>
+      <ScrollView
+        style={[styles.suggestionList, { overflow: "visible" }]}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      >
+        {mockSuggestionData.map((data) => {
+          return (
+            <Pressable
+              onPress={() => {
+                console.log(data.artist);
+                handlePlayMusic(data);
+              }}
+              key={data.id}
+            >
+              <View style={styles.suggestItem}>
+                <Image source={data.image} style={styles.image} />
+                <View style={styles.description}>
+                  <Text style={styles.title}>{data.title}</Text>
+                  <Text style={styles.artist}>{data.artist}</Text>
+                </View>
               </View>
-            </View>
-          </Pressable>
-        );
-      })}
-    </ScrollView>
-  </View>
-);
+            </Pressable>
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   heading: {
@@ -68,6 +92,8 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     shadowOffset: { width: 1, height: -1 },
     shadowRadius: 1,
+    shadowOpacity: 0.8, // Add shadowOpacity for better control
+    elevation: 5,
   },
   spacing: {
     flexGrow: 2,
@@ -80,14 +106,15 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
   },
-  author: {
-    fontSize: 20,
+  artist: {
+    fontSize: 18,
     color: "white",
+    marginVertical: 3,
   },
-  theme: {
-    fontSize: 28,
+  title: {
+    fontSize: 26,
     color: "white",
-    fontWeight: 10,
+    fontWeight: "bold",
   },
   description: {
     position: "absolute",

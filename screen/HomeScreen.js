@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import TopBanner from "@/components/HomeScreen/TopBanner";
 import SearchBar from "@/components/HomeScreen/SearchBar";
@@ -6,23 +6,40 @@ import SuggestionSection from "@/components/HomeScreen/SuggectionSection";
 import ChartSection from "@/components/HomeScreen/ChartSection";
 import TrendingAlbumSection from "@/components/HomeScreen/TrendingAlbumSection";
 import PopularArtistSection from "@/components/HomeScreen/PopularArtistSection";
+import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
 
 const name = "Sam";
 
-const HomeScreen = () => (
-  <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-    <View>
-      <TopBanner />
-      <Text style={styles.text}>Good morning,</Text>
-      <Text style={styles.name}>{name}</Text>
-      <SearchBar />
-      <SuggestionSection />
-      <ChartSection />
-      <TrendingAlbumSection />
-      <PopularArtistSection />
-    </View>
-  </ScrollView>
-);
+const HomeScreen = () => {
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+  const [isMinimized, setIsMinimized] = useState(false);
+  console.log(selectedAlbum);
+
+  return (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      {selectedAlbum && (
+        <View
+          style={
+            isMinimized === false ? styles.fullScreen : styles.minimizedScreen
+          }
+        >
+          <MusicPlayerScreen albumData={selectedAlbum} />
+        </View>
+      )}
+      <View style={styles.container}>
+        <TopBanner />
+
+        <Text style={styles.text}>Good morning,</Text>
+        <Text style={styles.name}>{name}</Text>
+        <SearchBar />
+        <SuggestionSection setSelectedAlbum={setSelectedAlbum} />
+        <ChartSection />
+        <TrendingAlbumSection setSelectedAlbum={setSelectedAlbum} />
+        <PopularArtistSection />
+      </View>
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
   text: {
@@ -39,6 +56,23 @@ const styles = StyleSheet.create({
   main: {
     justifyContent: "center",
     marginHorizontal: "auto",
+  },
+  fullScreen: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+
+    padding: 0,
+    zIndex: 1,
+  },
+  minimizedScreen: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+
+    padding: 0,
+    zIndex: 1,
   },
 });
 

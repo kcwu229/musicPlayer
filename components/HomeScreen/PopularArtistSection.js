@@ -38,7 +38,7 @@ const PopularArtistSection = () => (
       </Pressable>
     </View>
     <ScrollView
-      style={styles.artistList}
+      style={([styles.artistList], { overflow: "visible" })}
       horizontal
       showsHorizontalScrollIndicator={false}
     >
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   seeAll: {
     color: "gray",
     marginTop: 10,
-    fontSize: 16,
+    fontSize: 22,
     fontWeight: "thin",
   },
   heading: {

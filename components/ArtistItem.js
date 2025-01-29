@@ -84,6 +84,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginLeft: 5,
+    paddingVertical: 4,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginBottom: StyleSheet.hairlineWidth,
   },
   followerCount: {
     color: "grey",
@@ -108,6 +111,11 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: "black",
     marginTop: 15,
+    shadowColor: "black",
+    shadowOffset: { width: 1, height: -1 },
+    shadowRadius: 1,
+    shadowOpacity: 0.8, // Add shadowOpacity for better control
+    elevation: 5,
   },
 
   artistItem: {

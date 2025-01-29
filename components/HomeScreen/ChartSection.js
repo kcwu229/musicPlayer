@@ -37,7 +37,7 @@ const ChartSection = () => {
         </Pressable>
       </View>
       <ScrollView
-        style={styles.chartList}
+        style={([styles.chartList], { overflow: "visible" })}
         horizontal
         showsHorizontalScrollIndicator={false}
       >
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   seeAll: {
     color: "gray",
     marginTop: 10,
-    fontSize: 16,
+    fontSize: 22,
     fontWeight: "thin",
   },
   heading: {
@@ -98,6 +98,8 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     shadowOffset: { width: 1, height: -1 },
     shadowRadius: 1,
+    shadowOpacity: 0.8, // Add shadowOpacity for better control
+    elevation: 5,
   },
   title: {
     fontSize: 20,

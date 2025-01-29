@@ -6,8 +6,12 @@ const AlbumItem = ({
   albumData,
   allowOptionButton = false,
   shownOnResultList = false,
+  showViewAndDuration = false,
   imageWidth,
   imageHeight,
+  artistFontSize,
+  titleFontSize,
+  setSelectedAlbum,
 }) => {
   const { title, artist, viewCount, image, duration } = albumData;
   const handleOption = () => {
@@ -15,7 +19,12 @@ const AlbumItem = ({
   };
   return (
     <View style={shownOnResultList ? styles.albumItemOnList : styles.albumItem}>
-      <Pressable onPress={() => console.log(title)}>
+      <Pressable
+        onPress={() => {
+          console.log(title);
+          setSelectedAlbum(albumData);
+        }}
+      >
         <View style={styles.albumImage}>
           <Image
             source={image}
@@ -34,20 +43,36 @@ const AlbumItem = ({
         </View>
       </Pressable>
       <View style={shownOnResultList ? styles.viewOnList : null}>
-        <Text style={shownOnResultList ? styles.titleOnList : styles.title}>
+        <Text
+          style={
+            shownOnResultList
+              ? styles.titleOnList
+              : titleFontSize > 0
+              ? { fontSize: titleFontSize, marginTop: 10, fontWeight: "bold" }
+              : styles.title
+          }
+        >
           {title}
         </Text>
-        <Text style={shownOnResultList ? styles.artistOnList : styles.artist}>
+        <Text
+          style={
+            shownOnResultList
+              ? styles.artistOnList
+              : artistFontSize > 0
+              ? { fontSize: artistFontSize, marginTop: 10, color: "gray" }
+              : styles.artist
+          }
+        >
           {artist}
         </Text>
         <View style={shownOnResultList ? styles.viewCountAndDuration : null}>
-          {viewCount != null ? (
+          {viewCount != null && showViewAndDuration ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <FontAwesome name="play" size={15} style={styles.play} />
               <Text style={styles.viewCount}>{viewCount}</Text>
             </View>
           ) : null}
-          {duration != null ? (
+          {duration != null && showViewAndDuration ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <FontAwesome name="circle" size={6} style={styles.circle} />
               <Text style={styles.duration}>{duration}</Text>
@@ -101,6 +126,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     margin: 5,
     alignItems: "center",
+    paddingVertical: 4,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginBottom: StyleSheet.hairlineWidth,
   },
 
   name: {
@@ -128,6 +156,11 @@ const styles = StyleSheet.create({
 
   albumImage: {
     marginTop: 10,
+    shadowColor: "black",
+    shadowOffset: { width: 1, height: -1 },
+    shadowRadius: 1,
+    shadowOpacity: 0.8, // Add shadowOpacity for better control
+    elevation: 5,
   },
 });
 

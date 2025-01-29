@@ -43,10 +43,6 @@ const styles = StyleSheet.create({
   spacing: {
     flexGrow: 2,
   },
-  logo: {
-    width: 60,
-    height: 30,
-  },
 });
 
 export default TopBanner;

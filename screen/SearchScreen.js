@@ -1,38 +1,55 @@
-import React from "react";
-import { SafeAreaView, View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet } from "react-native";
 import SearchBar from "@/components/HomeScreen/SearchBar";
 import SearchResultPage from "@/components/SearchScreen/SearchResultPage";
+import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
+const SearchScreen = () => {
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+  const [isMinimized, setIsMinimized] = useState(false);
 
-const SearchScreen = () => (
-  <View style={styles.container}>
-    <Text style={styles.Search}>Search</Text>
-    <SearchBar />
-    <SearchResultPage />
-  </View>
-);
+  return (
+    <View style={styles.container}>
+      {selectedAlbum && (
+        <View
+          style={
+            isMinimized === false ? styles.fullScreen : styles.minimizedScreen
+          }
+        >
+          <MusicPlayerScreen albumData={selectedAlbum} />
+        </View>
+      )}
+      <Text style={styles.search}>Search</Text>
+      <SearchBar />
+      <SearchResultPage setSelectedAlbum={setSelectedAlbum} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  Search: {
-    fontSize: 35,
+  minimizedScreen: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1,
+    padding: 0,
+  },
+  search: {
+    fontSize: 32,
     fontWeight: "bold",
   },
   container: {
     flex: 1,
     padding: 24,
   },
-  main: {
-    flex: 1,
-    justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
-  },
-  title: {
-    fontSize: 64,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 36,
-    color: "#38434D",
+  fullScreen: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: 0,
+    zIndex: 1,
   },
 });
 

@@ -2,14 +2,15 @@ import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import {
   NavigationContainer,
   NavigationIndependentTree,
+  createStaticNavigation,
 } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screen/HomeScreen";
-import FeedScreen from "../screen/FeedScreen";
-import LibraryScreen from "../screen/LibraryScreen";
-import SearchScreen from "../screen/SearchScreen";
+import HomeScreen from "../Screen/HomeScreen";
+import FeedScreen from "../Screen/FeedScreen";
+import LibraryScreen from "../Screen/LibraryScreen";
+import SearchScreen from "../Screen/SearchScreen";
 import { Ionicons } from "@expo/vector-icons";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +20,7 @@ export default function Page() {
       <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
         <NavigationContainer>
           <Tab.Navigator
-            initialRouteName="Search"
+            initialRouteName="Home"
             screenOptions={{
               tabBarActiveTintColor: "white",
               tabBarInactiveTintColor: "grey",
