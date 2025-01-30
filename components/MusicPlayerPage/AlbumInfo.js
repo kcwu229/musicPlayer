@@ -1,18 +1,9 @@
-import { View, Text, StyleSheet } from "react-native";
-
-const albumResultData = {
-  id: 1,
-  title: "Future Nostalgia",
-  artist: "Dua Lipa",
-  image: require("../../assets/images/future_nostalgia.jpeg"),
-  viewCount: 20000,
-  duration: "3:03",
-};
+import { View, Text, StyleSheet, Animated } from "react-native";
 
 const AlbumInfo = ({ title, artist }) => {
   return (
     <View style={styles.infoList}>
-      <Text style={styles.title}>{title.toUpperCase()}</Text>
+      <Animated.Text style={styles.title}>{title.toUpperCase()}</Animated.Text>
       <Text style={styles.artist}>{artist}</Text>
     </View>
   );
@@ -32,10 +23,13 @@ const styles = StyleSheet.create({
   artist: {
     color: "white",
     fontSize: 20,
+    marginTop: 10,
   },
   title: {
     color: "white",
     fontSize: 30,
+    fontWeight: "bold",
+    marginTop: 10,
   },
   commentSection: {
     backgroundColor: "black",

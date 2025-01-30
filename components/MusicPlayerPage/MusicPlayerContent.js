@@ -1,32 +1,74 @@
+import React, { useRef } from "react";
 import {
   View,
   StyleSheet,
-  Pressable,
   ImageBackground,
   Dimensions,
+  Modal,
+  Animated,
 } from "react-native";
+import { PanGestureHandler, State } from "react-native-gesture-handler";
 import AlbumInfo from "@/components/MusicPlayerPage/AlbumInfo";
 import ButtonGroup from "@/components/MusicPlayerPage/ButtonGroup";
 import CommentSection from "@/components/MusicPlayerPage/CommentSection";
 import { FullScreenMusicPlayerHeader } from "@/components/MusicPlayerPage/MusicPlayerHeader";
+
 const { height, width } = Dimensions.get("window");
 
-const MusicPlayerContent = ({ albumData }) => {
+const MusicPlayerContent = ({
+  albumData,
+  handleMinimizedScreen,
+  isVisible,
+}) => {
   const { title, artist, likeCount, commentCount, image } = albumData;
+  const translateY = useRef(new Animated.Value(0)).current;
+
+  const onGestureEvent = Animated.event(
+    [{ nativeEvent: { translationY: translateY } }],
+    { useNativeDriver: true }
+  );
+
+  const onHandlerStateChange = (event) => {
+    if (event.nativeEvent.state === State.END) {
+      if (event.nativeEvent.translationY > height * 0.3) {
+        handleMinimizedScreen();
+      } else {
+        Animated.spring(translateY, {
+          toValue: 0,
+          useNativeDriver: true,
+        }).start();
+      }
+    }
+  };
+
   return (
-    <View style={{ flex: 1 }}>
-      <FullScreenMusicPlayerHeader />
-      <ImageBackground
-        source={image}
-        resizeMethod="cover"
-        style={([styles.image], { height: height - 257 })}
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={isVisible}
+      onRequestClose={handleMinimizedScreen}
+    >
+      <PanGestureHandler
+        onGestureEvent={onGestureEvent}
+        onHandlerStateChange={onHandlerStateChange}
       >
-        <View style={styles.space}></View>
-        <AlbumInfo title={title} artist={artist} />
-        <ButtonGroup />
-        <CommentSection likeCount={likeCount} commentCount={commentCount} />
-      </ImageBackground>
-    </View>
+        <Animated.View style={{ flex: 1, transform: [{ translateY }] }}>
+          <FullScreenMusicPlayerHeader
+            handleMinimizedScreen={handleMinimizedScreen}
+          />
+          <ImageBackground
+            source={image}
+            resizeMethod="cover"
+            style={[styles.image, { height: height, width: width }]}
+          >
+            <View style={{ height: height * 0.54 }}></View>
+            <AlbumInfo title={title} artist={artist} />
+            <ButtonGroup />
+            <CommentSection likeCount={likeCount} commentCount={commentCount} />
+          </ImageBackground>
+        </Animated.View>
+      </PanGestureHandler>
+    </Modal>
   );
 };
 
@@ -49,15 +91,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontWeight: "bold",
   },
-  space: {
-    flexGrow: 4,
-  },
-
   likeText: { fontSize: 15, color: "white" },
   commentText: { fontSize: 15, color: "white" },
-  image: {
-    flexGrow: 8,
-  },
 });
 
 export default MusicPlayerContent;

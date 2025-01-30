@@ -23,6 +23,10 @@ const CommentSection = ({ likeCount, commentCount }) => {
     console.log("share !");
   };
 
+  const handleComment = () => {
+    console.log("comment !");
+  };
+
   return (
     <View style={styles.commentSection}>
       {isLiked === true ? (
@@ -39,7 +43,7 @@ const CommentSection = ({ likeCount, commentCount }) => {
         </Pressable>
       )}
       <Text style={styles.likeText}>{_likeCount}</Text>
-      <Pressable onPress={handleShare}>
+      <Pressable onPress={handleComment}>
         <FontAwesome name="comments" size={22} style={styles.btnColor} />
       </Pressable>
       <Text style={styles.commentText}> {_commentCount}</Text>
@@ -64,6 +68,9 @@ const styles = StyleSheet.create({
   },
   likeText: { fontSize: 15, color: "white" },
   commentText: { fontSize: 15, color: "white" },
+  space: {
+    flexGrow: 1,
+  },
 });
 
 export default CommentSection;

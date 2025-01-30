@@ -1,12 +1,5 @@
 import React, { useState, useRef } from "react";
-import {
-  SafeAreaView,
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  PanResponder,
-} from "react-native";
+import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import TopBanner from "@/components/HomeScreen/TopBanner";
 import SearchBar from "@/components/HomeScreen/SearchBar";
 import SuggestionSection from "@/components/HomeScreen/SuggectionSection";
@@ -14,6 +7,7 @@ import ChartSection from "@/components/HomeScreen/ChartSection";
 import TrendingAlbumSection from "@/components/HomeScreen/TrendingAlbumSection";
 import PopularArtistSection from "@/components/HomeScreen/PopularArtistSection";
 import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
+import { MinimizedMusicPlayerHeader } from "@/components/MusicPlayerPage/MusicPlayerHeader";
 
 const name = "Sam";
 
@@ -22,41 +16,16 @@ const HomeScreen = () => {
   const [initialPlayMusic, setInitialPlayMusic] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
 
-  console.log(`isminized : ${isMinimized}`);
-
   const handleMinimizedScreen = () => {
     if (initialPlayMusic === false) {
-      setInitialPlayMusic(!initialPlayMusic);
+      setInitialPlayMusic(true);
     }
-    setIsMinimized(!isMinimized);
+    setIsMinimized((prev) => !prev);
   };
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (evt, gestureState) => {
-        // only swipe down to trigger
-        if (gestureState.dy > 100) {
-          handleMinimizedScreen();
-          return true;
-        }
-        return false;
-      },
-      onPanResponderMove: (evt, gestureState) => {
-        // Handle pan move
-      },
-      onPanResponderRelease: (evt, gestureState) => {
-        // Handle pan release
-      },
-    })
-  ).current;
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={isMinimized}
-        style={styles.container}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={styles.container}>
           <TopBanner />
           <Text style={styles.text}>Good morning,</Text>
@@ -72,14 +41,14 @@ const HomeScreen = () => {
       {selectedAlbum && (
         <View
           style={
-            isMinimized === false ? styles.fullScreen : styles.minimizedScreen
+            isMinimized
+              ? styles.minimizedScreenContainer
+              : styles.fullScreenContainer
           }
-          {...panResponder.panHandlers}
         >
           <MusicPlayerScreen
             albumData={selectedAlbum}
             isMinimized={isMinimized}
-            setIsMinimized={setIsMinimized}
             handleMinimizedScreen={handleMinimizedScreen}
           />
         </View>
@@ -89,6 +58,15 @@ const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  minimizedScreenContainer: {
+    flexDirection: "row",
+    position: "absolute",
+    bottom: 0,
+    zIndex: 1,
+    width: "100%",
+    flex: 1,
+    backgroundColor: "black",
+  },
   safeArea: {
     flex: 1,
     position: "relative",
@@ -109,22 +87,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: "auto",
   },
-  fullScreen: {
+  fullScreenContainer: {
     position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    padding: 0,
-    zIndex: 1,
-    width: "100%",
-  },
-  minimizedScreen: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    padding: 0,
     zIndex: 1,
     width: "100%",
   },
