@@ -1,61 +1,50 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  Image,
-  Button,
-} from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import ArtistItem from "@/components/ArtistItem";
 
-const artistData = [
-  {
-    id: 1,
-    name: "Ariana Grande",
-    image: require("../../assets/images/ariana_grande.png"),
-  },
-  {
-    id: 2,
-    name: "Beyoncé",
-    image: require("../../assets/images/beyonce.jpeg"),
-  },
-  {
-    id: 3,
-    name: "Ed Sheeran",
-    image: require("../../assets/images/ed_sheeran.jpeg"),
-  },
-];
+const PopularArtistSection = ({ artistData }) => {
+  const navigation = useNavigation();
+  const navigateToArtistInfoPage = (selectedArtistData) => {
+    navigation.navigate("ArtistInfo", {
+      artistData: { selectedArtistData },
+    });
+  };
 
-const PopularArtistSection = () => (
-  <View>
-    <View style={styles.topHeading}>
-      <Text style={styles.heading}>Popular artists</Text>
-      <Pressable onPress={() => console.log("See More")}>
-        <Text style={styles.seeAll}>See all</Text>
-      </Pressable>
+  return (
+    <View>
+      <View style={styles.topHeading}>
+        <Text style={styles.heading}>Popular artists</Text>
+        <Pressable onPress={() => console.log("See More")}>
+          <Text style={styles.seeAll}>See all</Text>
+        </Pressable>
+      </View>
+      <ScrollView
+        style={([styles.artistList], { overflow: "visible" })}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      >
+        {artistData.map((data) => {
+          return (
+            <Pressable
+              key={data.id}
+              onPress={() => navigateToArtistInfoPage(data)}
+            >
+              <ArtistItem
+                artistData={data}
+                allowFollowButton={true}
+                imageWidth={180}
+                imageHeight={180}
+                displayFollower={false}
+              />
+            </Pressable>
+          );
+        })}
+      </ScrollView>
     </View>
-    <ScrollView
-      style={([styles.artistList], { overflow: "visible" })}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-    >
-      {artistData.map((data) => {
-        return (
-          <ArtistItem
-            key={data.id}
-            artistData={data}
-            allowFollowButton={true}
-            imageWidth={180}
-            imageHeight={180}
-          />
-        );
-      })}
-    </ScrollView>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   followBtn: {

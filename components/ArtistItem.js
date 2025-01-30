@@ -9,8 +9,9 @@ const ArtistIcon = ({
   imageWidth,
   imageHeight,
   shownOnResultList = false,
+  displayFollower = false,
 }) => {
-  const { name, followerCount, image } = artistData;
+  const { followerCount, image, artist } = artistData;
   const [hasFollowed, setHasFollow] = useState(false);
 
   const handleFollow = (name) => {
@@ -26,19 +27,17 @@ const ArtistIcon = ({
     <View
       style={shownOnResultList ? styles.artistItemOnList : styles.artistItem}
     >
-      <Pressable onPress={() => console.log(name)}>
-        <View style={shownOnResultList ? null : styles.description}>
-          <Image
-            source={image}
-            style={[styles.image, { width: imageWidth, height: imageHeight }]}
-          />
-        </View>
-      </Pressable>
+      <View style={shownOnResultList ? null : styles.description}>
+        <Image
+          source={image}
+          style={[styles.image, { width: imageWidth, height: imageHeight }]}
+        />
+      </View>
       <View>
         <Text style={shownOnResultList ? styles.nameOnList : styles.name}>
-          {name}
+          {artist}
         </Text>
-        {followerCount != null ? (
+        {followerCount != null && displayFollower == true ? (
           <View style={shownOnResultList ? styles.followerRow : null}>
             <FontAwesome name="user" size={15} style={styles.user} />
             <Text style={styles.followerCount}>{followerCount} Followers </Text>
@@ -47,7 +46,7 @@ const ArtistIcon = ({
       </View>
       {allowFollowButton ? <View style={styles.space}></View> : null}
       {allowFollowButton ? (
-        <Pressable onPress={() => handleFollow(name)}>
+        <Pressable onPress={() => handleFollow(artist)}>
           {hasFollowed === true ? (
             <View style={styles.unfollowBtn}>
               <Text style={styles.unfollowText}>Unfollow</Text>

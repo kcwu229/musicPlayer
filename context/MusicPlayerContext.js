@@ -1,20 +1,34 @@
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useState, useContext } from "react";
 
 const MusicPlayerContext = createContext();
 
-const MusicPlayerComponent = () => {
-  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+export const MusicPlayerProvider = ({ children }) => {
   const [selectedAlbum, setSelectedAlbum] = useState(null);
+  const [initialPlayMusic, setInitialPlayMusic] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+
+  const handleMinimizedScreen = () => {
+    if (initialPlayMusic === false) {
+      setInitialPlayMusic(true);
+    }
+    setIsMinimized((prev) => !prev);
+  };
+
   return (
     <MusicPlayerContext.Provider
       value={{
-        isPlayingMusic,
         selectedAlbum,
-        setIsPlayingMusic,
         setSelectedAlbum,
+        initialPlayMusic,
+        setInitialPlayMusic,
+        isMinimized,
+        setIsMinimized,
+        handleMinimizedScreen,
       }}
-    ></MusicPlayerContext.Provider>
+    >
+      {children}
+    </MusicPlayerContext.Provider>
   );
 };
 
-export default MusicPlayerContext;
+export const useMusicPlayer = () => useContext(MusicPlayerContext);

@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet } from "react-native";
-import ArtistDetailPage from "@/components/ArtistDetailPage";
+
 const FeedScreen = () => {
   const data = {
     id: 1,
@@ -13,11 +13,7 @@ const FeedScreen = () => {
     likeCount: 20000,
     commentCount: 20000,
   };
-  return (
-    <View style={styles.container}>
-      <ArtistDetailPage artistData={data} />
-    </View>
-  );
+  return <View style={styles.container}></View>;
 };
 
 const styles = StyleSheet.create({

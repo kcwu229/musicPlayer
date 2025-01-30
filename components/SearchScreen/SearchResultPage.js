@@ -33,19 +33,19 @@ const albumResultData = [
 const artistResultData = [
   {
     id: 1,
-    name: "Ariana Grande",
+    artist: "Ariana Grande",
     image: require("../../assets/images/ariana_grande.png"),
     followerCount: 20000,
   },
   {
     id: 2,
-    name: "Beyoncé",
+    artist: "Beyoncé",
     image: require("../../assets/images/beyonce.jpeg"),
     followerCount: 20000,
   },
   {
     id: 3,
-    name: "Ed Sheeran",
+    artist: "Ed Sheeran",
     image: require("../../assets/images/ed_sheeran.jpeg"),
     followerCount: 20000,
   },
@@ -66,6 +66,7 @@ const SearchResultPage = ({ setSelectedAlbum }) => {
               imageHeight={60}
               shownOnResultList={true}
               allowFollowButton={true}
+              displayFollower={true}
             />
           </Pressable>
         ))}
