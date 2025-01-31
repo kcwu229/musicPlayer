@@ -1,3 +1,8 @@
+# Demo
+
+https://github.com/user-attachments/assets/ef567764-1f9a-4e4e-adb4-1870fcc7dcd1
+
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
@@ -13,7 +18,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 2. Start the app
 
    ```bash
-    npx expo start
+    npm start
    ```
 
 In the output, you'll find options to open the app in a
@@ -45,10 +50,9 @@ To learn more about developing your project with Expo, look at the following res
 ## Join the community
 
 
-![Simulator Screenshot - iPhone 15 Pro Max - 2025-01-27 at 22 13 45](https://github.com/user-attachments/assets/1982ffff-df14-48ce-b2b1-af3caa762146)
+### API form last.fm to imort to Database
+<img width="264" alt="image" src="https://github.com/user-attachments/assets/87d409cd-d6f4-4fbf-a5e6-2681b1be5a85" />
 
-Not develope yet
-![Simulator Screenshot - iPhone 15 Pro Max - 2025-01-27 at 22 13 10](https://github.com/user-attachments/assets/a88e9cc8-701b-4bb6-8b4a-577fde0dbef7)
 
 
 
