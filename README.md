@@ -50,6 +50,7 @@ This command will move the starter code to the **app-example** directory and cre
 
 ### MongoDB
 
+#### Following table structure just for reference
 1. Artist Document
 ```bash
 {
