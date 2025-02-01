@@ -1,3 +1,8 @@
+# Demo
+
+https://github.com/user-attachments/assets/ef567764-1f9a-4e4e-adb4-1870fcc7dcd1
+
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
@@ -13,7 +18,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 2. Start the app
 
    ```bash
-    npx expo start
+    npm start
    ```
 
 In the output, you'll find options to open the app in a
@@ -35,20 +40,58 @@ npm run reset-project
 
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
+### API form last.fm to imort to Database
+<img width="366" alt="image" src="https://github.com/user-attachments/assets/249c6469-2cba-4dbf-9dbc-1a1aa809abcd" />
 
 
-![Simulator Screenshot - iPhone 15 Pro Max - 2025-01-27 at 22 13 45](https://github.com/user-attachments/assets/1982ffff-df14-48ce-b2b1-af3caa762146)
+### Schema Design (will change into NOSQL later)
+![image](https://github.com/user-attachments/assets/47a88071-4267-492e-b9b5-4a1ad00173fb)
 
-Not develope yet
-![Simulator Screenshot - iPhone 15 Pro Max - 2025-01-27 at 22 13 10](https://github.com/user-attachments/assets/a88e9cc8-701b-4bb6-8b4a-577fde0dbef7)
+### MongoDB
+
+#### Following table structure just for reference
+1. Artist Document
+```bash
+{
+  "artist_id": "1",
+  "artist_name": "Artist Name",
+  "artist_listeners": 1000,
+  "artist_summary": "Summary about the artist.",
+  "artist_play_count": 500,
+  "albums": [
+    {
+      "album_id": "1",
+      "album_name": "First Album",
+      "album_summary": "Summary of the album.",
+      "album_publish_year": 2020,
+      "album_listeners": 500,
+      "tracks": [
+        {
+          "track_id": "1",
+          "track_title": "First Track",
+          "track_duration": 180,
+          "record_tags": ["tag1", "tag2"]
+        },
+        {
+          "track_id": "2",
+          "track_title": "Second Track",
+          "track_duration": 210,
+          "record_tags": ["tag1"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+2. Artist Document
+```bash
+{
+  "tag_id": "1",
+  "tag_name": "tag1"
+}
+```
 
 
 
