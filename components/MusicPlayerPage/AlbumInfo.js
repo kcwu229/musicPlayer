@@ -1,4 +1,6 @@
-import { View, Text, StyleSheet, Animated } from "react-native";
+import { View, Text, StyleSheet, Animated, Dimensions } from "react-native";
+
+const { height, width } = Dimensions.get("window");
 
 const AlbumInfo = ({ title, artist }) => {
   return (
@@ -14,22 +16,22 @@ const styles = StyleSheet.create({
   infoList: {
     paddingVertical: 15,
     paddingHorizontal: 20,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   container: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   artist: {
     color: "white",
-    fontSize: 20,
+    fontSize: width > 100 && width < 500 ? 15 : 30,
     marginTop: 10,
+    marginHorizontal: width * 0.1,
   },
   title: {
     color: "white",
-    fontSize: 30,
+    fontSize: width > 100 && width < 500 ? 20 : 40,
     fontWeight: "bold",
     marginTop: 10,
+    marginHorizontal: width * 0.1,
   },
   commentSection: {
     backgroundColor: "black",

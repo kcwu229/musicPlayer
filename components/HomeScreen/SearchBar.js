@@ -1,17 +1,16 @@
 import React from "react";
 import {
-  SafeAreaView,
   View,
-  Text,
   StyleSheet,
   TextInput,
   Pressable,
+  Dimensions,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Feather from "react-native-vector-icons/Feather";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { useState } from "react";
+
+const { height, width } = Dimensions.get("window");
 
 const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -24,13 +23,19 @@ const SearchBar = () => {
     setSearchValue("");
   };
 
+  const maginLeftCalculator = () => {
+    let marginLeftPercentage = "3%";
+    if (width > 100 && width < 600) marginLeftPercentage = "8%";
+    return marginLeftPercentage;
+  };
+
   return (
     <View style={styles.searchBar}>
       <FontAwesome name="search" size={20} style={styles.searchIcon} />
       <TextInput
         placeholder="What you want to listen to ..."
         placeholderTextColor="grey"
-        marginLeft="8%"
+        marginLeft={maginLeftCalculator()}
         value={searchValue}
         onChangeText={handleSearchChange}
         style={styles.searchField}
@@ -56,7 +61,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   searchIcon: {
-    left: "5%",
+    left: width > 100 && width < 600 ? "5%" : "2%",
   },
   closeIcon: {
     right: "5%",

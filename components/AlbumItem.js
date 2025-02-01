@@ -1,7 +1,15 @@
 import React from "react";
-import { View, Text, StyleSheet, Pressable, Image, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Image,
+  Button,
+  Dimensions,
+} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
+const { height, width } = Dimensions.get("window");
 const AlbumItem = ({
   albumData,
   allowOptionButton = false,
@@ -119,7 +127,7 @@ const styles = StyleSheet.create({
   albumItem: {
     flexDirection: "column",
     marginRight: 20,
-    marginTop: 20,
+    marginTop: 100 && height < 800 ? 3 : 8,
   },
 
   albumItemOnList: {
@@ -138,7 +146,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 22,
+    fontSize: height > 100 && height < 800 ? 14 : 22,
     color: "black",
     marginTop: 10,
   },
@@ -151,7 +159,7 @@ const styles = StyleSheet.create({
   artist: {
     marginTop: 10,
     color: "gray",
-    fontSize: 18,
+    fontSize: height > 100 && height < 800 ? 12 : 18,
   },
 
   albumImage: {

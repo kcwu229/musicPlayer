@@ -1,8 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet, Pressable, Image, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Image,
+  Button,
+  Dimensions,
+} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
-
+const { height, width } = Dimensions.get("window");
 const ArtistIcon = ({
   artistData,
   allowFollowButton = false,
@@ -119,8 +127,8 @@ const styles = StyleSheet.create({
 
   artistItem: {
     flexDirection: "column",
-    marginRight: 20,
-    marginTop: 20,
+    marginRight: height > 100 && height < 800 ? 10 : 20,
+    marginTop: height > 100 && height < 800 ? 5 : 20,
     alignItems: "center",
   },
   nameOnList: {
@@ -130,7 +138,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   name: {
-    fontSize: 20,
+    fontSize: height > 100 && height < 800 ? 13 : 20,
     margin: 10,
     color: "black",
   },

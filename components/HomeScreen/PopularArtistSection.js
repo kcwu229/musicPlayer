@@ -1,8 +1,17 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  Dimensions,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import ArtistItem from "@/components/ArtistItem";
+
+const { height, width } = Dimensions.get("window");
 
 const PopularArtistSection = ({ artistData }) => {
   const navigation = useNavigation();
@@ -34,8 +43,8 @@ const PopularArtistSection = ({ artistData }) => {
               <ArtistItem
                 artistData={data}
                 allowFollowButton={true}
-                imageWidth={180}
-                imageHeight={180}
+                imageWidth={height > 100 && height < 800 ? 100 : 180}
+                imageHeight={height > 100 && height < 800 ? 100 : 180}
                 displayFollower={false}
               />
             </Pressable>
@@ -67,11 +76,11 @@ const styles = StyleSheet.create({
   seeAll: {
     color: "gray",
     marginTop: 10,
-    fontSize: 22,
+    fontSize: height > 100 && height < 800 ? 17 : 22,
     fontWeight: "thin",
   },
   heading: {
-    fontSize: 26,
+    fontSize: height > 100 && height < 800 ? 20 : 26,
     fontWeight: "bold",
     color: "black",
     marginTop: 10,

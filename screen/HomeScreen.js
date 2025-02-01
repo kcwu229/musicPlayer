@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import TopBanner from "@/components/HomeScreen/TopBanner";
 import SearchBar from "@/components/HomeScreen/SearchBar";
@@ -8,8 +8,6 @@ import TrendingAlbumSection from "@/components/HomeScreen/TrendingAlbumSection";
 import PopularArtistSection from "@/components/HomeScreen/PopularArtistSection";
 import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
 import { useMusicPlayer } from "../context/MusicPlayerContext";
-
-const name = "Sam";
 
 const artistData = [
   {
@@ -42,6 +40,36 @@ const artistData = [
     description: "This is not good",
     followerCount: 20000,
   },
+  {
+    id: 4,
+    title: "Future Nostalgia",
+    artist: "Dua Lipa",
+    image: require("@/assets/images/future_nostalgia.jpeg"),
+    viewCount: 20000,
+    duration: "3:03",
+    description: "THis is a girl",
+    followerCount: 20000,
+  },
+  {
+    id: 5,
+    title: "After Hours",
+    artist: "The Weeknd",
+    image: require("@/assets/images/after_hour.jpeg"),
+    viewCount: 20000,
+    duration: "3:03",
+    description: "He is a man",
+    followerCount: 20000,
+  },
+  {
+    id: 6,
+    title: "Fine Line",
+    artist: "Harry Styles",
+    image: require("@/assets/images/fine_line.jpg"),
+    viewCount: 20000,
+    duration: "3:03",
+    description: "This is not good",
+    followerCount: 20000,
+  },
 ];
 
 const albumData = [
@@ -66,7 +94,6 @@ const albumData = [
 ];
 
 const HomeScreen = () => {
-  const [initialPlayMusic, setInitialPlayMusic] = useState(false);
   const {
     selectedAlbum,
     setSelectedAlbum,
@@ -74,12 +101,22 @@ const HomeScreen = () => {
     handleMinimizedScreen,
   } = useMusicPlayer();
 
+  const checkTime = () => {
+    let helloWord = "Good Morning";
+    const hour = new Date().getHours();
+    if (hour > 12 && hour < 18) helloWord = "Good afternoon";
+    if (hour >= 18) helloWord = "Good night";
+    return helloWord;
+  };
+
+  const name = "User";
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={styles.container}>
           <TopBanner />
-          <Text style={styles.text}>Good morning,</Text>
+          <Text style={styles.text}>{checkTime()},</Text>
           <Text style={styles.name}>{name}</Text>
           <SearchBar />
           <SuggestionSection setSelectedAlbum={setSelectedAlbum} />
@@ -110,15 +147,6 @@ const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  minimizedScreenContainer: {
-    flexDirection: "row",
-    position: "absolute",
-    bottom: 0,
-    zIndex: 1,
-    width: "100%",
-    flex: 1,
-    backgroundColor: "black",
-  },
   safeArea: {
     flex: 1,
     position: "relative",
@@ -130,7 +158,7 @@ const styles = StyleSheet.create({
     fontWeight: "ultralight",
     color: "darkgrey",
   },
-  name: { fontSize: 30, fontWeight: "normal" },
+  name: { fontSize: 28, fontWeight: "normal", marginTop: 5 },
   container: {
     flex: 1,
     position: "relative",

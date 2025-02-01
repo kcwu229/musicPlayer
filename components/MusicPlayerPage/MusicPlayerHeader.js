@@ -6,8 +6,8 @@ import {
   Pressable,
   Dimensions,
 } from "react-native";
-import { useState } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useMusicPlayer } from "@/context/MusicPlayerContext";
 
 const { height, width } = Dimensions.get("window");
 
@@ -17,7 +17,8 @@ exports.MinimizedMusicPlayerHeader = ({
   style,
 }) => {
   const { title, artist, image } = albumData;
-  const [isPlaying, setIsPlaying] = useState(false);
+
+  const { isPlaying, setIsPlaying } = useMusicPlayer();
 
   const handleNextSong = () => {
     console.log("Next song ");
@@ -36,15 +37,27 @@ exports.MinimizedMusicPlayerHeader = ({
         <View style={styles.space}></View>
         {isPlaying ? (
           <Pressable onPress={handlePlaying}>
-            <FontAwesome name="pause" size={22} style={styles.btnColor} />
+            <FontAwesome
+              name="pause"
+              size={width > 100 && width < 600 ? 22 : 30}
+              style={styles.btnColor}
+            />
           </Pressable>
         ) : (
           <Pressable onPress={handlePlaying}>
-            <FontAwesome name="play" size={22} style={styles.btnColor} />
+            <FontAwesome
+              name="play"
+              size={width > 100 && width < 600 ? 22 : 30}
+              style={styles.btnColor}
+            />
           </Pressable>
         )}
         <Pressable onPress={handleNextSong}>
-          <FontAwesome name="step-forward" size={22} style={styles.btnColor} />
+          <FontAwesome
+            name="step-forward"
+            size={width > 100 && width < 600 ? 22 : 30}
+            style={styles.btnColor}
+          />
         </Pressable>
       </View>
     </Pressable>
@@ -54,19 +67,27 @@ exports.MinimizedMusicPlayerHeader = ({
 exports.FullScreenMusicPlayerHeader = ({ handleMinimizedScreen }) => {
   return (
     <View>
-      <View style={{ backgroundColor: "black", paddingTop: 25 }}>
+      <View
+        style={{
+          paddingTop: height < 800 ? 40 : 80,
+        }}
+      >
+        {/*<View style={styles.topBanner}>
+          <View style={{ flexGrow: 1 }}></View>
+          <Pressable onPress={handleMinimizedScreen}>
+            <FontAwesome
+              name="chevron-down"
+              size={width > 800 ? 26 : 16}
+              style={styles.btnColor}
+            />
+          </Pressable>
+        </View>*/}
         <View
           style={[
             styles.horizontalBar,
             { width: width * 0.13, height: height * 0.01 },
           ]}
         ></View>
-      </View>
-      <View style={styles.topBanner}>
-        <Text style={styles.playText}>Now Playing</Text>
-        <Pressable onPress={handleMinimizedScreen}>
-          <FontAwesome name="chevron-down" size={10} style={styles.btnColor} />
-        </Pressable>
       </View>
     </View>
   );
@@ -75,22 +96,25 @@ exports.FullScreenMusicPlayerHeader = ({ handleMinimizedScreen }) => {
 const styles = StyleSheet.create({
   minimizedTopBanner: {
     flexDirection: "row",
-    padding: 10,
+    height: height > 100 && width < 800 ? 75 : 120,
+    padding: height > 100 && width < 800 ? 10 : 30,
     alignItems: "center",
   },
   horizontalBar: {
-    backgroundColor: "grey",
+    backgroundColor: "rgb(204, 200, 200)",
     alignSelf: "center",
     borderRadius: 20,
   },
-  playText: { color: "white", fontSize: 18 },
+  playText: {
+    color: "white",
+    fontSize: width > 800 ? 30 : 18,
+  },
   topBanner: {
     flexDirection: "row",
-    width: "100%",
-    padding: 10,
+    padding: width > 500 ? 22 : 10,
     justifyContent: "space-between",
-    backgroundColor: "black",
     alignItems: "center",
+    marginHorizontal: width * 0.1,
   },
   artist: {
     color: "white",
@@ -101,7 +125,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   minimizedTitle: {
-    fontSize: 16,
+    fontSize: width > 100 && width < 600 ? 16 : 26,
     color: "white",
     marginLeft: 10,
     fontWeight: "bold",
@@ -124,8 +148,8 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   minimizedImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 8,
+    width: width > 100 && width < 600 ? 40 : 80,
+    height: width > 100 && width < 600 ? 40 : 80,
+    borderRadius: 20,
   },
 });

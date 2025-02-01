@@ -1,14 +1,8 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
 
 const LibraryScreen = () => {
-  return (
-    <View style={styles.container}>
-      <Text>Developing with the music player screen</Text>
-      <MusicPlayerScreen albumData={albumData} />
-    </View>
-  );
+  return <View style={styles.container}></View>;
 };
 
 const albumData = {

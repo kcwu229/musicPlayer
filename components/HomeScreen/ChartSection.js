@@ -1,28 +1,58 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  Dimensions,
+} from "react-native";
 import RandomColor from "../../components/RandomColor";
 import { LinearGradient } from "expo-linear-gradient";
+
+const { height, width } = Dimensions.get("window");
 
 const chartData = [
   {
     id: 1,
     title: "Top 50",
     region: "Canada",
-    subscription: "Subscribe for more",
+    subscription: "Subscribe",
     status: "update",
   },
   {
     id: 2,
     title: "Top 50",
     region: "Global",
-    subscription: "Subscribe for more",
+    subscription: "Subscribe",
     status: "update",
   },
   {
     id: 3,
     title: "Top 50",
     region: "Taiwan",
-    subscription: "Subscribe for more",
+    subscription: "Subscribe",
+    status: "update",
+  },
+  {
+    id: 4,
+    title: "Top 50",
+    region: "Canada",
+    subscription: "Subscribe",
+    status: "update",
+  },
+  {
+    id: 5,
+    title: "Top 50",
+    region: "Global",
+    subscription: "Subscribe",
+    status: "update",
+  },
+  {
+    id: 6,
+    title: "Top 50",
+    region: "Taiwan",
+    subscription: "Subscribe",
     status: "update",
   },
 ];
@@ -75,11 +105,11 @@ const styles = StyleSheet.create({
   seeAll: {
     color: "gray",
     marginTop: 10,
-    fontSize: 22,
+    fontSize: height > 100 && height < 800 ? 17 : 22,
     fontWeight: "thin",
   },
   heading: {
-    fontSize: 26,
+    fontSize: height > 100 && height < 800 ? 20 : 26,
     fontWeight: "bold",
     color: "black",
     marginTop: 10,
@@ -90,10 +120,10 @@ const styles = StyleSheet.create({
   chartItem: {
     flexDirection: "column",
     marginRight: 20,
-    height: 200,
-    width: 200,
+    height: height > 100 && height < 800 ? 100 : 200,
+    width: height > 100 && height < 800 ? 100 : 200,
     opacity: 0.5,
-    marginTop: 20,
+    marginTop: height > 100 && height < 800 ? 15 : 20,
     borderRadius: 20,
     shadowColor: "black",
     shadowOffset: { width: 1, height: -1 },
@@ -102,13 +132,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    fontSize: 20,
+    fontSize: height > 100 && height < 800 ? 14 : 20,
     color: "white",
     margin: 10,
     fontWeight: "bold",
   },
   region: {
-    fontSize: 40,
+    fontSize: height > 100 && height < 800 ? 18 : 40,
     color: "white",
     margin: 10,
     fontWeight: "bold",
@@ -117,24 +147,23 @@ const styles = StyleSheet.create({
     textShadowRadius: 1,
   },
   chartImage: {
-    position: "absolute",
-    top: "20%",
+    flex: 1,
+    top: height > 100 && height < 800 ? "10%" : "40",
+    flexDirection: "column",
     alignItems: "center",
-    alignSelf: "center",
     alignContent: "center",
-    width: "auto",
   },
   subscription: {
     marginRight: 20,
     marginTop: 10,
-    fontSize: 22,
+    fontSize: height > 100 && height < 800 ? 13 : 22,
     color: "black",
   },
   status: {
     marginRight: 20,
     marginTop: 10,
     color: "gray",
-    fontSize: 18,
+    fontSize: height > 100 && height < 800 ? 11 : 18,
   },
 });
 

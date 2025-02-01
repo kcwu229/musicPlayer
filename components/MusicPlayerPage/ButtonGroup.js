@@ -1,10 +1,12 @@
-import { View, StyleSheet, Pressable } from "react-native";
-import { useState } from "react";
+import { View, StyleSheet, Pressable, Dimensions } from "react-native";
 import AntDesign from "react-native-vector-icons/MaterialIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useMusicPlayer } from "@/context/MusicPlayerContext";
+
+const { height, width } = Dimensions.get("window");
 
 const ButtonGroup = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { isPlaying, setIsPlaying } = useMusicPlayer();
 
   const handleMoreOption = () => {
     console.log("more option !");
@@ -29,25 +31,49 @@ const ButtonGroup = () => {
   return (
     <View style={styles.musicControlList}>
       <Pressable onPress={handleRandomPlaying}>
-        <FontAwesome name="random" size={25} style={styles.btnColor} />
+        <FontAwesome
+          name="random"
+          size={width > 100 && width < 600 ? 15 : 25}
+          style={styles.btnColor}
+        />
       </Pressable>
       <Pressable onPress={handlePreviousSong}>
-        <FontAwesome name="step-backward" size={25} style={styles.btnColor} />
+        <FontAwesome
+          name="step-backward"
+          size={width > 100 && width < 600 ? 15 : 25}
+          style={styles.btnColor}
+        />
       </Pressable>
       <Pressable onPress={handlePlaying}>
         {isPlaying === true ? (
-          <AntDesign name="play-circle" size={80} style={styles.btnColor} />
+          <AntDesign
+            name="play-circle"
+            size={width > 100 && width < 600 ? 60 : 80}
+            style={styles.btnColor}
+          />
         ) : (
-          <AntDesign name="pause-circle" size={80} style={styles.btnColor} />
+          <AntDesign
+            name="pause-circle"
+            size={width > 100 && width < 600 ? 60 : 80}
+            style={styles.btnColor}
+          />
         )}
       </Pressable>
 
       <Pressable onPress={handleNextSong}>
-        <FontAwesome name="step-forward" size={25} style={[styles.btnColor]} />
+        <FontAwesome
+          name="step-forward"
+          size={width > 100 && width < 600 ? 15 : 25}
+          style={[styles.btnColor]}
+        />
       </Pressable>
 
       <Pressable onPress={handleMoreOption}>
-        <FontAwesome name="ellipsis-h" size={25} style={styles.btnColor} />
+        <FontAwesome
+          name="ellipsis-h"
+          size={width > 100 && width < 600 ? 15 : 25}
+          style={styles.btnColor}
+        />
       </Pressable>
     </View>
   );
@@ -56,7 +82,6 @@ const ButtonGroup = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   artist: {
     color: "white",
@@ -78,7 +103,7 @@ const styles = StyleSheet.create({
 
   musicControlList: {
     flexDirection: "row",
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    marginHorizontal: width > 500 ? width * 0.01 : width * 0.001,
     alignItems: "center",
     justifyContent: "space-evenly",
   },
@@ -93,7 +118,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   btnColor: {
-    color: "white",
+    color: "rgb(236, 236, 236)",
     margin: 15,
   },
   likeText: { fontSize: 15, color: "white" },

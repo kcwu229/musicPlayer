@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   minimizedScreenContainer: {
-    backgroundColor: "black",
+    backgroundColor: "rgb(31, 30, 30)",
     bottom: 0,
     position: "absolute",
     left: 0,

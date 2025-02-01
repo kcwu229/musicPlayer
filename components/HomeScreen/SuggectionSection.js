@@ -6,7 +6,10 @@ import {
   Image,
   ScrollView,
   Pressable,
+  Dimensions,
 } from "react-native";
+
+const { height, width } = Dimensions.get("window");
 
 const mockSuggestionData = [
   {
@@ -31,6 +34,36 @@ const mockSuggestionData = [
   },
   {
     id: 3,
+    artist: "Adele",
+    title: "Hello",
+    image: require("../../assets/images/adele.jpeg"),
+    viewCount: 20000,
+    duration: "3:03",
+    likeCount: 20000,
+    commentCount: 20000,
+  },
+  {
+    id: 4,
+    artist: "Taylor Swift",
+    title: "Love Story",
+    image: require("../../assets/images/taylor_swift.png"),
+    viewCount: 20000,
+    duration: "3:03",
+    likeCount: 20000,
+    commentCount: 20000,
+  },
+  {
+    id: 5,
+    artist: "Ed Sheeran",
+    title: "Shape of You",
+    image: require("../../assets/images/ed_sheeran.jpeg"),
+    viewCount: 20000,
+    duration: "3:03",
+    likeCount: 20000,
+    commentCount: 20000,
+  },
+  {
+    id: 6,
     artist: "Adele",
     title: "Hello",
     image: require("../../assets/images/adele.jpeg"),
@@ -80,14 +113,14 @@ const SuggectionSection = ({ setSelectedAlbum }) => {
 
 const styles = StyleSheet.create({
   heading: {
-    fontSize: 26,
+    fontSize: height > 100 && height < 800 ? 20 : 26,
     fontWeight: "bold",
     color: "black",
-    marginTop: 40,
+    marginTop: height > 100 && height < 800 ? 25 : 40,
   },
   image: {
-    height: 350,
-    width: 200,
+    height: height > 100 && height < 800 ? height * 0.33 : height * 0.25,
+    width: width > 100 && width < 600 ? width * 0.4 : width * 0.2,
     borderRadius: 20,
     shadowColor: "black",
     shadowOffset: { width: 1, height: -1 },
@@ -104,15 +137,15 @@ const styles = StyleSheet.create({
   suggestItem: {
     flexDirection: "column",
     marginRight: 20,
-    marginTop: 20,
+    marginTop: height > 100 && height < 800 ? 15 : 20,
   },
   artist: {
-    fontSize: 18,
+    fontSize: height > 100 && height < 800 ? 13 : 18,
     color: "white",
     marginVertical: 3,
   },
   title: {
-    fontSize: 26,
+    fontSize: height > 100 && height < 800 ? 17 : 26,
     color: "white",
     fontWeight: "bold",
   },

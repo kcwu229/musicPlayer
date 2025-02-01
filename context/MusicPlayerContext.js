@@ -6,6 +6,7 @@ export const MusicPlayerProvider = ({ children }) => {
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [initialPlayMusic, setInitialPlayMusic] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const handleMinimizedScreen = () => {
     if (initialPlayMusic === false) {
@@ -24,6 +25,8 @@ export const MusicPlayerProvider = ({ children }) => {
         isMinimized,
         setIsMinimized,
         handleMinimizedScreen,
+        isPlaying,
+        setIsPlaying,
       }}
     >
       {children}
