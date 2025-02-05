@@ -5,7 +5,7 @@ const { height, width } = Dimensions.get("window");
 const AlbumInfo = ({ title, artist }) => {
   return (
     <View style={styles.infoList}>
-      <Animated.Text style={styles.title}>{title.toUpperCase()}</Animated.Text>
+      <Animated.Text style={styles.title}>{name.toUpperCase()}</Animated.Text>
       <Text style={styles.artist}>{artist}</Text>
     </View>
   );

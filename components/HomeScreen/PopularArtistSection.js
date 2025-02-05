@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { BASE_URL } from "@env"
 
 import ArtistItem from "@/components/ArtistItem";
 
@@ -20,6 +21,26 @@ const PopularArtistSection = ({ artistData }) => {
       artistData: { selectedArtistData },
     });
   };
+  const [artistList, setArtistList] = useState([]);
+
+  useEffect(() => {
+    const fetchArtistList = async () => {
+      const artistCount = 8;
+      const url = BASE_URL + `artist?limit=${artistCount}`
+      //console.log(url)
+      try {
+        const result = await fetch(url);
+        //console.log(result)
+        const data = await result.json();
+        //console.log(data.data)
+        setArtistList(data.data);
+
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchArtistList();
+  }, [])
 
   return (
     <View>
@@ -34,10 +55,10 @@ const PopularArtistSection = ({ artistData }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {artistData.map((data) => {
+        {artistList.map((data) => {
           return (
             <Pressable
-              key={data.id}
+              key={data._id}
               onPress={() => navigateToArtistInfoPage(data)}
             >
               <ArtistItem

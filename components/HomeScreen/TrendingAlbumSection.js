@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import AlbumItem from "@/components/AlbumItem";
+import { BASE_URL } from "@env";
 
 const trendingAlbumData = [
   {
@@ -20,56 +21,7 @@ const trendingAlbumData = [
     likeCount: 20000,
     commentCount: 20000,
   },
-  {
-    id: 2,
-    title: "After Hours",
-    artist: "The Weeknd",
-    image: require("../../assets/images/after_hour.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
-  {
-    id: 3,
-    title: "Fine Line",
-    artist: "Harry Styles",
-    image: require("../../assets/images/fine_line.jpg"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
-  {
-    id: 4,
-    title: "Future Nostalgia",
-    artist: "Dua Lipa",
-    image: require("../../assets/images/future_nostalgia.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
-  {
-    id: 5,
-    title: "After Hours",
-    artist: "The Weeknd",
-    image: require("../../assets/images/after_hour.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
-  {
-    id: 6,
-    title: "Fine Line",
-    artist: "Harry Styles",
-    image: require("../../assets/images/fine_line.jpg"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
+
 ];
 
 const { height, width } = Dimensions.get("window");
@@ -78,6 +30,27 @@ const TrendingAlbumSection = ({ setSelectedAlbum }) => {
   const handlePlayMusic = (data) => {
     setSelectedAlbum(data);
   };
+
+  const [albumList, setAlbumList] = useState([]);
+  useEffect(() => {
+    const albumCount = 8;
+    const url = BASE_URL + `album?limit=${albumCount}`;
+
+   try {
+     const fetchTrendingAlbums = async () => {
+     const result = await fetch(url)
+       if (result.ok) {
+         const data = await result.json();
+         setAlbumList(data.data)
+       }
+     }
+     fetchTrendingAlbums();
+   }
+    catch (err) {
+     console.log(err)
+    }
+  }, [])
+
   return (
     <View>
       <View style={styles.topHeading}>
@@ -91,10 +64,10 @@ const TrendingAlbumSection = ({ setSelectedAlbum }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {trendingAlbumData.map((data) => {
+        {albumList.map((data) => {
           return (
             <Pressable
-              key={data.id}
+              key={data._id}
               onPress={() => {
                 () => handlePlayMusic(data);
               }}

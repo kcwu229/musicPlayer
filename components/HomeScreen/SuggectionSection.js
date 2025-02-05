@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,76 +8,34 @@ import {
   Pressable,
   Dimensions,
 } from "react-native";
+import { BASE_URL } from '@env';
 
 const { height, width } = Dimensions.get("window");
 
-const mockSuggestionData = [
-  {
-    id: 1,
-    artist: "Taylor Swift",
-    title: "Love Story",
-    image: require("../../assets/images/taylor_swift.png"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
-  {
-    id: 2,
-    artist: "Ed Sheeran",
-    title: "Shape of You",
-    image: require("../../assets/images/ed_sheeran.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
-  {
-    id: 3,
-    artist: "Adele",
-    title: "Hello",
-    image: require("../../assets/images/adele.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
-  {
-    id: 4,
-    artist: "Taylor Swift",
-    title: "Love Story",
-    image: require("../../assets/images/taylor_swift.png"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
-  {
-    id: 5,
-    artist: "Ed Sheeran",
-    title: "Shape of You",
-    image: require("../../assets/images/ed_sheeran.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
-  {
-    id: 6,
-    artist: "Adele",
-    title: "Hello",
-    image: require("../../assets/images/adele.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
-];
-
 const SuggectionSection = ({ setSelectedAlbum }) => {
+  const [trackList, setTrackList ] = useState([]);
   const handlePlayMusic = (data) => {
     setSelectedAlbum(data);
   };
+
+  useEffect( ()=> {
+    const fetchSuggestionTrack = async () => {
+      const itemDisplayed = 8;
+      const url = BASE_URL + `track?limit=${itemDisplayed}`;
+      console.log(url);
+      try {
+        const result = await fetch(url);
+        if (result.ok) {
+          const data = await result.json();
+          setTrackList(data.data);
+        }
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchSuggestionTrack();
+  }, [])
 
   return (
     <View>
@@ -87,20 +45,20 @@ const SuggectionSection = ({ setSelectedAlbum }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {mockSuggestionData.map((data) => {
+        {trackList.map((data) => {
           return (
             <Pressable
               onPress={() => {
                 console.log(data.artist);
                 handlePlayMusic(data);
               }}
-              key={data.id}
+              key={data._id}
             >
               <View style={styles.suggestItem}>
-                <Image source={data.image} style={styles.image} />
+                <Image source={{uri: data.imageUrl}} style={styles.image} />
                 <View style={styles.description}>
-                  <Text style={styles.title}>{data.title}</Text>
-                  <Text style={styles.artist}>{data.artist}</Text>
+                  <Text style={styles.title}>{data.name.length > 10 ? data.name.substring(0, 10): data.name}</Text>
+                  <Text style={styles.artist}>{data.artistId.name}</Text>
                 </View>
               </View>
             </Pressable>

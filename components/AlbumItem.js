@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
   View,
   Text,
@@ -21,7 +21,7 @@ const AlbumItem = ({
   titleFontSize,
   setSelectedAlbum,
 }) => {
-  const { title, artist, viewCount, image, duration } = albumData;
+  const { name, viewCount, imageUrl, duration } = albumData;
   const handleOption = () => {
     console.log("handleOption !");
   };
@@ -35,7 +35,7 @@ const AlbumItem = ({
       >
         <View style={styles.albumImage}>
           <Image
-            source={image}
+            source={{ uri: imageUrl}}
             style={[
               styles.albumImage,
               {
@@ -60,7 +60,7 @@ const AlbumItem = ({
               : styles.title
           }
         >
-          {title}
+          {name.length > 10 ? name.substring(0, 10) : name}
         </Text>
         <Text
           style={
@@ -71,7 +71,7 @@ const AlbumItem = ({
               : styles.artist
           }
         >
-          {artist}
+          {albumData.artistId.name}
         </Text>
         <View style={shownOnResultList ? styles.viewCountAndDuration : null}>
           {viewCount != null && showViewAndDuration ? (

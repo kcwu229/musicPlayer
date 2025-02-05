@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import RandomColor from "../../components/RandomColor";
 import { LinearGradient } from "expo-linear-gradient";
+import { BASE_URL } from "@env";
 
 const { height, width } = Dimensions.get("window");
 
@@ -20,44 +21,32 @@ const chartData = [
     subscription: "Subscribe",
     status: "update",
   },
-  {
-    id: 2,
-    title: "Top 50",
-    region: "Global",
-    subscription: "Subscribe",
-    status: "update",
-  },
-  {
-    id: 3,
-    title: "Top 50",
-    region: "Taiwan",
-    subscription: "Subscribe",
-    status: "update",
-  },
-  {
-    id: 4,
-    title: "Top 50",
-    region: "Canada",
-    subscription: "Subscribe",
-    status: "update",
-  },
-  {
-    id: 5,
-    title: "Top 50",
-    region: "Global",
-    subscription: "Subscribe",
-    status: "update",
-  },
-  {
-    id: 6,
-    title: "Top 50",
-    region: "Taiwan",
-    subscription: "Subscribe",
-    status: "update",
-  },
 ];
 
 const ChartSection = () => {
+
+  const [topTrackByCountryList, setTopTrackByCountryList] = useState([]);
+
+  useEffect(() => {
+    const fetchChartTrack = async () => {
+      const itemDisplayed = 8;
+      const url = BASE_URL + `track/country?limit=${itemDisplayed}`;
+      console.log(url);
+      try {
+        const result = await fetch(url);
+        if (result.ok) {
+          const data = await result.json();
+          setTopTrackByCountryList(data.data);
+          //console.log(data.data)
+        }
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchChartTrack();
+  }, []);
+
   return (
     <View>
       <View style={styles.topHeading}>
@@ -71,20 +60,20 @@ const ChartSection = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {chartData.map((data) => {
+        {topTrackByCountryList.map((data) => {
           return (
-            <View key={data.id}>
-              <Pressable onPress={() => console.log(data.title)}>
+            <View key={data._id}>
+              <Pressable onPress={() => console.log(data.countryItem)}>
                 <LinearGradient colors={RandomColor()} style={styles.chartItem}>
                   <View style={styles.chartImage}>
-                    <Text style={styles.title}>{data.title}</Text>
-                    <Text style={styles.region}>{data.region}</Text>
+                    <Text style={styles.title}>Top 50</Text>
+                    <Text style={styles.region}>{data.countryItem}</Text>
                   </View>
                 </LinearGradient>
               </Pressable>
               <View>
-                <Text style={styles.subscription}>{data.subscription}</Text>
-                <Text style={styles.status}>{data.status}</Text>
+                <Text style={styles.subscription}>Monthly chart-toppers</Text>
+                <Text style={styles.status}>update</Text>
               </View>
             </View>
           );
@@ -138,7 +127,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   region: {
-    fontSize: height > 100 && height < 800 ? 18 : 40,
+    fontSize: height > 100 && height < 800 ? 18 : 30,
     color: "white",
     margin: 10,
     fontWeight: "bold",
@@ -148,16 +137,17 @@ const styles = StyleSheet.create({
   },
   chartImage: {
     flex: 1,
-    top: height > 100 && height < 800 ? "10%" : "40",
-    flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
+    flexDirection: "column",
     alignContent: "center",
+    padding: 10,
   },
   subscription: {
     marginRight: 20,
     marginTop: 10,
-    fontSize: height > 100 && height < 800 ? 13 : 22,
-    color: "black",
+    fontSize: height > 100 && height < 800 ? 13 : 20,
+    color: "gray",
   },
   status: {
     marginRight: 20,

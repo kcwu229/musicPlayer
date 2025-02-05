@@ -109,7 +109,7 @@ const MusicPlayerComponent = ({ albumData, isMinimized, setIsMinimized }) => {
         <Pressable onPress={handleCollapse}>
           <View style={styles.minimizedTopBanner}>
             <Image source={image} style={styles.minimizedImage} />
-            <Text style={styles.minimizedTitle}>{title.toUpperCase()}</Text>
+            <Text style={styles.minimizedTitle}>{name.toUpperCase()}</Text>
             <View style={styles.space}></View>
             {isPlaying ? (
               <Pressable onPress={handlePlaying}>
@@ -147,7 +147,7 @@ const MusicPlayerComponent = ({ albumData, isMinimized, setIsMinimized }) => {
           </Pressable>
           <View style={styles.space}></View>
           <View style={styles.infoList}>
-            <Text style={styles.title}>{title.toUpperCase()}</Text>
+            <Text style={styles.title}>{name.toUpperCase()}</Text>
             <Text style={styles.artist}>{artist}</Text>
           </View>
 

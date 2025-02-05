@@ -33,7 +33,7 @@ exports.MinimizedMusicPlayerHeader = ({
     <Pressable onPress={handleMinimizedScreen}>
       <View style={[styles.minimizedTopBanner, style]}>
         <Image source={image} style={styles.minimizedImage} />
-        <Text style={styles.minimizedTitle}>{title.toUpperCase()}</Text>
+        <Text style={styles.minimizedTitle}>{name.toUpperCase()}</Text>
         <View style={styles.space}></View>
         {isPlaying ? (
           <Pressable onPress={handlePlaying}>

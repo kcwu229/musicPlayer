@@ -19,7 +19,8 @@ const ArtistIcon = ({
   shownOnResultList = false,
   displayFollower = false,
 }) => {
-  const { followerCount, image, artist } = artistData;
+  const { followerCount, imageUrl, artist, name } = artistData;
+  console.log(imageUrl)
   const [hasFollowed, setHasFollow] = useState(false);
 
   const handleFollow = (name) => {
@@ -31,19 +32,23 @@ const ArtistIcon = ({
       setHasFollow(!hasFollowed);
     }
   };
+
+  useEffect(()=> {
+    console.log(artistData)
+  })
   return (
     <View
       style={shownOnResultList ? styles.artistItemOnList : styles.artistItem}
     >
       <View style={shownOnResultList ? null : styles.description}>
         <Image
-          source={image}
+          source={{ uri: imageUrl}}
           style={[styles.image, { width: imageWidth, height: imageHeight }]}
         />
       </View>
       <View>
         <Text style={shownOnResultList ? styles.nameOnList : styles.name}>
-          {artist}
+          {name}
         </Text>
         {followerCount != null && displayFollower == true ? (
           <View style={shownOnResultList ? styles.followerRow : null}>
