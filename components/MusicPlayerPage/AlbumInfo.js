@@ -1,12 +1,16 @@
 import { View, Text, StyleSheet, Animated, Dimensions } from "react-native";
+import {useEffect} from "react";
 
 const { height, width } = Dimensions.get("window");
 
-const AlbumInfo = ({ title, artist }) => {
+const AlbumInfo = ({ name, artistName }) => {
+  useEffect(()=>{
+    console.log(name);
+  }, [])
   return (
     <View style={styles.infoList}>
       <Animated.Text style={styles.title}>{name.toUpperCase()}</Animated.Text>
-      <Text style={styles.artist}>{artist}</Text>
+      <Text style={styles.artist}>{artistName}</Text>
     </View>
   );
 };

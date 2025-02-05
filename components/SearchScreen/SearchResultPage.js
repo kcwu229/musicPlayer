@@ -1,69 +1,84 @@
-import React, { useState } from "react";
-import { View, Pressable, StyleSheet } from "react-native";
+import React, {useEffect, useState} from "react";
+import { View, Pressable, StyleSheet, Dimensions } from "react-native";
+import { BASE_URL } from "@env"
 
 import ArtistItem from "@/components/ArtistItem";
 import AlbumItem from "@/components/AlbumItem";
-const albumResultData = [
-  {
-    id: 1,
-    title: "Future Nostalgia",
-    artist: "Dua Lipa",
-    image: require("../../assets/images/future_nostalgia.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-  },
-  {
-    id: 2,
-    title: "After Hours",
-    artist: "The Weeknd",
-    image: require("../../assets/images/after_hour.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-  },
-  {
-    id: 3,
-    title: "Fine Line",
-    artist: "Harry Styles",
-    image: require("../../assets/images/fine_line.jpg"),
-    viewCount: 20000,
-    duration: "3:03",
-  },
-];
+import TrackItem from "@/components/TrackItem";
 
-const artistResultData = [
-  {
-    id: 1,
-    artist: "Ariana Grande",
-    image: require("../../assets/images/ariana_grande.png"),
-    followerCount: 20000,
-  },
-  {
-    id: 2,
-    artist: "Beyoncé",
-    image: require("../../assets/images/beyonce.jpeg"),
-    followerCount: 20000,
-  },
-  {
-    id: 3,
-    artist: "Ed Sheeran",
-    image: require("../../assets/images/ed_sheeran.jpeg"),
-    followerCount: 20000,
-  },
-];
+const {height} = Dimensions.get("window")
 
 const SearchResultPage = ({ setSelectedAlbum }) => {
   const handleArtist = () => {
     console.log(`Artist`);
   };
+
+  const [albumList, setAlbumList] = useState([]);
+  const [artistList, setArtistList] = useState([]);
+  const [trackList, setTrackList] = useState([]);
+
+  useEffect(() => {
+    const albumCount = 8;
+    const getAlbumListUrl = BASE_URL + `album?limit=${albumCount}`;
+    const artistCount = 8;
+    const getArtistListUrl = BASE_URL + `artist?limit=${artistCount}`;
+    const trackCount = 8;
+    const getTrackListUrl = BASE_URL + `track?limit=${trackCount}`;
+
+    try {
+      const fetchResultArtist = async () => {
+        try {
+          const result = await fetch(getArtistListUrl);
+          const data = await result.json();
+          setArtistList(data.data);
+
+        } catch (err) {
+          console.log(err)
+        }
+      }
+
+
+        const fetchResultTrack = async () => {
+          try {
+            const result = await fetch(getTrackListUrl);
+            const data = await result.json();
+            setTrackList(data.data);
+
+          } catch (err) {
+            console.log(err)
+          }
+        }
+
+      const fetchResultAlbums = async () => {
+        try {
+          const result = await fetch(getAlbumListUrl);
+          const data = await result.json();
+          setAlbumList(data.data);
+
+        } catch (err) {
+          console.log(err)
+        }
+      }
+
+      fetchResultTrack();
+      fetchResultArtist();
+      fetchResultAlbums();
+    }
+
+    catch (err) {
+      console.log(err)
+    }
+  }, [])
+
   return (
     <View style={styles.container}>
-      {artistResultData &&
-        artistResultData.map((artist) => (
-          <Pressable key={artist.id} onPress={handleArtist}>
+      {artistList &&
+          artistList.map((artist) => (
+          <Pressable key={artist._id} onPress={handleArtist}>
             <ArtistItem
               artistData={artist}
-              imageWidth={60}
-              imageHeight={60}
+              imageWidth={height > 800 ? 100: 60}
+              imageHeight={height > 800 ? 100: 60}
               shownOnResultList={true}
               allowFollowButton={true}
               displayFollower={true}
@@ -71,20 +86,37 @@ const SearchResultPage = ({ setSelectedAlbum }) => {
           </Pressable>
         ))}
 
-      {albumResultData &&
-        albumResultData.map((album) => (
-          <Pressable key={album.id} onPress={() => setSelectedAlbum(album)}>
+      {albumList &&
+        albumList.map((album) => (
+          <Pressable key={album._id} onPress={() => setSelectedAlbum(album)}>
             <AlbumItem
-              key={album.id}
               albumData={album}
-              imageWidth={60}
-              imageHeight={60}
+              imageWidth={height > 800 ? 100: 60}
+              imageHeight={height > 800 ? 100: 60}
               shownOnResultList={true}
               setSelectedAlbum={setSelectedAlbum}
               showViewAndDuration={true}
             />
           </Pressable>
         ))}
+
+      {/*. Need to fix
+      {trackList &&
+          trackList.map((track) => (
+              <Pressable key={track._id} onPress={() => setSelectedAlbum(track)}>
+                <TrackItem
+                    albumData={track}
+                    imageWidth={height > 800 ? 100: 60}
+                    imageHeight={height > 800 ? 100: 60}
+                    shownOnResultList={true}
+                    setSelectedAlbum={setSelectedAlbum}
+                    showViewAndDuration={true}
+                />
+              </Pressable>
+          ))}
+
+          */}
+
     </View>
   );
 };

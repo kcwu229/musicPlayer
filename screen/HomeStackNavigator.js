@@ -1,7 +1,11 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "@/Screen/HomeScreen";
+import {Dimensions} from "react-native";
 import ArtistInfo from "@/Screen/ArtistInfo";
+import AlbumInfo from "@/Screen/AlbumInfo";
+
+const {height} = Dimensions.get("window")
 
 const Stack = createStackNavigator();
 
@@ -12,6 +16,7 @@ const HomeStackNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{ headerShown: false }}
+
       />
       <Stack.Screen
         name="ArtistInfo"
@@ -21,9 +26,29 @@ const HomeStackNavigator = () => {
           headerStyle: {
             height: 120, // Adjust the height value as needed
           },
+            headerTitleStyle: {
+                fontSize: height > 800 ? 35: 24, // Adjust the font size as needed
+            },
         }}
         initialParams={{ artistData: {} }}
       />
+        <Stack.Screen
+            name="AlbumInfo"
+            component={AlbumInfo}
+            options={{
+                headerShown: true,
+                headerStyle: {
+                    height: 120,
+                    // Adjust the height value as needed
+                },
+                headerTitleStyle: {
+                    fontSize: height > 800 ? 35: 24, // Adjust the font size as needed
+                },
+            }
+        }
+
+            initialParams={{ albumData: {} }}
+        />
     </Stack.Navigator>
   );
 };

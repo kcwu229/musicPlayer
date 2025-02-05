@@ -122,7 +122,7 @@ const HomeScreen = () => {
           <SuggestionSection setSelectedAlbum={setSelectedAlbum} />
           <ChartSection />
           <TrendingAlbumSection setSelectedAlbum={setSelectedAlbum} />
-          <PopularArtistSection albumData={albumData} artistData={artistData} />
+          <PopularArtistSection/>
           <View style={{ marginTop: 120 }}></View>
         </View>
       </ScrollView>

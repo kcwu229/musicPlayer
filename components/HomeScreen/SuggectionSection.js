@@ -71,7 +71,7 @@ const SuggectionSection = ({ setSelectedAlbum }) => {
 
 const styles = StyleSheet.create({
   heading: {
-    fontSize: height > 100 && height < 800 ? 20 : 26,
+    fontSize: height > 100 && height < 800 ? 20 : 40,
     fontWeight: "bold",
     color: "black",
     marginTop: height > 100 && height < 800 ? 25 : 40,

@@ -20,8 +20,8 @@ const ArtistIcon = ({
   displayFollower = false,
 }) => {
   const { followerCount, imageUrl, artist, name } = artistData;
-  console.log(imageUrl)
   const [hasFollowed, setHasFollow] = useState(false);
+
 
   const handleFollow = (name) => {
     if (hasFollowed === true) {
@@ -33,9 +33,6 @@ const ArtistIcon = ({
     }
   };
 
-  useEffect(()=> {
-    console.log(artistData)
-  })
   return (
     <View
       style={shownOnResultList ? styles.artistItemOnList : styles.artistItem}

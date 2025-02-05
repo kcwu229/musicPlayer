@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     fontWeight: "thin",
   },
   heading: {
-    fontSize: height > 100 && height < 800 ? 20 : 26,
+    fontSize: height > 100 && height < 800 ? 20 : 40,
     fontWeight: "bold",
     color: "black",
     marginTop: 10,

@@ -64,7 +64,9 @@ const ChartSection = () => {
           return (
             <View key={data._id}>
               <Pressable onPress={() => console.log(data.countryItem)}>
-                <LinearGradient colors={RandomColor()} style={styles.chartItem}>
+                <LinearGradient colors={RandomColor()} style={styles.chartItem}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 1 }}>
                   <View style={styles.chartImage}>
                     <Text style={styles.title}>Top 50</Text>
                     <Text style={styles.region}>{data.countryItem}</Text>
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     fontWeight: "thin",
   },
   heading: {
-    fontSize: height > 100 && height < 800 ? 20 : 26,
+    fontSize: height > 100 && height < 800 ? 20 : 40,
     fontWeight: "bold",
     color: "black",
     marginTop: 10,

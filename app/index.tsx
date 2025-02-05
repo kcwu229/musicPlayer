@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Dimensions } from "react-native";
 import {
   NavigationContainer,
   NavigationIndependentTree,
@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { MusicPlayerProvider } from "@/context/MusicPlayerContext";
 
 const Tab = createBottomTabNavigator();
+const {height} = Dimensions.get("window");
 
 export default function Page() {
   return (
@@ -28,7 +29,7 @@ export default function Page() {
                   tabBarActiveTintColor: "white",
                   tabBarInactiveTintColor: "grey",
                   tabBarStyle: {
-                    height: 70,
+                    height: height > 800 ? 130 :70,
                     paddingVertical: 5,
                     backgroundColor: "black",
                   },
@@ -51,8 +52,8 @@ export default function Page() {
                     tabBarLabel: "Home",
                     headerShown: false,
                     tabBarLabelStyle: {
-                      fontSize: 12,
-                      margin: 5,
+                      fontSize: height > 800 ? 20 : 12,
+                        margin: height > 800 ? 2 : 5,
                     },
                   }}
                 />
@@ -70,8 +71,8 @@ export default function Page() {
                     tabBarLabel: "Search",
                     headerShown: false,
                     tabBarLabelStyle: {
-                      fontSize: 12,
-                      margin: 5,
+                        fontSize: height > 800 ? 20 : 12,
+                        margin: height > 800 ? 2 : 5,
                     },
                   }}
                 />
@@ -89,8 +90,8 @@ export default function Page() {
                     tabBarLabel: "Feed",
                     headerShown: false,
                     tabBarLabelStyle: {
-                      fontSize: 12,
-                      margin: 5,
+                        fontSize: height > 800 ? 20 : 12,
+                        margin: height > 800 ? 2 : 5,
                     },
                   }}
                 />
@@ -108,8 +109,8 @@ export default function Page() {
                     tabBarLabel: "Library",
                     headerShown: false,
                     tabBarLabelStyle: {
-                      fontSize: 12,
-                      margin: 5,
+                        fontSize: height > 800 ? 20 : 12,
+                      margin: height > 800 ? 2 : 5,
                     },
                   }}
                 />

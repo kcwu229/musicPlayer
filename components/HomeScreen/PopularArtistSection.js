@@ -14,7 +14,7 @@ import ArtistItem from "@/components/ArtistItem";
 
 const { height, width } = Dimensions.get("window");
 
-const PopularArtistSection = ({ artistData }) => {
+const PopularArtistSection = () => {
   const navigation = useNavigation();
   const navigateToArtistInfoPage = (selectedArtistData) => {
     navigation.navigate("ArtistInfo", {
@@ -30,7 +30,6 @@ const PopularArtistSection = ({ artistData }) => {
       //console.log(url)
       try {
         const result = await fetch(url);
-        //console.log(result)
         const data = await result.json();
         //console.log(data.data)
         setArtistList(data.data);
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
     fontWeight: "thin",
   },
   heading: {
-    fontSize: height > 100 && height < 800 ? 20 : 26,
+    fontSize: height > 100 && height < 800 ? 20 : 40,
     fontWeight: "bold",
     color: "black",
     marginTop: 10,

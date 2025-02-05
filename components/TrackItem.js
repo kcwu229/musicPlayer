@@ -5,13 +5,27 @@ import {
   StyleSheet,
   Pressable,
   Image,
+  Button,
   Dimensions,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import {useNavigation} from "@react-navigation/native";
 const { height, width } = Dimensions.get("window");
-const AlbumItem = ({
-  albumData,
+
+const formatDuration = (durationInSeconds) => {
+  const minutes = Math.floor(durationInSeconds / 60);
+  const seconds = Math.floor(durationInSeconds % 60);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
+
+const formatplayCount = (count) => {
+  if (count < 1000) return count.toString();
+  if (count >= 1000 && count < 1000000) return (count / 1000).toFixed(1) + "K";
+  if (count >= 1000000) return (count / 1000000).toFixed(1) + "M";
+  return count.toString();
+};
+
+const TrackItem = ({
+  trackData,
   allowOptionButton = false,
   shownOnResultList = false,
   showViewAndDuration = false,
@@ -21,30 +35,23 @@ const AlbumItem = ({
   titleFontSize,
   setSelectedAlbum,
 }) => {
-  const { name, viewCount, imageUrl, duration } = albumData;
+  const { name, playCount, imageUrl, duration } = trackData;
   const handleOption = () => {
     console.log("handleOption !");
   };
-
-  const navigation = useNavigation();
-  const navigateToAlbumInfoPage = (selectedAlbumData) => {
-    navigation.navigate("AlbumInfo", {
-      albumData: { selectedAlbumData },
-    });
-  };
-
   return (
-    <View style={shownOnResultList ? styles.albumItemOnList : styles.albumItem}>
+    <View style={shownOnResultList ? styles.TrackItemOnList : styles.TrackItem}>
       <Pressable
         onPress={() => {
-          navigateToAlbumInfoPage(albumData);
+          console.log(name);
+          setSelectedAlbum(trackData);
         }}
       >
-        <View style={styles.albumImage}>
+        <View style={styles.trackImage}>
           <Image
             source={{ uri: imageUrl}}
             style={[
-              styles.albumImage,
+              styles.trackImage,
               {
                 width: imageWidth,
                 height: imageHeight,
@@ -78,19 +85,19 @@ const AlbumItem = ({
               : styles.artist
           }
         >
-          {albumData.artistId.name}
+          {trackData.artistId.name}
         </Text>
-        <View style={shownOnResultList ? styles.viewCountAndDuration : null}>
-          {viewCount != null && showViewAndDuration ? (
+        <View style={shownOnResultList ? styles.playCountAndDuration : null}>
+          {playCount != null && showViewAndDuration ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <FontAwesome name="play" size={15} style={styles.play} />
-              <Text style={styles.viewCount}>{viewCount}</Text>
+              <FontAwesome name="play" size={height > 800? 20 :15} style={styles.play} />
+              <Text style={styles.playCount}>{formatplayCount(playCount)}</Text>
             </View>
           ) : null}
           {duration != null && showViewAndDuration ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <FontAwesome name="circle" size={6} style={styles.circle} />
-              <Text style={styles.duration}>{duration}</Text>
+              <FontAwesome name="circle" size={height > 800? 15 : 10} style={styles.circle} />
+              <Text style={styles.duration}>{formatDuration(duration)}</Text>
             </View>
           ) : null}
         </View>
@@ -113,37 +120,38 @@ const styles = StyleSheet.create({
   artistOnList: {
     marginVertical: 3,
     color: "grey",
+    fontSize: height > 800 ? 23 : 10
   },
-  viewCountAndDuration: {
+  playCountAndDuration: {
     flexDirection: "row",
     alignItems: "center",
   },
   viewOnList: {
-    marginLeft: 10,
+    marginLeft: height > 800 ? 20 : 10,
     marginTop: 10,
+    gap: height > 800 ? 4 : 1
   },
-  viewCount: {
+  playCount: {
     color: "grey",
     marginLeft: 8,
-    fontSize: 15,
+    fontSize: height > 800 ? 20 : 15,
   },
   duration: {
     marginLeft: 10,
+    fontSize: height > 800 ? 20 : 15,
   },
 
-  albumItem: {
+  TrackItem: {
     flexDirection: "column",
     marginRight: 20,
     marginTop: 100 && height < 800 ? 3 : 8,
   },
 
-  albumItemOnList: {
+  TrackItemOnList: {
     flexDirection: "row",
     margin: 5,
     alignItems: "center",
     paddingVertical: 4,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: StyleSheet.hairlineWidth,
   },
 
   name: {
@@ -159,7 +167,7 @@ const styles = StyleSheet.create({
   },
 
   titleOnList: {
-    fontSize: 18,
+    fontSize: height > 800 ? 32: 25,
     color: "black",
   },
 
@@ -169,7 +177,7 @@ const styles = StyleSheet.create({
     fontSize: height > 100 && height < 800 ? 12 : 18,
   },
 
-  albumImage: {
+  trackImage: {
     marginTop: 10,
     shadowColor: "black",
     shadowOffset: { width: 1, height: -1 },
@@ -179,4 +187,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AlbumItem;
+export default TrackItem;

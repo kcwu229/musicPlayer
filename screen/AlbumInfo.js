@@ -15,14 +15,15 @@ import AlbumItem from "@/components/AlbumItem";
 const screenHeight = Dimensions.get("window").height;
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
 import { BASE_URL } from "@env"
+import {useNavigation} from "@react-navigation/native";
 
-const ArtistInfo = ({ route }) => {
-  const { artistData } = route.params;
-  const { selectedArtistData } = artistData;
-  //console.log(selectedArtistData)
-  const artistId = selectedArtistData._id;
-  const { imageUrl, followerCount, description, genres } = selectedArtistData;
-  const artistName = selectedArtistData.name;
+const AlbumInfo = ({ route }) => {
+  const { albumData } = route.params;
+  const { selectedAlbumData } = albumData;
+  const selectedAlbumId = selectedAlbumData._id;
+  const { imageUrl, playCount } = selectedAlbumData;
+  const ablumName = selectedAlbumData.name;
+
   const {
     selectedAlbum,
     setSelectedAlbum,
@@ -30,26 +31,27 @@ const ArtistInfo = ({ route }) => {
     handleMinimizedScreen,
   } = useMusicPlayer();
   const [initialPlayMusic, setInitialPlayMusic] = useState(false);
-  const [hasFollowed, setHasFollow] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [trackList, setTrackList] = useState([]);
+  const [seeMoreTrack, setSeeMoreTrack] = useState(false);
 
-  const handleFollow = (name) => {
-    if (hasFollowed === true) {
-      console.log(`You haved unfollow artist - ${name}`);
-      setHasFollow(!hasFollowed);
+  const handleLike = (name) => {
+    if (isLiked === true) {
+      console.log(`You haved unliked artist - ${ablumName}`);
+      setIsLiked(!isLiked);
     } else {
-      console.log(`You haved follow artist - ${name}`);
-      setHasFollow(!hasFollowed);
+      console.log(`You haved liked artist - ${ablumName}`);
+      setIsLiked(!isLiked);
     }
   };
 
-  const formatFollowerCount = (count) => {
+  const formatplayCount = (count) => {
     if (count < 1000) return count.toString();
     if (count >= 1000 && count < 1000000) return (count / 1000).toFixed(1) + "K";
     if (count >= 1000000) return (count / 1000000).toFixed(1) + "M";
     return count.toString();
   };
-
 
   const handleRandomPlaying = () => {
     console.log("random playing");
@@ -64,41 +66,21 @@ const ArtistInfo = ({ route }) => {
     setSelectedAlbum(album);
   };
 
-  const [albumList, setAlbumList] = useState([]);
-  const [trackList, setTrackList] = useState([]);
-  const [seeMoreTrack, setSeeMoreTrack] = useState(false);
-  const [seeMoreAlbum, setSeeMoreAlbum] = useState(false);
-
-
+  const handleSeeMoreTrack = () => {
+    setSeeMoreTrack(!seeMoreTrack);
+  }
   const handleSeeMoreAlbum = () => {
     setSeeMoreAlbum(!seeMoreAlbum);
   }
 
-  const handleSeeMoreTrack = () => {
-    setSeeMoreTrack(!seeMoreAlbum);
-  }
-
   useEffect(() => {
-    const fetchAlbumList = async (artistId) => {
-      const artistCount = 8;
-      const getAlbumUrl = BASE_URL + `album/artist/${artistId}?limit=${artistCount}`
 
-      try {
-        const result = await fetch(getAlbumUrl);
-        const data = await result.json();
-        setAlbumList(data.data);
-
-      } catch (err) {
-        console.log(err)
-      }
-    }
-
-    const fetchTrackList = async (artistId) => {
+    const fetchTrackList = async (albumId) => {
       const trackCount = 8;
-      const getTrackUrl = BASE_URL + `track/artist/${artistId}?limit=${trackCount}`
+      const url = BASE_URL + `track/album/${albumId}`
       //console.log(url)
       try {
-        const result = await fetch(getTrackUrl);
+        const result = await fetch(url);
         const data = await result.json();
         //console.log(data.data)
         setTrackList(data.data);
@@ -109,8 +91,7 @@ const ArtistInfo = ({ route }) => {
       }
     }
 
-    fetchAlbumList(artistId);
-    fetchTrackList(artistId)
+    fetchTrackList(selectedAlbumId)
   }, [])
 
   return (
@@ -123,38 +104,34 @@ const ArtistInfo = ({ route }) => {
           <View style={styles.container}>
             <Image source={{uri: imageUrl}} style={styles.image} />
             <View style={styles.textContainer}>
-              <Text style={styles.name}>{artistName}</Text>
-              <Text style={styles.followerCount}>
-                {formatFollowerCount(followerCount)} Followers
+              <Text style={styles.name}>{ablumName}</Text>
+              <Text style={styles.playCount}>
+                {formatplayCount(playCount)} Play Count
               </Text>
             </View>
 
-
-            <View style={styles.tagContainer}>
-              {genres.length > 0 && (
-                  genres.map((genre) => (
-                      <View key={genre._id} style={[styles.genreBadge]}>
-                        <Text style={[styles.followText, {color: "orange"}]}>{genre.name}</Text>
-                      </View>
-                  ))
-              )}
-            </View>
-
             <View style={styles.buttonContainer}>
-              <Pressable onPress={() => handleFollow(artistName)}>
-                {hasFollowed === true ? (
-                  <View style={[styles.unfollowBtn]}>
-                    <Text style={styles.unfollowText}>Unfollow</Text>
-                  </View>
-                ) : (
-                  <View style={styles.followBtn}>
-                    <Text style={styles.followText}>Follow</Text>
-                  </View>
-                )}
-              </Pressable>
+              <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                <Pressable onPress={() => handleLike(ablumName)}>
+                  {isLiked === true ? (
+                      <View style={[styles.unLikeBtn]}>
+                        <Text style={styles.unLikeText}>
+                          UNLIKE
+                        </Text>
+                      </View>
+                  ) : (
+                      <View style={styles.likeBtn}>
+                        <Text style={styles.likeText}>
+                          LIKE
+                        </Text>
+                      </View>
+                  )}
+                </Pressable>
+              </View>
+              
               <View style={{ width: "10%" }}></View>
               <Pressable onPress={handleRandomPlaying}>
-                <FontAwesome name="random" size={screenHeight > 800 ? 34 : 18} style={styles.btn} />
+                <FontAwesome name="random" size={screenHeight > 800 ? 30 : 18} style={styles.btn} />
               </Pressable>
               {isPlaying ? (
                 <Pressable onPress={handlePlaying}>
@@ -179,40 +156,7 @@ const ArtistInfo = ({ route }) => {
 
           <View style={{ margin: 24 }}>
             <View style={{ flexDirection: "row", alignItems:"center"}}>
-              <Text style={styles.popularText}>Albums</Text>
-              <View style={{ flexGrow: 1}}></View>
-              <Pressable onPress={() => handleSeeMoreAlbum()}>
-                <Text style={styles.seeAll}>See all</Text>
-              </Pressable>
-            </View>
-            <ScrollView
-              style={([styles.albumList], { overflow: "visible" })}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-            >
-              {albumList &&
-                  albumList.slice(0, seeMoreAlbum ? albumList.length : 6).map((album) => (
-                  <Pressable
-                    key={album._id}
-                    onPress={() => navigateToAlbumInfoPage(album)}
-                  >
-                    <AlbumItem
-                      albumData={album}
-                      imageWidth={screenHeight > 800 ? 140 :100}
-                      imageHeight={screenHeight > 800 ? 140 :100}
-                      artistFontSize={12}
-                      titleFontSize={screenHeight > 800 ? 22 : 14}
-                      shownOnResultList={false}
-                      setSelectedAlbum={setSelectedAlbum}
-                    />
-                  </Pressable>
-                ))}
-            </ScrollView>
-          </View>
-
-          <View style={{ margin: 24 }}>
-            <View style={{ flexDirection: "row", alignItems:"center"}}>
-              <Text style={styles.popularText}>Popular</Text>
+              <Text style={styles.popularText}>Tracks</Text>
               <View style={{ flexGrow: 1}}></View>
               <Pressable onPress={() => handleSeeMoreTrack()}>
                 <Text style={styles.seeAll}>See all</Text>
@@ -226,8 +170,8 @@ const ArtistInfo = ({ route }) => {
                     >
                       <TrackItem
                           trackData={track}
-                          imageWidth={screenHeight > 800 ? 140 :100}
-                          imageHeight={screenHeight > 800 ? 140 :100}
+                          imageWidth={screenHeight > 800 ? 140 : 60}
+                          imageHeight={screenHeight > 800 ? 140 : 60}
                           shownOnResultList={true}
                           showViewAndDuration={true}
                           setSelectedAlbum={setSelectedAlbum}
@@ -236,11 +180,6 @@ const ArtistInfo = ({ route }) => {
                 )}
           </View>
 
-          <View style={{ margin: 24 }}>
-            <Text style={styles.popularText}>About</Text>
-            <Image source={{uri: imageUrl}} style={styles.aboutImage} />
-            <Text style={styles.descriptionText}>{description}</Text>
-          </View>
         </View>
       </ScrollView>
 
@@ -264,18 +203,6 @@ const ArtistInfo = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-  descriptionText: {
-    color: "grey",
-    fontSize: screenHeight > 800 ? 25 : 17,
-    marginTop: 15,
-    lineHeight: screenHeight > 800 ? 35 : 30,
-  },
-  aboutImage: {
-    marginTop: 20,
-    width: "100%",
-    borderRadius: 15,
-    height: screenHeight * 0.3,
-  },
   seeAll: {
     color: "gray",
     marginTop: 10,
@@ -309,11 +236,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  tagContainer: {
-    marginTop: "2%",
-    flexDirection: "row",
-    alignItems: "center",
-  },
   container: {
     flex: 1,
     alignItems: "center",
@@ -322,18 +244,20 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center"
   },
 
   name: {
     fontWeight: "bold",
-    marginTop: screenHeight > 800 ? 20 : 10,
-    fontSize: screenHeight > 800 ? 45 : 30,
+    marginTop: 10,
+    fontSize: screenHeight > 800 ? 45 : 30
   },
 
-  followerCount: {
+  playCount: {
     fontWeight: "200",
-    marginTop: 10,
-    fontSize: screenHeight > 800 ? 34 : 16,
+    marginTop: screenHeight > 800 ? 20 : 10,
+    fontSize: screenHeight > 800 ? 28 : 16
   },
 
   space: {
@@ -346,35 +270,28 @@ const styles = StyleSheet.create({
 
   image: {
     marginTop: "8%",
-    height: screenHeight > 800 ? 200 : 160,
-    width: screenHeight > 800 ? 200 : 160,
-    borderRadius: 100,
+    height: screenHeight > 800 ? 250 : 160,
+    width: screenHeight > 800 ? 250 : 160,
+    borderRadius: 20,
+    marginBottom: "3%",
   },
 
-  followText: {
+  likeText: {
     color: "grey",
-    fontSize: screenHeight > 800 ? 24 : 14
+    fontSize: screenHeight > 800 ? 22 : 16
   },
-  unfollowText: {
+  unLikeText: {
     color: "red",
-    fontSize: screenHeight > 800 ? 24 : 14
+    fontSize: screenHeight > 800 ? 22 : 16
   },
-  genreBadge: {
-    borderRadius: 10,
-    borderColor: "orange",
-    borderWidth: 2,
-    padding: 10,
-    paddingHorizontal: 20,
-    margin: "1%"
-  },
-  followBtn: {
+  likeBtn: {
     borderRadius: 20,
     borderColor: "grey",
     borderWidth: 1,
     padding: 10,
     paddingHorizontal: 20,
   },
-  unfollowBtn: {
+  unLikeBtn: {
     borderRadius: 20,
     borderColor: "red",
     borderWidth: 1,
@@ -383,4 +300,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ArtistInfo;
+
+
+export default AlbumInfo;

@@ -21,7 +21,8 @@ const MusicPlayerContent = ({
   handleMinimizedScreen,
   isVisible,
 }) => {
-  const { title, artist, likeCount, commentCount, image } = albumData;
+  const {name, likeCount, commentCount, imageUrl } = albumData;
+  const artistName = albumData.artistId.name;
   const translateY = useRef(new Animated.Value(0)).current;
 
   const onGestureEvent = Animated.event(
@@ -64,7 +65,7 @@ const MusicPlayerContent = ({
 
             <View style={{ flexGrow: 1 }}></View>
             <Image
-              source={image}
+              source={{uri: imageUrl}}
               style={[
                 styles.image,
                 {
@@ -76,7 +77,7 @@ const MusicPlayerContent = ({
               ]}
             />
             <View style={{ flexGrow: 1 }}></View>
-            <AlbumInfo title={title} artist={artist} />
+            <AlbumInfo name={name} artistName={artistName} />
             <View style={{ flexGrow: 1 }}></View>
             <ButtonGroup />
             <View style={{ flexGrow: 1 }}></View>

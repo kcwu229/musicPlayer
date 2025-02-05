@@ -16,7 +16,8 @@ exports.MinimizedMusicPlayerHeader = ({
   handleMinimizedScreen,
   style,
 }) => {
-  const { title, artist, image } = albumData;
+  const { name, imageUrl } = albumData;
+  const artistName = albumData.artistId.name;
 
   const { isPlaying, setIsPlaying } = useMusicPlayer();
 
@@ -32,7 +33,7 @@ exports.MinimizedMusicPlayerHeader = ({
   return (
     <Pressable onPress={handleMinimizedScreen}>
       <View style={[styles.minimizedTopBanner, style]}>
-        <Image source={image} style={styles.minimizedImage} />
+        <Image source={{uri: imageUrl}} style={styles.minimizedImage} />
         <Text style={styles.minimizedTitle}>{name.toUpperCase()}</Text>
         <View style={styles.space}></View>
         {isPlaying ? (
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
   minimizedTitle: {
     fontSize: width > 100 && width < 600 ? 16 : 26,
     color: "white",
-    marginLeft: 10,
+    marginLeft: 20,
     fontWeight: "bold",
   },
   space: {
