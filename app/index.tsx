@@ -6,15 +6,15 @@ import {
 import "react-native-gesture-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeStackNavigator from "@/Screen/HomeStackNavigator";
-import FeedScreen from "@/Screen/FeedScreen";
-import LibraryScreen from "@/Screen/LibraryScreen";
-import SearchScreen from "@/Screen/SearchScreen";
+import HomeStackNavigator from "@/screen/HomeStackNavigator";
+import FeedScreen from "@/screen/FeedScreen";
+import LibraryScreen from "@/screen/LibraryScreen";
+import SearchScreen from "@/screen/SearchScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { MusicPlayerProvider } from "@/context/MusicPlayerContext";
 
 const Tab = createBottomTabNavigator();
-const {height} = Dimensions.get("window");
+const { height } = Dimensions.get("window");
 
 export default function Page() {
   return (
@@ -29,7 +29,7 @@ export default function Page() {
                   tabBarActiveTintColor: "white",
                   tabBarInactiveTintColor: "grey",
                   tabBarStyle: {
-                    height: height > 800 ? 130 :70,
+                    height: height > 800 ? 130 : 70,
                     paddingVertical: 5,
                     backgroundColor: "black",
                   },
@@ -53,7 +53,7 @@ export default function Page() {
                     headerShown: false,
                     tabBarLabelStyle: {
                       fontSize: height > 800 ? 20 : 12,
-                        margin: height > 800 ? 2 : 5,
+                      margin: height > 800 ? 2 : 5,
                     },
                   }}
                 />
@@ -71,8 +71,8 @@ export default function Page() {
                     tabBarLabel: "Search",
                     headerShown: false,
                     tabBarLabelStyle: {
-                        fontSize: height > 800 ? 20 : 12,
-                        margin: height > 800 ? 2 : 5,
+                      fontSize: height > 800 ? 20 : 12,
+                      margin: height > 800 ? 2 : 5,
                     },
                   }}
                 />
@@ -90,8 +90,8 @@ export default function Page() {
                     tabBarLabel: "Feed",
                     headerShown: false,
                     tabBarLabelStyle: {
-                        fontSize: height > 800 ? 20 : 12,
-                        margin: height > 800 ? 2 : 5,
+                      fontSize: height > 800 ? 20 : 12,
+                      margin: height > 800 ? 2 : 5,
                     },
                   }}
                 />
@@ -109,7 +109,7 @@ export default function Page() {
                     tabBarLabel: "Library",
                     headerShown: false,
                     tabBarLabelStyle: {
-                        fontSize: height > 800 ? 20 : 12,
+                      fontSize: height > 800 ? 20 : 12,
                       margin: height > 800 ? 2 : 5,
                     },
                   }}

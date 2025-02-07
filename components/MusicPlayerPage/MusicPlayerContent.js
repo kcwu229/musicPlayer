@@ -17,12 +17,15 @@ import { LinearGradient } from "expo-linear-gradient";
 const { height, width } = Dimensions.get("window");
 
 const MusicPlayerContent = ({
-  albumData,
+  trackData,
   handleMinimizedScreen,
   isVisible,
+    isPlaying,
+    setIsPlaying
 }) => {
-  const {name, likeCount, commentCount, imageUrl } = albumData;
-  const artistName = albumData.artistId.name;
+  //console.log(JSON.stringify(trackData))
+  const {name, likeCount, commentCount, imageUrl } = trackData;
+  const artistName = trackData.artistId.name;
   const translateY = useRef(new Animated.Value(0)).current;
 
   const onGestureEvent = Animated.event(
@@ -79,7 +82,7 @@ const MusicPlayerContent = ({
             <View style={{ flexGrow: 1 }}></View>
             <AlbumInfo name={name} artistName={artistName} />
             <View style={{ flexGrow: 1 }}></View>
-            <ButtonGroup />
+            <ButtonGroup/>
             <View style={{ flexGrow: 1 }}></View>
             <CommentSection likeCount={likeCount} commentCount={commentCount} />
           </LinearGradient>

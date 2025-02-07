@@ -9,96 +9,16 @@ import PopularArtistSection from "@/components/HomeScreen/PopularArtistSection";
 import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
 import { useMusicPlayer } from "../context/MusicPlayerContext";
 
-const artistData = [
-  {
-    id: 1,
-    title: "Future Nostalgia",
-    artist: "Dua Lipa",
-    image: require("@/assets/images/future_nostalgia.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    description: "THis is a girl",
-    followerCount: 20000,
-  },
-  {
-    id: 2,
-    title: "After Hours",
-    artist: "The Weeknd",
-    image: require("@/assets/images/after_hour.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    description: "He is a man",
-    followerCount: 20000,
-  },
-  {
-    id: 3,
-    title: "Fine Line",
-    artist: "Harry Styles",
-    image: require("@/assets/images/fine_line.jpg"),
-    viewCount: 20000,
-    duration: "3:03",
-    description: "This is not good",
-    followerCount: 20000,
-  },
-  {
-    id: 4,
-    title: "Future Nostalgia",
-    artist: "Dua Lipa",
-    image: require("@/assets/images/future_nostalgia.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    description: "THis is a girl",
-    followerCount: 20000,
-  },
-  {
-    id: 5,
-    title: "After Hours",
-    artist: "The Weeknd",
-    image: require("@/assets/images/after_hour.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    description: "He is a man",
-    followerCount: 20000,
-  },
-  {
-    id: 6,
-    title: "Fine Line",
-    artist: "Harry Styles",
-    image: require("@/assets/images/fine_line.jpg"),
-    viewCount: 20000,
-    duration: "3:03",
-    description: "This is not good",
-    followerCount: 20000,
-  },
-];
-
-const albumData = [
-  {
-    id: 1,
-    title: "Future Nostalgia",
-    artist: "Dua Lipa",
-    image: require("@/assets/images/future_nostalgia.jpeg"),
-  },
-  {
-    id: 2,
-    title: "After Hours",
-    artist: "The Weeknd",
-    image: require("@/assets/images/after_hour.jpeg"),
-  },
-  {
-    id: 3,
-    title: "Fine Line",
-    artist: "Harry Styles",
-    image: require("@/assets/images/fine_line.jpg"),
-  },
-];
-
 const HomeScreen = () => {
   const {
-    selectedAlbum,
-    setSelectedAlbum,
+    selectedTrack,
+    setSelectedTrack,
     isMinimized,
     handleMinimizedScreen,
+    handlePlayTrack,
+      setTrackUrl,
+    isPlaying,
+    setIsPlaying
   } = useMusicPlayer();
 
   const checkTime = () => {
@@ -119,15 +39,15 @@ const HomeScreen = () => {
           <Text style={styles.text}>{checkTime()},</Text>
           <Text style={styles.name}>{name}</Text>
           <SearchBar />
-          <SuggestionSection setSelectedAlbum={setSelectedAlbum} />
+          <SuggestionSection setSelectedTrack={setSelectedTrack} setTrackUrl={setTrackUrl} handlePlayTrack={handlePlayTrack} isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
           <ChartSection />
-          <TrendingAlbumSection setSelectedAlbum={setSelectedAlbum} />
+          <TrendingAlbumSection/>
           <PopularArtistSection/>
           <View style={{ marginTop: 120 }}></View>
         </View>
       </ScrollView>
 
-      {selectedAlbum && (
+      {selectedTrack && (
         <View
           style={
             isMinimized
@@ -136,9 +56,11 @@ const HomeScreen = () => {
           }
         >
           <MusicPlayerScreen
-            albumData={selectedAlbum}
+            trackData={selectedTrack}
             isMinimized={isMinimized}
             handleMinimizedScreen={handleMinimizedScreen}
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
           />
         </View>
       )}

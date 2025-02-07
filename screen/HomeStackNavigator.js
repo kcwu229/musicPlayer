@@ -1,11 +1,12 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "@/Screen/HomeScreen";
-import {Dimensions} from "react-native";
-import ArtistInfo from "@/Screen/ArtistInfo";
-import AlbumInfo from "@/Screen/AlbumInfo";
+import HomeScreen from "@/screen/HomeScreen";
+import { Dimensions } from "react-native";
+import ArtistInfo from "@/screen/ArtistInfo";
+import AlbumInfo from "@/screen/AlbumInfo";
+import ChartInfo from "@/screen/ChartInfo";
 
-const {height} = Dimensions.get("window")
+const { height } = Dimensions.get("window");
 
 const Stack = createStackNavigator();
 
@@ -16,7 +17,6 @@ const HomeStackNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{ headerShown: false }}
-
       />
       <Stack.Screen
         name="ArtistInfo"
@@ -26,15 +26,30 @@ const HomeStackNavigator = () => {
           headerStyle: {
             height: 120, // Adjust the height value as needed
           },
-            headerTitleStyle: {
-                fontSize: height > 800 ? 35: 24, // Adjust the font size as needed
-            },
+          headerTitleStyle: {
+            fontSize: height > 800 ? 35 : 24, // Adjust the font size as needed
+          },
         }}
         initialParams={{ artistData: {} }}
       />
+      <Stack.Screen
+        name="AlbumInfo"
+        component={AlbumInfo}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            height: 120,
+            // Adjust the height value as needed
+          },
+          headerTitleStyle: {
+            fontSize: height > 800 ? 35 : 24, // Adjust the font size as needed
+          },
+        }}
+        initialParams={{ albumData: {} }}
+      />
         <Stack.Screen
-            name="AlbumInfo"
-            component={AlbumInfo}
+            name="ChartInfo"
+            component={ChartInfo}
             options={{
                 headerShown: true,
                 headerStyle: {
@@ -42,14 +57,13 @@ const HomeStackNavigator = () => {
                     // Adjust the height value as needed
                 },
                 headerTitleStyle: {
-                    fontSize: height > 800 ? 35: 24, // Adjust the font size as needed
+                    fontSize: height > 800 ? 35 : 24, // Adjust the font size as needed
                 },
-            }
-        }
-
+            }}
             initialParams={{ albumData: {} }}
         />
     </Stack.Navigator>
+
   );
 };
 

@@ -1,12 +1,16 @@
 import { View, StyleSheet, Pressable, Dimensions } from "react-native";
-import AntDesign from "react-native-vector-icons/MaterialIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useMusicPlayer } from "@/context/MusicPlayerContext";
 
 const { height, width } = Dimensions.get("window");
+import {useMusicPlayer} from "@/context/MusicPlayerContext";
+import {useEffect} from "react";
 
 const ButtonGroup = () => {
-  const { isPlaying, setIsPlaying } = useMusicPlayer();
+  const {
+    isPlaying,
+    setIsPlaying
+  } = useMusicPlayer();
 
   const handleMoreOption = () => {
     console.log("more option !");
@@ -28,6 +32,7 @@ const ButtonGroup = () => {
     isPlaying === true ? console.log("now play") : console.log("paused !");
     setIsPlaying(!isPlaying);
   };
+
   return (
     <View style={styles.musicControlList}>
       <Pressable onPress={handleRandomPlaying}>
@@ -44,16 +49,17 @@ const ButtonGroup = () => {
           style={styles.btnColor}
         />
       </Pressable>
+
       <Pressable onPress={handlePlaying}>
         {isPlaying === true ? (
           <AntDesign
-            name="play-circle"
+            name="pausecircle"
             size={width > 100 && width < 600 ? 60 : 80}
             style={styles.btnColor}
           />
         ) : (
           <AntDesign
-            name="pause-circle"
+            name="playcircleo"
             size={width > 100 && width < 600 ? 60 : 80}
             style={styles.btnColor}
           />

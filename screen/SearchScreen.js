@@ -8,8 +8,8 @@ import { ScrollView } from "react-native-gesture-handler";
 
 const SearchScreen = () => {
   const {
-    selectedAlbum,
-    setSelectedAlbum,
+    selectedTrack,
+    setSelectedTrack,
     isMinimized,
     handleMinimizedScreen,
   } = useMusicPlayer();
@@ -19,11 +19,11 @@ const SearchScreen = () => {
       <ScrollView style={{ padding: 24 }} showsVerticalScrollIndicator={false}>
         <Text style={styles.search}>Search</Text>
         <SearchBar />
-        <SearchResultPage setSelectedAlbum={setSelectedAlbum} />
+        <SearchResultPage setSelectedTrack={setSelectedTrack} />
       </ScrollView>
 
       <View style={{ flex: 1 }}>
-        {selectedAlbum && (
+        {selectedTrack && (
           <View
             style={
               isMinimized
@@ -32,7 +32,7 @@ const SearchScreen = () => {
             }
           >
             <MusicPlayerScreen
-              albumData={selectedAlbum}
+              trackData={selectedTrack}
               isMinimized={isMinimized}
               handleMinimizedScreen={handleMinimizedScreen}
             />

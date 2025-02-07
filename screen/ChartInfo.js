@@ -9,20 +9,16 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
+
 import TrackItem from "@/components/TrackItem";
 import React, {useEffect, useState} from "react";
-import AlbumItem from "@/components/AlbumItem";
 const screenHeight = Dimensions.get("window").height;
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
-import {useNavigation} from "@react-navigation/native";
+import {LinearGradient} from "expo-linear-gradient";
+import albumItem from "@/components/AlbumItem";
 
-const AlbumInfo = ({ route }) => {
-  const { albumData } = route.params;
-  const { selectedAlbumData } = albumData;
-  const selectedAlbumId = selectedAlbumData._id;
-  const { imageUrl, playCount } = selectedAlbumData;
-  const albumName = selectedAlbumData.name;
-
+const ChartInfo = ({ route }) => {
+  const { countryData, colorData } = route.params;
   const {
     selectedTrack,
     setSelectedTrack,
@@ -33,19 +29,9 @@ const AlbumInfo = ({ route }) => {
       setTrackUrl,
       handlePlayTrack,
   } = useMusicPlayer();
-  const [isLiked, setIsLiked] = useState(false);
   const [trackList, setTrackList] = useState([]);
+  const [isLiked, setIsLiked] = useState(false);
   const [seeMoreTrack, setSeeMoreTrack] = useState(false);
-
-  const handleLike = (name) => {
-    if (isLiked === true) {
-      console.log(`You haved unliked artist - ${albumName}`);
-      setIsLiked(!isLiked);
-    } else {
-      console.log(`You haved liked artist - ${albumName}`);
-      setIsLiked(!isLiked);
-    }
-  };
 
   const formatplayCount = (count) => {
     if (count < 1000) return count.toString();
@@ -70,31 +56,32 @@ const AlbumInfo = ({ route }) => {
     handlePlayTrack(data.soundTrackUrl);
   }
 
-  const handleSeeMoreTrack = () => {
-    setSeeMoreTrack(!seeMoreTrack);
-  }
-  const handleSeeMoreAlbum = () => {
-    setSeeMoreAlbum(!seeMoreAlbum);
-  }
+  const handleLike = (name) => {
+    if (isLiked === true) {
+      console.log(`You haved unliked the Top 50 ${name} Tracks`);
+      setIsLiked(!isLiked);
+    } else {
+      console.log(`You haved liked the Top 50 ${name} Tracks`);
+      setIsLiked(!isLiked);
+    }
+  };
+
 
   useEffect(() => {
-    const fetchTrackList = async (albumId) => {
-      const trackCount = 8;
-      const url = process.env.EXPO_PUBLIC_BASE_URL + `track/album/${albumId}`
-      //console.log(url)
+    const fetchTrackList = async (countryName) => {
+      const resultLimit = 50;
+      const url = process.env.EXPO_PUBLIC_BASE_URL + `track/country/${countryName}?limit=${resultLimit}`
       try {
         const result = await fetch(url);
         const data = await result.json();
-        //console.log(data.data)
         setTrackList(data.data);
-        //console.log(data.data)
 
       } catch (err) {
         console.log(err)
       }
     }
 
-    fetchTrackList(selectedAlbumId)
+    fetchTrackList(countryData)
   }, [])
 
   return (
@@ -105,17 +92,20 @@ const AlbumInfo = ({ route }) => {
       >
         <View>
           <View style={styles.container}>
-            <Image source={{uri: imageUrl}} style={styles.image} />
-            <View style={styles.textContainer}>
-              <Text style={styles.name}>{albumName}</Text>
-              <Text style={styles.playCount}>
-                {formatplayCount(playCount)} Play Count
-              </Text>
-            </View>
+            <LinearGradient colors={colorData} style={styles.chartItem}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}>
+              <View style={[styles.chartImage, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
+                <Text style={styles.title}>Top 50</Text>
+                <Text style={styles.region}>{countryData}</Text>
+              </View>
+            </LinearGradient>
+
+            <Text style={styles.name}>Top 50 {countryData} Tracks</Text>
 
             <View style={styles.buttonContainer}>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                <Pressable onPress={() => handleLike(albumName)}>
+                <Pressable onPress={() => handleLike(albumItem)}>
                   {isLiked === true ? (
                       <View style={[styles.unLikeBtn]}>
                         <Text style={styles.unLikeText}>
@@ -162,13 +152,10 @@ const AlbumInfo = ({ route }) => {
             <View style={{ flexDirection: "row", alignItems:"center"}}>
               <Text style={styles.popularText}>Tracks</Text>
               <View style={{ flexGrow: 1}}></View>
-              <Pressable onPress={() => handleSeeMoreTrack()}>
-                <Text style={styles.seeAll}>See all</Text>
-              </Pressable>
             </View>
 
             { trackList &&
-                trackList.slice(0, seeMoreTrack? trackList.length: 6).map((track) => (
+                trackList.map((track) => (
                     <Pressable
                         key={track._id}
                         onPress={() => handlePlayMusic(track)}
@@ -207,9 +194,41 @@ const AlbumInfo = ({ route }) => {
       )}
     </View>
   );
+
 };
 
+
+
 const styles = StyleSheet.create({
+  title: {
+    fontSize: screenHeight > 100 && screenHeight < 800 ? 14 : 20,
+    color: "white",
+    margin: 10,
+    fontWeight: "bold",
+  },
+  region: {
+    fontSize: screenHeight > 100 && screenHeight < 800 ? 18 : 30,
+    color: "white",
+    margin: 10,
+    fontWeight: "bold",
+    textShadowColor: "black",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
+  },
+  chartItem: {
+    flexDirection: "column",
+    marginRight: 20,
+    height: screenHeight > 100 && screenHeight < 800 ? 100 : 200,
+    width: screenHeight > 100 && screenHeight < 800 ? 100 : 200,
+    opacity: 0.5,
+    marginTop: screenHeight > 100 && screenHeight < 800 ? 15 : 20,
+    borderRadius: 20,
+    shadowColor: "black",
+    shadowOffset: { width: 1, height: -1 },
+    shadowRadius: 1,
+    shadowOpacity: 0.8, // Add shadowOpacity for better control
+    elevation: 5,
+  },
   seeAll: {
     color: "gray",
     marginTop: 10,
@@ -257,7 +276,7 @@ const styles = StyleSheet.create({
 
   name: {
     fontWeight: "bold",
-    marginTop: 10,
+    marginTop: screenHeight > 800 ? 20 : 10,
     fontSize: screenHeight > 800 ? 45 : 30
   },
 
@@ -274,7 +293,6 @@ const styles = StyleSheet.create({
   btn: {
     margin: 15,
   },
-
   image: {
     marginTop: "8%",
     height: screenHeight > 800 ? 250 : 160,
@@ -309,4 +327,4 @@ const styles = StyleSheet.create({
 
 
 
-export default AlbumInfo;
+export default ChartInfo;

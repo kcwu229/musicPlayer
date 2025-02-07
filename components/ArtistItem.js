@@ -23,12 +23,12 @@ const ArtistIcon = ({
   const [hasFollowed, setHasFollow] = useState(false);
 
 
-  const handleFollow = (name) => {
+  const handleFollow = (artistName) => {
     if (hasFollowed === true) {
-      console.log(`You haved unfollow artist - ${name}`);
+      console.log(`You haved unfollow artist - ${artistName}`);
       setHasFollow(!hasFollowed);
     } else {
-      console.log(`You haved follow artist - ${name}`);
+      console.log(`You haved follow artist - ${artistName}`);
       setHasFollow(!hasFollowed);
     }
   };
@@ -56,7 +56,7 @@ const ArtistIcon = ({
       </View>
       {allowFollowButton ? <View style={styles.space}></View> : null}
       {allowFollowButton ? (
-        <Pressable onPress={() => handleFollow(artist)}>
+        <Pressable onPress={() => handleFollow(name)}>
           {hasFollowed === true ? (
             <View style={styles.unfollowBtn}>
               <Text style={styles.unfollowText}>Unfollow</Text>

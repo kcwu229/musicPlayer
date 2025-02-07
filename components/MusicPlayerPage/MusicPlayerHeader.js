@@ -12,12 +12,12 @@ import { useMusicPlayer } from "@/context/MusicPlayerContext";
 const { height, width } = Dimensions.get("window");
 
 exports.MinimizedMusicPlayerHeader = ({
-  albumData,
+  trackData,
   handleMinimizedScreen,
   style,
 }) => {
-  const { name, imageUrl } = albumData;
-  const artistName = albumData.artistId.name;
+  const { name, imageUrl } = trackData;
+  const artistName = trackData.artistId.name;
 
   const { isPlaying, setIsPlaying } = useMusicPlayer();
 

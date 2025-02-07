@@ -1,21 +1,25 @@
 import { View, StyleSheet, Pressable, Text } from "react-native";
 import { useState } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useMusicPlayer } from "@/context/MusicPlayerContext";
 
-const CommentSection = ({ likeCount, commentCount }) => {
+
+const CommentSection = () => {
   const [isLiked, setisLiked] = useState(false);
-  const [_likeCount, setLikeCount] = useState(likeCount || 200);
-  const [_commentCount, setCommentCount] = useState(commentCount || 200);
+  const { commentCount, likeCount, setCommentCount, setLikeCount } = useMusicPlayer();
 
+  // todo : call api to get like status
   const handleLike = () => {
     if (isLiked === true) {
       console.log("unlike");
       setisLiked(!isLiked);
-      setLikeCount(_likeCount - 1);
+      setLikeCount(likeCount - 1);
+      // call api to unlike
     } else {
       console.log("like !");
       setisLiked(!isLiked);
-      setLikeCount(_likeCount + 1);
+      setLikeCount(likeCount + 1);
+      // call api unlike
     }
   };
 
@@ -42,11 +46,11 @@ const CommentSection = ({ likeCount, commentCount }) => {
           <FontAwesome name="heart-o" size={22} style={styles.btnColor} />
         </Pressable>
       )}
-      <Text style={styles.likeText}>{_likeCount}</Text>
+      <Text style={styles.likeText}>{likeCount}</Text>
       <Pressable onPress={handleComment}>
         <FontAwesome name="comments" size={22} style={styles.btnColor} />
       </Pressable>
-      <Text style={styles.commentText}> {_commentCount}</Text>
+      <Text style={styles.commentText}> {commentCount}</Text>
       <View style={styles.space}></View>
       <Pressable onPress={handleShare}>
         <FontAwesome name="share-alt" size={22} style={styles.btnColor} />

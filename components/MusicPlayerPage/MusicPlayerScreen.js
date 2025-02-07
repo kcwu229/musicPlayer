@@ -4,9 +4,10 @@ import MusicPlayerContent from "@/components/MusicPlayerPage/MusicPlayerContent"
 import { MinimizedMusicPlayerHeader } from "@/components/MusicPlayerPage/MusicPlayerHeader";
 
 const MusicPlayerScreen = ({
-  albumData,
+  trackData,
   isMinimized,
   handleMinimizedScreen,
+    isPlaying,
 }) => {
   const slideAnim = useRef(new Animated.Value(0)).current;
   const screenHeight = Dimensions.get("window").height;
@@ -17,13 +18,13 @@ const MusicPlayerScreen = ({
       duration: 500,
       useNativeDriver: true,
     }).start();
-  }, [isMinimized]);
+  }, [isMinimized, isPlaying]);
 
   return (
     <View style={{ flex: 1 }}>
       {isMinimized && (
         <MinimizedMusicPlayerHeader
-          albumData={albumData}
+          trackData={trackData}
           handleMinimizedScreen={handleMinimizedScreen}
           style={styles.minimizedScreenContainer}
         />
@@ -32,7 +33,7 @@ const MusicPlayerScreen = ({
         {!isMinimized && (
           <View>
             <MusicPlayerContent
-              albumData={albumData}
+              trackData={trackData}
               handleMinimizedScreen={handleMinimizedScreen}
               visible={isMinimized}
               style={styles.fullScreenContainer}

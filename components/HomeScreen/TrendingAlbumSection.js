@@ -8,33 +8,15 @@ import {
   Dimensions,
 } from "react-native";
 import AlbumItem from "@/components/AlbumItem";
-import { BASE_URL } from "@env";
-
-const trendingAlbumData = [
-  {
-    id: 1,
-    title: "Future Nostalgia",
-    artist: "Dua Lipa",
-    image: require("../../assets/images/future_nostalgia.jpeg"),
-    viewCount: 20000,
-    duration: "3:03",
-    likeCount: 20000,
-    commentCount: 20000,
-  },
-
-];
 
 const { height, width } = Dimensions.get("window");
 
-const TrendingAlbumSection = ({ setSelectedAlbum }) => {
-  const handlePlayMusic = (data) => {
-    setSelectedAlbum(data);
-  };
+const TrendingAlbumSection = () => {
 
   const [albumList, setAlbumList] = useState([]);
   useEffect(() => {
     const albumCount = 8;
-    const url = BASE_URL + `album?limit=${albumCount}`;
+    const url = process.env.EXPO_PUBLIC_BASE_URL + `album?limit=${albumCount}`;
 
    try {
      const fetchTrendingAlbums = async () => {
@@ -76,7 +58,6 @@ const TrendingAlbumSection = ({ setSelectedAlbum }) => {
                 albumData={data}
                 imageWidth={height > 100 && height < 800 ? 100 : 200}
                 imageHeight={height > 100 && height < 800 ? 100 : 200}
-                setSelectedAlbum={setSelectedAlbum}
                 style={styles.albumItem}
               />
             </Pressable>

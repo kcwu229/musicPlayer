@@ -8,7 +8,6 @@ import {
   Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { BASE_URL } from "@env"
 
 import ArtistItem from "@/components/ArtistItem";
 
@@ -26,7 +25,7 @@ const PopularArtistSection = () => {
   useEffect(() => {
     const fetchArtistList = async () => {
       const artistCount = 8;
-      const url = BASE_URL + `artist?limit=${artistCount}`
+      const url = process.env.EXPO_PUBLIC_BASE_URL + `artist?limit=${artistCount}`
       //console.log(url)
       try {
         const result = await fetch(url);

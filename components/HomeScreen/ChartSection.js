@@ -9,35 +9,37 @@ import {
 } from "react-native";
 import RandomColor from "../../components/RandomColor";
 import { LinearGradient } from "expo-linear-gradient";
-import { BASE_URL } from "@env";
+import {useNavigation} from "@react-navigation/native";
 
 const { height, width } = Dimensions.get("window");
 
-const chartData = [
-  {
-    id: 1,
-    title: "Top 50",
-    region: "Canada",
-    subscription: "Subscribe",
-    status: "update",
-  },
-];
 
 const ChartSection = () => {
+  const navigation = useNavigation();
+  const navigateToAlbumInfoPage = (countryData, colorData) => {
+    navigation.navigate("ChartInfo", {
+      countryData: countryData ,
+      colorData: colorData
+    });
+  };
+
 
   const [topTrackByCountryList, setTopTrackByCountryList] = useState([]);
+  const [chartColor, setChartColor] = useState([])
 
   useEffect(() => {
     const fetchChartTrack = async () => {
       const itemDisplayed = 8;
-      const url = BASE_URL + `track/country?limit=${itemDisplayed}`;
+      const url = process.env.EXPO_PUBLIC_BASE_URL + `track/country?limit=${itemDisplayed}`;
       console.log(url);
       try {
         const result = await fetch(url);
         if (result.ok) {
           const data = await result.json();
           setTopTrackByCountryList(data.data);
-          //console.log(data.data)
+
+          // save the color
+          setChartColor(data.data.map(data => RandomColor()))
         }
 
       } catch (error) {
@@ -60,14 +62,14 @@ const ChartSection = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {topTrackByCountryList.map((data) => {
+        {topTrackByCountryList.map((data, index) => {
           return (
             <View key={data._id}>
-              <Pressable onPress={() => console.log(data.countryItem)}>
-                <LinearGradient colors={RandomColor()} style={styles.chartItem}
+              <Pressable onPress={() => navigateToAlbumInfoPage(data.countryItem, chartColor[index])}>
+                <LinearGradient colors={chartColor[index]} style={styles.chartItem}
                                 start={{ x: 0, y: 0 }}
                                 end={{ x: 1, y: 1 }}>
-                  <View style={styles.chartImage}>
+                  <View style={[styles.chartImage, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
                     <Text style={styles.title}>Top 50</Text>
                     <Text style={styles.region}>{data.countryItem}</Text>
                   </View>

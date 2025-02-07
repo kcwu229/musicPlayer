@@ -33,7 +33,8 @@ const TrackItem = ({
   imageHeight,
   artistFontSize,
   titleFontSize,
-  setSelectedAlbum,
+  setSelectedTrack,
+    setLikeCount, setCommentCount
 }) => {
   const { name, playCount, imageUrl, duration } = trackData;
   const handleOption = () => {
@@ -44,7 +45,7 @@ const TrackItem = ({
       <Pressable
         onPress={() => {
           console.log(name);
-          setSelectedAlbum(trackData);
+          setSelectedTrack(trackData);
         }}
       >
         <View style={styles.trackImage}>

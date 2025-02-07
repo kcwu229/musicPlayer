@@ -19,7 +19,6 @@ const AlbumItem = ({
   imageHeight,
   artistFontSize,
   titleFontSize,
-  setSelectedAlbum,
 }) => {
   const { name, viewCount, imageUrl, duration } = albumData;
   const handleOption = () => {

@@ -8,21 +8,23 @@ import {
   Pressable,
   Dimensions,
 } from "react-native";
-import { BASE_URL } from '@env';
 
 const { height, width } = Dimensions.get("window");
 
-const SuggectionSection = ({ setSelectedAlbum }) => {
+const SuggectionSection = ({ setSelectedTrack, handlePlayTrack, setTrackUrl, setIsPlaying, isPlaying }) => {
   const [trackList, setTrackList ] = useState([]);
-  const handlePlayMusic = (data) => {
-    setSelectedAlbum(data);
+  const handlePlayMusic =  (data) => {
+    setIsPlaying(!isPlaying)
+    setSelectedTrack(data);
+    setTrackUrl(data.soundTrackUrl);
+    handlePlayTrack(data.soundTrackUrl);
   };
 
   useEffect( ()=> {
     const fetchSuggestionTrack = async () => {
       const itemDisplayed = 8;
-      const url = BASE_URL + `track?limit=${itemDisplayed}`;
-      console.log(url);
+      const url = process.env.EXPO_PUBLIC_BASE_URL + `track?limit=${itemDisplayed}`;
+      //console.log(url);
       try {
         const result = await fetch(url);
         if (result.ok) {
@@ -48,10 +50,7 @@ const SuggectionSection = ({ setSelectedAlbum }) => {
         {trackList.map((data) => {
           return (
             <Pressable
-              onPress={() => {
-                console.log(data.artist);
-                handlePlayMusic(data);
-              }}
+              onPress={() => handlePlayMusic(data)}
               key={data._id}
             >
               <View style={styles.suggestItem}>

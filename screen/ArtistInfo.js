@@ -14,24 +14,24 @@ import React, {useEffect, useState} from "react";
 import AlbumItem from "@/components/AlbumItem";
 const screenHeight = Dimensions.get("window").height;
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
-import { BASE_URL } from "@env"
 
 const ArtistInfo = ({ route }) => {
   const { artistData } = route.params;
   const { selectedArtistData } = artistData;
-  //console.log(selectedArtistData)
   const artistId = selectedArtistData._id;
   const { imageUrl, followerCount, description, genres } = selectedArtistData;
   const artistName = selectedArtistData.name;
   const {
-    selectedAlbum,
-    setSelectedAlbum,
+    selectedTrack,
+    setSelectedTrack,
     isMinimized,
     handleMinimizedScreen,
+      isPlaying,
+      setIsPlaying
   } = useMusicPlayer();
   const [initialPlayMusic, setInitialPlayMusic] = useState(false);
   const [hasFollowed, setHasFollow] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  //const [isPlaying, setIsPlaying] = useState(false);
 
   const handleFollow = (name) => {
     if (hasFollowed === true) {
@@ -61,7 +61,7 @@ const ArtistInfo = ({ route }) => {
   };
 
   const handleSelectSong = (album) => {
-    setSelectedAlbum(album);
+    setSelectedTrack(album);
   };
 
   const [albumList, setAlbumList] = useState([]);
@@ -81,7 +81,7 @@ const ArtistInfo = ({ route }) => {
   useEffect(() => {
     const fetchAlbumList = async (artistId) => {
       const artistCount = 8;
-      const getAlbumUrl = BASE_URL + `album/artist/${artistId}?limit=${artistCount}`
+      const getAlbumUrl = process.env.EXPO_PUBLIC_BASE_URL + `album/artist/${artistId}?limit=${artistCount}`
 
       try {
         const result = await fetch(getAlbumUrl);
@@ -95,7 +95,7 @@ const ArtistInfo = ({ route }) => {
 
     const fetchTrackList = async (artistId) => {
       const trackCount = 8;
-      const getTrackUrl = BASE_URL + `track/artist/${artistId}?limit=${trackCount}`
+      const getTrackUrl = process.env.EXPO_PUBLIC_BASE_URL + `track/artist/${artistId}?limit=${trackCount}`
       //console.log(url)
       try {
         const result = await fetch(getTrackUrl);
@@ -203,7 +203,7 @@ const ArtistInfo = ({ route }) => {
                       artistFontSize={12}
                       titleFontSize={screenHeight > 800 ? 22 : 14}
                       shownOnResultList={false}
-                      setSelectedAlbum={setSelectedAlbum}
+                      setSelectedTrack={setSelectedTrack}
                     />
                   </Pressable>
                 ))}
@@ -230,7 +230,7 @@ const ArtistInfo = ({ route }) => {
                           imageHeight={screenHeight > 800 ? 140 :100}
                           shownOnResultList={true}
                           showViewAndDuration={true}
-                          setSelectedAlbum={setSelectedAlbum}
+                          setSelectedTrack={setSelectedTrack}
                       />
                     </Pressable>)
                 )}
@@ -244,7 +244,7 @@ const ArtistInfo = ({ route }) => {
         </View>
       </ScrollView>
 
-      {selectedAlbum && (
+      {selectedTrack && (
         <View
           style={
             isMinimized
@@ -253,7 +253,8 @@ const ArtistInfo = ({ route }) => {
           }
         >
           <MusicPlayerScreen
-            albumData={selectedAlbum}
+              isPlaying={isPlaying}
+            trackData={selectedTrack}
             isMinimized={isMinimized}
             handleMinimizedScreen={handleMinimizedScreen}
           />

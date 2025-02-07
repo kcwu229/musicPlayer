@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import { View, Pressable, StyleSheet, Dimensions } from "react-native";
-import { BASE_URL } from "@env"
 
 import ArtistItem from "@/components/ArtistItem";
 import AlbumItem from "@/components/AlbumItem";
@@ -8,7 +7,7 @@ import TrackItem from "@/components/TrackItem";
 
 const {height} = Dimensions.get("window")
 
-const SearchResultPage = ({ setSelectedAlbum }) => {
+const SearchResultPage = ({ setSelectedTrack }) => {
   const handleArtist = () => {
     console.log(`Artist`);
   };
@@ -19,11 +18,11 @@ const SearchResultPage = ({ setSelectedAlbum }) => {
 
   useEffect(() => {
     const albumCount = 8;
-    const getAlbumListUrl = BASE_URL + `album?limit=${albumCount}`;
+    const getAlbumListUrl = process.env.EXPO_PUBLIC_BASE_URL + `album?limit=${albumCount}`;
     const artistCount = 8;
-    const getArtistListUrl = BASE_URL + `artist?limit=${artistCount}`;
+    const getArtistListUrl = process.env.EXPO_PUBLIC_BASE_URL + `artist?limit=${artistCount}`;
     const trackCount = 8;
-    const getTrackListUrl = BASE_URL + `track?limit=${trackCount}`;
+    const getTrackListUrl = process.env.EXPO_PUBLIC_BASE_URL + `track?limit=${trackCount}`;
 
     try {
       const fetchResultArtist = async () => {
@@ -88,13 +87,13 @@ const SearchResultPage = ({ setSelectedAlbum }) => {
 
       {albumList &&
         albumList.map((album) => (
-          <Pressable key={album._id} onPress={() => setSelectedAlbum(album)}>
+          <Pressable key={album._id} onPress={() => setSelectedTrack(album)}>
             <AlbumItem
               albumData={album}
               imageWidth={height > 800 ? 100: 60}
               imageHeight={height > 800 ? 100: 60}
               shownOnResultList={true}
-              setSelectedAlbum={setSelectedAlbum}
+              setSelectedTrack={setSelectedTrack}
               showViewAndDuration={true}
             />
           </Pressable>
@@ -103,13 +102,13 @@ const SearchResultPage = ({ setSelectedAlbum }) => {
       {/*. Need to fix
       {trackList &&
           trackList.map((track) => (
-              <Pressable key={track._id} onPress={() => setSelectedAlbum(track)}>
+              <Pressable key={track._id} onPress={() => setSelectedTrack(track)}>
                 <TrackItem
                     albumData={track}
                     imageWidth={height > 800 ? 100: 60}
                     imageHeight={height > 800 ? 100: 60}
                     shownOnResultList={true}
-                    setSelectedAlbum={setSelectedAlbum}
+                    setSelectedTrack={setSelectedTrack}
                     showViewAndDuration={true}
                 />
               </Pressable>
