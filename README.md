@@ -1,6 +1,10 @@
 # Demo
 
-https://github.com/user-attachments/assets/ef567764-1f9a-4e4e-adb4-1870fcc7dcd1
+
+https://github.com/user-attachments/assets/1a4e8ba9-741e-462c-9b33-c4ea1d630e01
+
+
+
 
 
 # Welcome to your Expo app 👋
