@@ -82,7 +82,7 @@ const MusicPlayerContent = ({
             <View style={{ flexGrow: 1 }}></View>
             <AlbumInfo name={name} artistName={artistName} />
             <View style={{ flexGrow: 1 }}></View>
-            <ButtonGroup/>
+            <ButtonGroup  trackData={trackData}/>
             <View style={{ flexGrow: 1 }}></View>
             <CommentSection likeCount={likeCount} commentCount={commentCount} />
           </LinearGradient>

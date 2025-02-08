@@ -36,6 +36,7 @@ const AlbumInfo = ({ route }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [trackList, setTrackList] = useState([]);
   const [seeMoreTrack, setSeeMoreTrack] = useState(false);
+  const [hasPlayedInthisPage, setHasPlayedInthisPage] = useState(false);
 
   const handleLike = (name) => {
     if (isLiked === true) {
@@ -58,9 +59,28 @@ const AlbumInfo = ({ route }) => {
     console.log("random playing");
   };
 
-  const handlePlaying = () => {
+  const handlePlaying = (trackData) => {
+    //console.log(trackData)
     isPlaying === true ? console.log("now play") : console.log("paused !");
     setIsPlaying(!isPlaying);
+    if (trackData.length === 1){
+      let data = trackData[0];
+      setSelectedTrack(data);
+      setHasPlayedInthisPage(true);
+      handlePlayTrack(data.soundTrackUrl);
+    }
+
+    // todo: handle playing multiple tracks
+    else if (trackData.length > 1) {
+      let data = trackData[0];
+      setSelectedTrack(data);
+      setHasPlayedInthisPage(true);
+      handlePlayTrack(data.soundTrackUrl);
+    }
+    else {
+      console.error("Error: trackList is null or undefined");
+    }
+
   };
 
   const handlePlayMusic = (data) => {
@@ -137,23 +157,21 @@ const AlbumInfo = ({ route }) => {
                 <FontAwesome name="random" size={screenHeight > 800 ? 30 : 18} style={styles.btn} />
               </Pressable>
 
-              {isPlaying ? (
-                <Pressable onPress={handlePlaying}>
+              <Pressable onPress={() => handlePlaying(trackList)}>
+              {isPlaying === true && hasPlayedInthisPage === true?  (
                   <FontAwesome
                     name="pause-circle"
                     size={screenHeight > 800 ? 80 : 50}
                     style={styles.btn}
                   />
-                </Pressable>
               ) : (
-                <Pressable onPress={handlePlaying}>
                   <FontAwesome
                     name="play-circle"
                     size={screenHeight > 800 ? 80 : 50}
                     style={styles.btn}
                   />
-                </Pressable>
               )}
+              </Pressable>
             </View>
           </View>
 

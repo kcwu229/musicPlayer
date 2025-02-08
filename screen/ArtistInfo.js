@@ -27,10 +27,12 @@ const ArtistInfo = ({ route }) => {
     isMinimized,
     handleMinimizedScreen,
       isPlaying,
-      setIsPlaying
+      setIsPlaying,
+      handlePlayTrack,
   } = useMusicPlayer();
   const [initialPlayMusic, setInitialPlayMusic] = useState(false);
   const [hasFollowed, setHasFollow] = useState(false);
+  const [hasPlayedInthisPage, setHasPlayedInthisPage] = useState(false);
   //const [isPlaying, setIsPlaying] = useState(false);
 
   const handleFollow = (name) => {
@@ -55,13 +57,34 @@ const ArtistInfo = ({ route }) => {
     console.log("random playing");
   };
 
-  const handlePlaying = () => {
+  const handlePlaying = (trackListItems) => {
     isPlaying === true ? console.log("now play") : console.log("paused !");
-    setIsPlaying(!isPlaying);
+    //console.log(trackListItems);
+    if (trackListItems.length > 1) {
+      let data = trackListItems[0]
+      setIsPlaying(!isPlaying);
+      setSelectedTrack(data);
+      setHasPlayedInthisPage(true);
+      handlePlayTrack(data.soundTrackUrl);
+    }
+
+    else if (trackListItems.length === 1) {
+      let data = trackListItems[0]
+      setIsPlaying(!isPlaying);
+      setSelectedTrack(data);
+      setHasPlayedInthisPage(true);
+      handlePlayTrack(data.soundTrackUrl);
+    }
+    else {
+      console.error("Error: trackList is null or undefined");
+    }
+
   };
 
-  const handleSelectSong = (album) => {
-    setSelectedTrack(album);
+  const handleSelectSong = (trackData) => {
+    setSelectedTrack(trackData);
+    setIsPlaying(!isPlaying);
+    handlePlayTrack(trackData.soundTrackUrl);
   };
 
   const [albumList, setAlbumList] = useState([]);
@@ -156,23 +179,23 @@ const ArtistInfo = ({ route }) => {
               <Pressable onPress={handleRandomPlaying}>
                 <FontAwesome name="random" size={screenHeight > 800 ? 34 : 18} style={styles.btn} />
               </Pressable>
-              {isPlaying ? (
-                <Pressable onPress={handlePlaying}>
+
+              <Pressable onPress={() => handlePlaying(trackList)}>
+              {isPlaying === true && hasPlayedInthisPage === true ? (
                   <FontAwesome
                     name="pause-circle"
                     size={screenHeight > 800 ? 80 : 50}
                     style={styles.btn}
                   />
-                </Pressable>
               ) : (
-                <Pressable onPress={handlePlaying}>
                   <FontAwesome
                     name="play-circle"
                     size={screenHeight > 800 ? 80 : 50}
                     style={styles.btn}
                   />
-                </Pressable>
               )}
+            </Pressable>
+
             </View>
           </View>
 
@@ -254,6 +277,7 @@ const ArtistInfo = ({ route }) => {
         >
           <MusicPlayerScreen
               isPlaying={isPlaying}
+              setIsPlaying={setIsPlaying}
             trackData={selectedTrack}
             isMinimized={isMinimized}
             handleMinimizedScreen={handleMinimizedScreen}

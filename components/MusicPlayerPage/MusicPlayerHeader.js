@@ -19,15 +19,16 @@ exports.MinimizedMusicPlayerHeader = ({
   const { name, imageUrl } = trackData;
   const artistName = trackData.artistId.name;
 
-  const { isPlaying, setIsPlaying } = useMusicPlayer();
+  const { isPlaying, setIsPlaying, handlePlayTrack } = useMusicPlayer();
 
   const handleNextSong = () => {
     console.log("Next song ");
   };
 
-  const handlePlaying = () => {
+  const handlePlaying = (url) => {
     isPlaying ? console.log("paused !") : console.log("now play");
     setIsPlaying(!isPlaying);
+    handlePlayTrack(url);
   };
 
   return (
@@ -36,23 +37,21 @@ exports.MinimizedMusicPlayerHeader = ({
         <Image source={{uri: imageUrl}} style={styles.minimizedImage} />
         <Text style={styles.minimizedTitle}>{name.toUpperCase()}</Text>
         <View style={styles.space}></View>
+        <Pressable onPress={() => handlePlaying(trackData.soundTrackUrl)}>
         {isPlaying ? (
-          <Pressable onPress={handlePlaying}>
             <FontAwesome
               name="pause"
               size={width > 100 && width < 600 ? 22 : 30}
               style={styles.btnColor}
             />
-          </Pressable>
         ) : (
-          <Pressable onPress={handlePlaying}>
             <FontAwesome
               name="play"
               size={width > 100 && width < 600 ? 22 : 30}
               style={styles.btnColor}
             />
-          </Pressable>
         )}
+        </Pressable>
         <Pressable onPress={handleNextSong}>
           <FontAwesome
             name="step-forward"

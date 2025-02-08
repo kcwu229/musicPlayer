@@ -32,6 +32,7 @@ const ChartInfo = ({ route }) => {
   const [trackList, setTrackList] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [seeMoreTrack, setSeeMoreTrack] = useState(false);
+  const [hasPlayedInthisPage, setHasPlayedInthisPage] = useState(false);
 
   const formatplayCount = (count) => {
     if (count < 1000) return count.toString();
@@ -44,9 +45,26 @@ const ChartInfo = ({ route }) => {
     console.log("random playing");
   };
 
-  const handlePlaying = () => {
+  const handlePlaying = (trackListItems) => {
     isPlaying === true ? console.log("now play") : console.log("paused !");
-    setIsPlaying(!isPlaying);
+    if (trackListItems.length === 1) {
+      let data = trackListItems[0];
+      setHasPlayedInthisPage(true);
+      setIsPlaying(!isPlaying);
+      setSelectedTrack(data);
+      handlePlayTrack(data.soundTrackUrl);
+    }
+    else if (trackListItems.length > 1) {
+      let data = trackListItems[0];
+      setHasPlayedInthisPage(true);
+      setIsPlaying(!isPlaying);
+      setSelectedTrack(data);
+      handlePlayTrack(data.soundTrackUrl);
+    }
+    else {
+        console.error("Error: trackList is null or undefined");
+    }
+
   };
 
   const handlePlayMusic = (data) => {
@@ -127,23 +145,24 @@ const ChartInfo = ({ route }) => {
                 <FontAwesome name="random" size={screenHeight > 800 ? 30 : 18} style={styles.btn} />
               </Pressable>
 
-              {isPlaying ? (
-                <Pressable onPress={handlePlaying}>
+              <Pressable onPress={() => handlePlaying(trackList)}>
+              {isPlaying === true && hasPlayedInthisPage === true? (
                   <FontAwesome
                     name="pause-circle"
                     size={screenHeight > 800 ? 80 : 50}
                     style={styles.btn}
                   />
-                </Pressable>
+
               ) : (
-                <Pressable onPress={handlePlaying}>
+
                   <FontAwesome
                     name="play-circle"
                     size={screenHeight > 800 ? 80 : 50}
                     style={styles.btn}
                   />
-                </Pressable>
+
               )}
+              </Pressable>
             </View>
           </View>
 

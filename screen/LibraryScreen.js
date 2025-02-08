@@ -5,17 +5,6 @@ const LibraryScreen = () => {
   return <View style={styles.container}></View>;
 };
 
-const albumData = {
-  id: 1,
-  title: "Future Nostalgia",
-  artist: "Dua Lipa",
-  image: require("@/assets/images/future_nostalgia.jpeg"),
-  viewCount: 20000,
-  duration: "3:03",
-  likeCount: 20000,
-  commentCount: 20000,
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

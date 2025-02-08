@@ -6,10 +6,12 @@ const { height, width } = Dimensions.get("window");
 import {useMusicPlayer} from "@/context/MusicPlayerContext";
 import {useEffect} from "react";
 
-const ButtonGroup = () => {
+const ButtonGroup = ({trackData}) => {
   const {
     isPlaying,
-    setIsPlaying
+    setIsPlaying,
+    handlePlayTrack,
+      selectedTrack,
   } = useMusicPlayer();
 
   const handleMoreOption = () => {
@@ -28,9 +30,13 @@ const ButtonGroup = () => {
     console.log("previous song");
   };
 
-  const handlePlaying = () => {
-    isPlaying === true ? console.log("now play") : console.log("paused !");
+  const handlePlaying = (url) => {
+    if (!url) {
+      console.error("Error: trackUrl is null or undefined");
+      return;
+    }
     setIsPlaying(!isPlaying);
+    handlePlayTrack(url);
   };
 
   return (
@@ -50,7 +56,7 @@ const ButtonGroup = () => {
         />
       </Pressable>
 
-      <Pressable onPress={handlePlaying}>
+      <Pressable onPress={ () => handlePlaying(trackData.soundTrackUrl)}>
         {isPlaying === true ? (
           <AntDesign
             name="pausecircle"
