@@ -10,7 +10,6 @@ const LoginScreen = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({username: "", password: ""})
-    const [backgroundColor] = useState(randomColor());
 
     const handleInputUsername = (text) => {
         setUsername(text)
@@ -51,7 +50,7 @@ const LoginScreen = ({ navigation }) => {
                 password: password
             }
 
-            const url =  process.env.EXPO_PUBLIC_BASE_URL + "auth/sign-up";
+            const url =  process.env.EXPO_PUBLIC_BASE_URL + "auth/login";
             console.log(url)
 
             try {
@@ -75,39 +74,52 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <ImageBackground source={null} resizeMode="cover" style={styles.imageBg} />
+            <ImageBackground source={backgroundImage} resizeMode="cover" style={styles.imageBg} >
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ flexGrow: 3 }}></View>
+                    <Text style={styles.heading}>Login</Text>
+                    <Text style={styles.subHeading}>Enjoy your musical journey</Text>
+                    <TextInput style={styles.username} placeholder="Username" placeholderTextColor="white" value={username} onChangeText={handleInputUsername} />
+                    { 1 ? <Text>{errors.username}</Text> : null }
+                    <TextInput style={styles.password} placeholder="Password" placeholderTextColor="white" value={password} onChangeText={handleInputPassword}/>
+                    { 1 ? <Text>{errors.password}</Text> : null }
+
+                    <View style={{ flexGrow: 1 }}></View>
+                    <View style={{ zIndex: 1 }}>
+                        <Button title={"Login"} onPress={() => submitLoginForm()}/>
+                    </View>
+                    <View style={{ flexGrow: 1 }}></View>
+                </View>
+            </ImageBackground>
             <LinearGradient
-                colors={backgroundColor}
+                colors={["rgba(0, 0, 0, 0.8)", "rgba(64, 64, 64, 0.7)"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.colorFilter}>
             </LinearGradient>
-
-            <View style={{ position: "absolute", flex: 1 }}>
-                <Text style={{ color: 'white', fontWeight: "bold", fontSize: height > 800 ? 70 : 30, zIndex: 2 }}>Login Screen</Text>
-                <Text style={{ color: 'white', fontWeight: "extra-light", fontSize: height > 800 ? 30 : 20, zIndex: 2 }}>Enjoy your musical journey</Text>
-                <View style={{ flexGrow: 2 }}></View>
-
-                <TextInput style={styles.username} placeholder="Username" placeholderTextColor="white" value={username} onChangeText={handleInputUsername} />
-                { 1 ? <Text>{errors.username}</Text> : null }
-                <TextInput style={styles.password} placeholder="Password" placeholderTextColor="white" value={password} onChangeText={handleInputPassword}/>
-                { 1 ? <Text>{errors.password}</Text> : null }
-
-                <View style={{ flexGrow: 2 }}></View>
-                <View style={{ zIndex: 2 }}>
-                    <Button title={"Login"} onPress={() => submitLoginForm()}/>
-                </View>
-            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    heading: {
+        color: 'white',
+        fontWeight: "400",
+        fontSize: height > 800 ? 70 : 30,
+        zIndex: 2,
+    },
+    subHeading: {
+        color: 'white',
+        fontWeight: "300",
+        textAlign: "left", // Add this line
+        fontSize: height > 800 ? 30 : 20,
+        zIndex: 2
+    },
     container: {
         flexDirection: 'column',
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     imageBg: {
         top: 0,
@@ -116,8 +128,27 @@ const styles = StyleSheet.create({
         height: '100%',
         position: "relative"
     },
-    username: { color: 'white', fontSize: height > 800 ? 40 : 30, zIndex: 2, marginTop: height > 800 ? 30 : 10 },
-    password: { color: 'white', fontSize: height > 800 ? 40 : 30, zIndex: 2, marginTop: height > 800 ? 30 : 10 },
+    username: {
+        color: 'white', fontSize: height > 800 ? 30 : 20,
+        zIndex: 2, marginTop: height > 800 ? 40 : 15,
+        backgroundColor: "rgba(128, 128, 128, 0.33)",
+        width: "35%",
+        borderColor: "white",
+        borderWidth:1,
+        paddingHorizontal: 15,
+        paddingVertical: 10
+    },
+    password: {
+        color: 'white',
+        fontSize: height > 800 ? 30 : 20,
+        zIndex: 2, marginTop: height > 800 ? 30 : 10 ,
+        backgroundColor: "rgba(128, 128, 128, 0.33)",
+        width: "35%",
+        borderColor: "white",
+        borderWidth:1,
+        paddingHorizontal: 15,
+        paddingVertical: 10
+    },
     colorFilter: {
         position: 'absolute',
         top: 0,

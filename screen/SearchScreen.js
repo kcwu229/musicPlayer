@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Dimensions, StatusBar } from "react-native";
 import SearchBar from "@/components/HomeScreen/SearchBar";
 import SearchResultPage from "@/components/SearchScreen/SearchResultPage";
 import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   search: {
+    marginTop: StatusBar.currentHeight + 20,
     fontSize: height > 100 && height < 800 ? 32 : 50,
     fontWeight: "bold",
   },
