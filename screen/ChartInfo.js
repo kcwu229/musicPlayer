@@ -68,6 +68,7 @@ const ChartInfo = ({ route }) => {
   };
 
   const handlePlayMusic = (data) => {
+    setHasPlayedInthisPage(true);
     setIsPlaying(!isPlaying);
     setSelectedTrack(data);
     setTrackUrl(data.soundTrackUrl);
@@ -181,6 +182,7 @@ const ChartInfo = ({ route }) => {
                     >
                       <TrackItem
                           trackData={track}
+                          selectedTrack={selectedTrack}
                           imageWidth={screenHeight > 800 ? 140 : 60}
                           imageHeight={screenHeight > 800 ? 140 : 60}
                           shownOnResultList={true}

@@ -1,7 +1,6 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import TopBanner from "@/components/HomeScreen/TopBanner";
-import SearchBar from "@/components/HomeScreen/SearchBar";
 import SuggestionSection from "@/components/HomeScreen/SuggectionSection";
 import ChartSection from "@/components/HomeScreen/ChartSection";
 import TrendingAlbumSection from "@/components/HomeScreen/TrendingAlbumSection";
@@ -38,7 +37,6 @@ const HomeScreen = () => {
           <TopBanner />
           <Text style={styles.text}>{checkTime()},</Text>
           <Text style={styles.name}>{name}</Text>
-          <SearchBar />
           <SuggestionSection setSelectedTrack={setSelectedTrack} setTrackUrl={setTrackUrl} handlePlayTrack={handlePlayTrack} isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
           <ChartSection />
           <TrendingAlbumSection/>

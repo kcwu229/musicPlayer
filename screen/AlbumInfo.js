@@ -15,6 +15,7 @@ import AlbumItem from "@/components/AlbumItem";
 const screenHeight = Dimensions.get("window").height;
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
 import {useNavigation} from "@react-navigation/native";
+import CreateAlert from "@/components/AlertComponent";
 
 const AlbumInfo = ({ route }) => {
   const { albumData } = route.params;
@@ -39,12 +40,18 @@ const AlbumInfo = ({ route }) => {
   const [hasPlayedInthisPage, setHasPlayedInthisPage] = useState(false);
 
   const handleLike = (name) => {
-    if (isLiked === true) {
-      console.log(`You haved unliked artist - ${albumName}`);
-      setIsLiked(!isLiked);
-    } else {
-      console.log(`You haved liked artist - ${albumName}`);
-      setIsLiked(!isLiked);
+
+    if (true) {
+      CreateAlert("Authentication Error", "Require login to follow artist");
+    }
+    else {
+      if (isLiked === true) {
+        console.log(`You haved unliked artist - ${albumName}`);
+        setIsLiked(!isLiked);
+      } else {
+        console.log(`You haved liked artist - ${albumName}`);
+        setIsLiked(!isLiked);
+      }
     }
   };
 
@@ -191,14 +198,18 @@ const AlbumInfo = ({ route }) => {
                         key={track._id}
                         onPress={() => handlePlayMusic(track)}
                     >
-                      <TrackItem
-                          trackData={track}
-                          imageWidth={screenHeight > 800 ? 140 : 60}
-                          imageHeight={screenHeight > 800 ? 140 : 60}
-                          shownOnResultList={true}
-                          showViewAndDuration={true}
-                          setSelectedTrack={setSelectedTrack}
-                      />
+                        <View>
+                          <TrackItem
+                              trackData={track}
+                              selectedTrack={selectedTrack}
+                              imageWidth={screenHeight > 800 ? 140 : 60}
+                              imageHeight={screenHeight > 800 ? 140 : 60}
+                              shownOnResultList={true}
+                              showViewAndDuration={true}
+
+                              setSelectedTrack={setSelectedTrack}
+                          />
+                        </View>
                     </Pressable>)
                 )}
 

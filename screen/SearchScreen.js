@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import SearchBar from "@/components/HomeScreen/SearchBar";
 import SearchResultPage from "@/components/SearchScreen/SearchResultPage";
 import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
 import { useMusicPlayer } from "../context/MusicPlayerContext";
 import { ScrollView } from "react-native-gesture-handler";
+const { height } = Dimensions.get("window");
 
 const SearchScreen = () => {
   const {
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   search: {
-    fontSize: 32,
+    fontSize: height > 100 && height < 800 ? 32 : 50,
     fontWeight: "bold",
   },
   container: {

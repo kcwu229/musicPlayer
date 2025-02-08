@@ -49,7 +49,7 @@ const PopularArtistSection = () => {
         </Pressable>
       </View>
       <ScrollView
-        style={([styles.artistList], { overflow: "visible" })}
+        style={[styles.artistList, { overflow: "visible" }]}
         horizontal
         showsHorizontalScrollIndicator={false}
       >

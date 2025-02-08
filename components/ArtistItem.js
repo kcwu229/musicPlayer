@@ -5,12 +5,14 @@ import {
   StyleSheet,
   Pressable,
   Image,
-  Button,
   Dimensions,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 const { height, width } = Dimensions.get("window");
+import CreateAlert from "@/components/AlertComponent";
+import { useNavigation } from "@react-navigation/native";
+
 const ArtistIcon = ({
   artistData,
   allowFollowButton = false,
@@ -21,15 +23,22 @@ const ArtistIcon = ({
 }) => {
   const { followerCount, imageUrl, artist, name } = artistData;
   const [hasFollowed, setHasFollow] = useState(false);
+  const navigation = useNavigation();
 
 
   const handleFollow = (artistName) => {
-    if (hasFollowed === true) {
-      console.log(`You haved unfollow artist - ${artistName}`);
-      setHasFollow(!hasFollowed);
-    } else {
-      console.log(`You haved follow artist - ${artistName}`);
-      setHasFollow(!hasFollowed);
+    if (true) {
+      CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
+    }
+
+    else {
+      if (hasFollowed === true) {
+        console.log(`You haved unfollow artist - ${artistName}`);
+        setHasFollow(!hasFollowed);
+      } else {
+        console.log(`You haved follow artist - ${artistName}`);
+        setHasFollow(!hasFollowed);
+      }
     }
   };
 
@@ -75,9 +84,11 @@ const ArtistIcon = ({
 const styles = StyleSheet.create({
   followText: {
     color: "grey",
+    fontSize: height > 800 ? 22 :15,
   },
   unfollowText: {
     color: "red",
+    fontSize: height > 800 ? 22 :15,
   },
   space: {
     flexGrow: 2,
@@ -140,7 +151,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   name: {
-    fontSize: height > 100 && height < 800 ? 13 : 20,
+    fontSize: height > 100 && height < 800 ? 13 : 25,
     margin: 10,
     color: "black",
   },

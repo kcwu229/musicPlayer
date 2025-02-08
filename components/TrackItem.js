@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {useMusicPlayer} from "@/context/MusicPlayerContext";
 const { height, width } = Dimensions.get("window");
 
 const formatDuration = (durationInSeconds) => {
@@ -24,6 +25,7 @@ const formatplayCount = (count) => {
   return count.toString();
 };
 
+
 const TrackItem = ({
   trackData,
   allowOptionButton = false,
@@ -32,11 +34,26 @@ const TrackItem = ({
   imageWidth,
   imageHeight,
   artistFontSize,
+    selectedTrack,
   titleFontSize,
   setSelectedTrack,
-    setLikeCount, setCommentCount
 }) => {
+
+  const {
+    isPlaying,
+    setIsPlaying,
+    handlePlayTrack,
+  } = useMusicPlayer();
+
   const { name, playCount, imageUrl, duration } = trackData;
+
+  const handlePlaying = (data) => {
+    isPlaying === true ? console.log("now play") : console.log("paused !");
+    setIsPlaying(!isPlaying);
+    setSelectedTrack(data);
+    handlePlayTrack(data.soundTrackUrl);
+  }
+
   const handleOption = () => {
     console.log("handleOption !");
   };
@@ -44,8 +61,7 @@ const TrackItem = ({
     <View style={shownOnResultList ? styles.TrackItemOnList : styles.TrackItem}>
       <Pressable
         onPress={() => {
-          console.log(name);
-          setSelectedTrack(trackData);
+          handlePlaying(trackData);
         }}
       >
         <View style={styles.trackImage}>
@@ -64,6 +80,11 @@ const TrackItem = ({
             ]}
           />
         </View>
+        { (selectedTrack !== null) && (selectedTrack.name === name) ?
+            (<View style={styles.isPlayingShield}>
+              <Text style={{ color: "grey", textAlign: "center", fontSize: height * 0.02, fontWeight: "bold" }}>Now playing</Text>
+            </View>)
+            : null}
       </Pressable>
       <View style={shownOnResultList ? styles.viewOnList : null}>
         <Text
@@ -114,6 +135,16 @@ const TrackItem = ({
 };
 
 const styles = StyleSheet.create({
+  isPlayingShield: {
+    position: "absolute",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.76)",
+    borderRadius: 20,
+  },
   circle: {
     marginLeft: 10,
     color: "blue",
@@ -179,7 +210,8 @@ const styles = StyleSheet.create({
   },
 
   trackImage: {
-    marginTop: 10,
+    position: "relative",
+
     shadowColor: "black",
     shadowOffset: { width: 1, height: -1 },
     shadowRadius: 1,

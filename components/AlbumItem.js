@@ -146,13 +146,13 @@ const styles = StyleSheet.create({
   },
 
   name: {
-    fontSize: 20,
+    fontSize: height > 800 ? 25 :15,
     margin: 10,
     color: "black",
   },
 
   title: {
-    fontSize: height > 100 && height < 800 ? 14 : 22,
+    fontSize: height > 100 && height < 800 ? 14 : 25,
     color: "black",
     marginTop: 10,
   },
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   artist: {
     marginTop: 10,
     color: "gray",
-    fontSize: height > 100 && height < 800 ? 12 : 18,
+    fontSize: height > 100 && height < 800 ? 12 : 20,
   },
 
   albumImage: {

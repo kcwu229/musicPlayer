@@ -14,6 +14,7 @@ import React, {useEffect, useState} from "react";
 import AlbumItem from "@/components/AlbumItem";
 const screenHeight = Dimensions.get("window").height;
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
+import CreateAlert from "@/components/AlertComponent";
 
 const ArtistInfo = ({ route }) => {
   const { artistData } = route.params;
@@ -36,12 +37,18 @@ const ArtistInfo = ({ route }) => {
   //const [isPlaying, setIsPlaying] = useState(false);
 
   const handleFollow = (name) => {
-    if (hasFollowed === true) {
-      console.log(`You haved unfollow artist - ${name}`);
-      setHasFollow(!hasFollowed);
-    } else {
-      console.log(`You haved follow artist - ${name}`);
-      setHasFollow(!hasFollowed);
+    if (true) {
+      CreateAlert("Authentication Error", "Require login to follow artist");
+    }
+
+    else {
+      if (hasFollowed === true) {
+        console.log(`You haved unfollow artist - ${name}`);
+        setHasFollow(!hasFollowed);
+      } else {
+        console.log(`You haved follow artist - ${name}`);
+        setHasFollow(!hasFollowed);
+      }
     }
   };
 
@@ -84,6 +91,7 @@ const ArtistInfo = ({ route }) => {
   const handleSelectSong = (trackData) => {
     setSelectedTrack(trackData);
     setIsPlaying(!isPlaying);
+    setHasPlayedInthisPage(true);
     handlePlayTrack(trackData.soundTrackUrl);
   };
 
@@ -249,6 +257,7 @@ const ArtistInfo = ({ route }) => {
                     >
                       <TrackItem
                           trackData={track}
+                          selectedTrack={selectedTrack}
                           imageWidth={screenHeight > 800 ? 140 :100}
                           imageHeight={screenHeight > 800 ? 140 :100}
                           shownOnResultList={true}

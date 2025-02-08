@@ -51,7 +51,9 @@ const TopBanner = () => {
           </Text>
         </View>
       )}
-      <Image source={userIcon} style={styles.userIcon} />
+      <Pressable onPress={() => console.log("click the user")}>
+        <Image source={userIcon} style={styles.userIcon} />
+      </Pressable>
     </View>
   );
 };
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   Home: {
-    fontSize: 35,
+    fontSize: height > 100 && height < 800 ? 35 : 50,
     fontWeight: "bold",
   },
   userIcon: {
