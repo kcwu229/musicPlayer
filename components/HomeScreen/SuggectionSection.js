@@ -7,6 +7,7 @@ import {
   ScrollView,
   Pressable,
   Dimensions,
+    Platform
 } from "react-native";
 
 const { height, width } = Dimensions.get("window");
@@ -23,8 +24,9 @@ const SuggectionSection = ({ setSelectedTrack, handlePlayTrack, setTrackUrl, set
   useEffect( ()=> {
     const fetchSuggestionTrack = async () => {
       const itemDisplayed = 8;
-      const url = process.env.EXPO_PUBLIC_BASE_URL + `track?limit=${itemDisplayed}`;
-      //console.log(url);
+      const url = Platform.OS === "ios"
+          ? process.env.EXPO_PUBLIC_BASE_URL + `track?limit=${itemDisplayed}`
+          : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `track?limit=${itemDisplayed}`;
       try {
         const result = await fetch(url);
         if (result.ok) {

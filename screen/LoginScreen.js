@@ -1,4 +1,4 @@
-import { View, Text, Button, ImageBackground, StyleSheet, Dimensions, TextInput } from 'react-native';
+import {View, Text, Button, ImageBackground, StyleSheet, Dimensions, TextInput, Pressable, Modal} from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
 import {useState, useEffect} from "react";
 
@@ -10,6 +10,9 @@ const LoginScreen = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({username: "", password: ""})
+    const [usernameFail, setUsernameFail] = useState(false);
+    const [passwordFail, setPasswordFail] = useState(false);
+
 
     const handleInputUsername = (text) => {
         setUsername(text)
@@ -20,27 +23,26 @@ const LoginScreen = ({ navigation }) => {
     }
 
     const formValidation = () => {
-        let usernameFail = false;
-        let passwordFail = false;
-
+        setPasswordFail(false)
+        setUsernameFail(false)
+        console.log("ssss")
         if (username === "") {
             console.log("Username is empty")
-            setErrors(errors.username = "Username is empty")
-            console.log(errors)
-            usernameFail = true;
+            setErrors(prevErrors => ({ ...prevErrors, username: "Username is empty" }));
+            setUsernameFail(true)
         }
 
         if (password === "") {
             console.log("Password is empty")
-            setErrors(errors.password = "Password is empty")
-            console.log(errors)
-            passwordFail = true;
+            setErrors(prevErrors => ({ ...prevErrors, password: "Password is empty" }));
+            setPasswordFail(true)
         }
 
         return {usernameFail, passwordFail};
     }
 
     const submitLoginForm = async () => {
+        console.log("ssss")
         const {usernameFail, passwordFail} = formValidation();
         if (!usernameFail && !passwordFail ) {
             console.log("well done")
@@ -76,23 +78,25 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.container}>
             <ImageBackground source={backgroundImage} resizeMode="cover" style={styles.imageBg} >
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <View style={{ flexGrow: 3 }}></View>
+                    <View style={{ flexGrow: 4 }}></View>
                     <Text style={styles.heading}>Login</Text>
                     <Text style={styles.subHeading}>Enjoy your musical journey</Text>
-                    <TextInput style={styles.username} placeholder="Username" placeholderTextColor="white" value={username} onChangeText={handleInputUsername} />
-                    { 1 ? <Text>{errors.username}</Text> : null }
-                    <TextInput style={styles.password} placeholder="Password" placeholderTextColor="white" value={password} onChangeText={handleInputPassword}/>
-                    { 1 ? <Text>{errors.password}</Text> : null }
+                    <TextInput style={styles.textField} placeholder="Username" placeholderTextColor="white" value={username} onChangeText={handleInputUsername} />
+                    { usernameFail ? <Text style={[styles.subHeading, {color: "red"}]}>*{errors.username}</Text> : null }
+                    <TextInput style={styles.textField} placeholder="Password" placeholderTextColor="white" value={password} onChangeText={handleInputPassword}/>
+                    { passwordFail ? <Text style={[styles.subHeading,{color: "red"}]}>*{errors.password}</Text> : null }
 
                     <View style={{ flexGrow: 1 }}></View>
-                    <View style={{ zIndex: 1 }}>
-                        <Button title={"Login"} onPress={() => submitLoginForm()}/>
-                    </View>
-                    <View style={{ flexGrow: 1 }}></View>
+
+                    <Pressable style={{ zIndex: 1}} onPress={() => submitLoginForm()}>
+                        <Text style={styles.submitBtn}>Login</Text>
+                    </Pressable>
+
+                    <View style={{ flexGrow: 2 }}></View>
                 </View>
             </ImageBackground>
             <LinearGradient
-                colors={["rgba(0, 0, 0, 0.8)", "rgba(64, 64, 64, 0.7)"]}
+                colors={["rgba(0, 0, 0, 0.85)", "rgba(64, 64, 64, 0.85)"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.colorFilter}>
@@ -105,15 +109,26 @@ const styles = StyleSheet.create({
     heading: {
         color: 'white',
         fontWeight: "400",
-        fontSize: height > 800 ? 70 : 30,
+        fontSize: width > 800 ? 70 : 30,
         zIndex: 2,
     },
     subHeading: {
         color: 'white',
         fontWeight: "300",
-        textAlign: "left", // Add this line
-        fontSize: height > 800 ? 30 : 20,
+        fontSize: width > 800 ? 30 : 20,
         zIndex: 2
+    },
+    submitBtn: {
+        color: 'white',
+        fontWeight: "300",
+        textAlign: "left", // Add this line
+        fontSize: width > 800 ? 30 : 20,
+        zIndex: 2,
+        borderRadius: 10,
+        borderColor: "white",
+        borderWidth: 1,
+        paddingVertical: width > 800 ? 15 : 5,
+        paddingHorizontal: width > 800 ? 30 : 15,
     },
     container: {
         flexDirection: 'column',
@@ -128,26 +143,18 @@ const styles = StyleSheet.create({
         height: '100%',
         position: "relative"
     },
-    username: {
-        color: 'white', fontSize: height > 800 ? 30 : 20,
-        zIndex: 2, marginTop: height > 800 ? 40 : 15,
-        backgroundColor: "rgba(128, 128, 128, 0.33)",
-        width: "35%",
-        borderColor: "white",
-        borderWidth:1,
-        paddingHorizontal: 15,
-        paddingVertical: 10
-    },
-    password: {
+    textField: {
         color: 'white',
-        fontSize: height > 800 ? 30 : 20,
-        zIndex: 2, marginTop: height > 800 ? 30 : 10 ,
+        fontSize: width > 800 ? 30 : 20,
+        zIndex: 2,
+        marginTop: width > 800 ? 40 : 15,
         backgroundColor: "rgba(128, 128, 128, 0.33)",
-        width: "35%",
+        width: width > 800 ? "45%": "50%",
         borderColor: "white",
         borderWidth:1,
         paddingHorizontal: 15,
-        paddingVertical: 10
+        paddingVertical: 10,
+        borderRadius: 10
     },
     colorFilter: {
         position: 'absolute',
@@ -155,7 +162,7 @@ const styles = StyleSheet.create({
         left: 0,
         width: '100%',
         height: '100%',
-        opacity: 0.7
+        opacity: 0.85
     },
     loginBtn: {
         color: 'white', fontSize: height > 800 ? 50 : 30, marginTop: height > 800 ? 50 : 10, zIndex: 2

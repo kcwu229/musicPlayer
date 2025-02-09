@@ -6,7 +6,7 @@ import ArtistInfo from "@/screen/ArtistInfo";
 import AlbumInfo from "@/screen/AlbumInfo";
 import ChartInfo from "@/screen/ChartInfo";
 
-const { height } = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
 
 const Stack = createStackNavigator();
 
@@ -27,7 +27,7 @@ const HomeStackNavigator = () => {
             height: 120, // Adjust the height value as needed
           },
           headerTitleStyle: {
-            fontSize: height > 800 ? 35 : 24, // Adjust the font size as needed
+            fontSize: width > 800 ? 35 : 24, // Adjust the font size as needed
           },
         }}
         initialParams={{ artistData: {} }}
@@ -42,7 +42,7 @@ const HomeStackNavigator = () => {
             // Adjust the height value as needed
           },
           headerTitleStyle: {
-            fontSize: height > 800 ? 35 : 24, // Adjust the font size as needed
+            fontSize: width > 800 ? 35 : 24, // Adjust the font size as needed
           },
         }}
         initialParams={{ albumData: {} }}
@@ -57,7 +57,7 @@ const HomeStackNavigator = () => {
                     // Adjust the height value as needed
                 },
                 headerTitleStyle: {
-                    fontSize: height > 800 ? 35 : 24, // Adjust the font size as needed
+                    fontSize: width > 800 ? 35 : 24, // Adjust the font size as needed
                 },
             }}
             initialParams={{ albumData: {} }}

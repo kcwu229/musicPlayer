@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Dimensions, StatusBar, Modal, Platform } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Dimensions, StatusBar } from "react-native";
 import {
   NavigationContainer,
   NavigationIndependentTree,
@@ -24,24 +24,22 @@ export default function Page() {
             <StatusBar barStyle="light-content" backgroundColor="#27364E" />
               <MusicPlayerProvider>
                 <NavigationContainer>
-                    {Platform.OS !== 'android' ? (
-                        <Modal visible={true} transparent={true}>
-                            <Tab.Navigator
-                                initialRouteName="Library"
-                                screenOptions={{
-                                    tabBarActiveTintColor: "white",
-                                    tabBarInactiveTintColor: "grey",
-                                    tabBarStyle: {
-                                        height: height > 800 ? 130 : 70,
-                                        paddingVertical: 5,
-                                        backgroundColor: "black",
-                                    },
-                                    sceneStyle: {
-                                        backgroundColor: "white",
-                                    },
-                                }}
-                            >
-                                <Tab.Screen
+                        <Tab.Navigator
+                            initialRouteName="Library"
+                            screenOptions={{
+                                tabBarActiveTintColor: "white",
+                                tabBarInactiveTintColor: "grey",
+                                tabBarStyle: {
+                                    height: height > 800 ? 130 : 70,
+                                    paddingVertical: 5,
+                                    backgroundColor: "black",
+                                },
+                                sceneStyle: {
+                                    backgroundColor: "white",
+                                },
+                            }}
+                        >
+                            <Tab.Screen
                                     name="Home"
                                     component={HomeStackNavigator}
                                     options={{
@@ -60,100 +58,6 @@ export default function Page() {
                                         },
                                     }}
                                 />
-                                <Tab.Screen
-                                    name="Search"
-                                    component={SearchScreen}
-                                    options={{
-                                        tabBarIcon: ({ focused }) => (
-                                            <Ionicons
-                                                name="search"
-                                                size={30}
-                                                color={focused ? "white" : "grey"}
-                                            />
-                                        ),
-                                        tabBarLabel: "Search",
-                                        headerShown: false,
-                                        tabBarLabelStyle: {
-                                            fontSize: height > 800 ? 20 : 12,
-                                            margin: height > 800 ? 2 : 5,
-                                        },
-                                    }}
-                                />
-                                <Tab.Screen
-                                    name="Feed"
-                                    component={FeedScreen}
-                                    options={{
-                                        tabBarIcon: ({ focused }) => (
-                                            <Ionicons
-                                                name="disc"
-                                                size={30}
-                                                color={focused ? "white" : "grey"}
-                                            />
-                                        ),
-                                        tabBarLabel: "Feed",
-                                        headerShown: false,
-                                        tabBarLabelStyle: {
-                                            fontSize: height > 800 ? 20 : 12,
-                                            margin: height > 800 ? 2 : 5,
-                                        },
-                                    }}
-                                />
-                                <Tab.Screen
-                                    name="Library"
-                                    component={LibraryScreen}
-                                    options={{
-                                        tabBarIcon: ({ focused }) => (
-                                            <Ionicons
-                                                name="library"
-                                                size={30}
-                                                color={focused ? "white" : "grey"}
-                                            />
-                                        ),
-                                        tabBarLabel: "Library",
-                                        headerShown: false,
-                                        tabBarLabelStyle: {
-                                            fontSize: height > 800 ? 20 : 12,
-                                            margin: height > 800 ? 2 : 5,
-                                        },
-                                    }}
-                                />
-                            </Tab.Navigator>
-                        </Modal>
-                    ) : (
-                        <Tab.Navigator
-                            initialRouteName="Library"
-                            screenOptions={{
-                                tabBarActiveTintColor: "white",
-                                tabBarInactiveTintColor: "grey",
-                                tabBarStyle: {
-                                    height: height > 800 ? 130 : 70,
-                                    paddingVertical: 5,
-                                    backgroundColor: "black",
-                                },
-                                sceneStyle: {
-                                    backgroundColor: "white",
-                                },
-                            }}
-                        >
-                            <Tab.Screen
-                                name="Home"
-                                component={HomeStackNavigator}
-                                options={{
-                                    tabBarIcon: ({ focused }) => (
-                                        <Ionicons
-                                            name="home"
-                                            size={30}
-                                            color={focused ? "white" : "grey"}
-                                        />
-                                    ),
-                                    tabBarLabel: "Home",
-                                    headerShown: false,
-                                    tabBarLabelStyle: {
-                                        fontSize: height > 800 ? 20 : 12,
-                                        margin: height > 800 ? 2 : 5,
-                                    },
-                                }}
-                            />
                             <Tab.Screen
                                 name="Search"
                                 component={SearchScreen}
@@ -212,8 +116,6 @@ export default function Page() {
                                 }}
                             />
                         </Tab.Navigator>
-                    )}
-
                 </NavigationContainer>
               </MusicPlayerProvider>
         </SafeAreaView>
