@@ -5,6 +5,7 @@ import SearchResultPage from "@/components/SearchScreen/SearchResultPage";
 import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
 import { useMusicPlayer } from "../context/MusicPlayerContext";
 import { ScrollView } from "react-native-gesture-handler";
+import getSize from "../components/AdjustSizeByScreenSize";
 const { height } = Dimensions.get("window");
 
 const SearchScreen = () => {
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
   },
   search: {
     marginTop: StatusBar.currentHeight + 20,
-    fontSize: height > 100 && height < 800 ? 32 : 50,
+    fontSize: getSize(32, 35, 50),
     fontWeight: "bold",
   },
   container: {

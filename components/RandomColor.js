@@ -9,7 +9,7 @@ const RandomColor = () => {
     return color;
   };
 
-  return [getRandomDarkColor(), getRandomDarkColor()];
+  return getRandomDarkColor();
 };
 
 export default RandomColor;

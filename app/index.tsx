@@ -25,7 +25,7 @@ export default function Page() {
               <MusicPlayerProvider>
                 <NavigationContainer>
                         <Tab.Navigator
-                            initialRouteName="Library"
+                            initialRouteName="Home"
                             screenOptions={{
                                 tabBarActiveTintColor: "white",
                                 tabBarInactiveTintColor: "grey",

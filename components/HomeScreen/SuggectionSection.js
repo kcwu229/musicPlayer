@@ -9,7 +9,7 @@ import {
   Dimensions,
     Platform
 } from "react-native";
-
+import getSize from "../AdjustSizeByScreenSize";
 const { height, width } = Dimensions.get("window");
 
 const SuggectionSection = ({ setSelectedTrack, handlePlayTrack, setTrackUrl, setIsPlaying, isPlaying }) => {
@@ -27,6 +27,7 @@ const SuggectionSection = ({ setSelectedTrack, handlePlayTrack, setTrackUrl, set
       const url = Platform.OS === "ios"
           ? process.env.EXPO_PUBLIC_BASE_URL + `track?limit=${itemDisplayed}`
           : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `track?limit=${itemDisplayed}`;
+
       try {
         const result = await fetch(url);
         if (result.ok) {
@@ -72,14 +73,14 @@ const SuggectionSection = ({ setSelectedTrack, handlePlayTrack, setTrackUrl, set
 
 const styles = StyleSheet.create({
   heading: {
-    fontSize: height > 100 && height < 800 ? 20 : 40,
+    fontSize: getSize(20, 30,40),
     fontWeight: "bold",
     color: "black",
-    marginTop: height > 100 && height < 800 ? 25 : 40,
+    marginTop: getSize(25, 30,40),
   },
   image: {
-    height: height > 100 && height < 800 ? height * 0.33 : height * 0.25,
-    width: width > 100 && width < 600 ? width * 0.4 : width * 0.2,
+    height: getSize(height * 0.33, height * 0.3,height * 0.25),
+    width: getSize(height * 0.4, height * 0.25,height * 0.2),
     borderRadius: 20,
     shadowColor: "black",
     shadowOffset: { width: 1, height: -1 },
@@ -96,15 +97,15 @@ const styles = StyleSheet.create({
   suggestItem: {
     flexDirection: "column",
     marginRight: 20,
-    marginTop: height > 100 && height < 800 ? 15 : 20,
+    marginTop: getSize(15, 18, 20),
   },
   artist: {
-    fontSize: height > 100 && height < 800 ? 13 : 18,
+    fontSize: getSize(13,15,18),
     color: "white",
     marginVertical: 3,
   },
   title: {
-    fontSize: height > 100 && height < 800 ? 17 : 26,
+    fontSize: getSize(17,20,26),
     color: "white",
     fontWeight: "bold",
   },

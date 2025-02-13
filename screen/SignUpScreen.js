@@ -1,9 +1,10 @@
 import {View, Text, Button, ImageBackground, StyleSheet, Dimensions, TextInput, Pressable} from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 
 const backgroundImage = require("../assets/images/signUpBG.jpg");
 import randomColor from "@/components/RandomColor";
+import getSize from "../components/AdjustSizeByScreenSize";
 const { height, width } = Dimensions.get("window");
 
 const SignUpScreen = ({ navigation }) => {
@@ -85,9 +86,19 @@ const SignUpScreen = ({ navigation }) => {
 
                     <View style={{ flexGrow: 1 }}></View>
 
-                    <Pressable style={{ zIndex: 1}} onPress={() => submitLoginForm()}>
-                        <Text style={styles.submitBtn}>Login</Text>
-                    </Pressable>
+                    <LinearGradient
+                        colors={[
+                            "rgba(255, 0, 0, 0.85)",  // Red
+                            "rgba(0, 0, 255, 0.85)"   // Blue
+                        ]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        style={{borderRadius: 20}}
+                    >
+                        <Pressable style={{ zIndex: 2}} onPress={() => submitLoginForm()}>
+                            <Text style={styles.submitBtn}>Login</Text>
+                        </Pressable>
+                    </LinearGradient>
 
                     <View style={{ flexGrow: 2 }}></View>
                 </View>
@@ -105,27 +116,25 @@ const SignUpScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     heading: {
         color: 'white',
-        fontWeight: "400",
-        fontSize: width > 800 ? 70 : 30,
+        fontWeight: "300",
+        fontSize: getSize(25, 35, 70),
         zIndex: 2,
     },
     subHeading: {
         color: 'white',
-        fontWeight: "300",
-        fontSize: width > 800 ? 30 : 20,
+        fontWeight: "200",
+        fontSize: getSize(10, 20,30),
         zIndex: 2
     },
     submitBtn: {
         color: 'white',
-        fontWeight: "300",
+        fontWeight: "200",
         textAlign: "left", // Add this line
-        fontSize: width > 800 ? 30 : 20,
+        fontSize: getSize(15,17, 30),
         zIndex: 2,
-        borderRadius: 10,
-        borderColor: "white",
-        borderWidth: 1,
-        paddingVertical: width > 800 ? 15 : 5,
-        paddingHorizontal: width > 800 ? 30 : 15,
+        borderRadius: 20,
+        paddingVertical: getSize(7, 7, 15),
+        paddingHorizontal: getSize(14, 19,30),
     },
     container: {
         flexDirection: 'column',
@@ -142,11 +151,12 @@ const styles = StyleSheet.create({
     },
     textField: {
         color: 'white',
-        fontSize: width > 800 ? 30 : 20,
+        fontSize: getSize(14,18,30),
         zIndex: 2,
-        marginTop: width > 800 ? 40 : 15,
+        fontWeight: "200",
+        marginTop: getSize(15,25,40),
         backgroundColor: "rgba(128, 128, 128, 0.33)",
-        width: width > 800 ? "45%": "50%",
+        width: getSize("45%", "50%", "50%"),
         borderColor: "white",
         borderWidth:1,
         paddingHorizontal: 15,
@@ -159,10 +169,13 @@ const styles = StyleSheet.create({
         left: 0,
         width: '100%',
         height: '100%',
-        opacity: 0.3
+        opacity: 0.4
     },
     loginBtn: {
-        color: 'white', fontSize: height > 800 ? 50 : 30, marginTop: height > 800 ? 50 : 10, zIndex: 2
+        color: 'white',
+        fontWeight: "200",
+        fontSize: getSize(20,18,50),
+        marginTop: getSize(10, 30,50), zIndex: 2
     }
 });
 

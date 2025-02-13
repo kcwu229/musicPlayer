@@ -5,13 +5,12 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
-  Dimensions,
+  Platform,
 } from "react-native";
 import RandomColor from "../../components/RandomColor";
 import { LinearGradient } from "expo-linear-gradient";
 import {useNavigation} from "@react-navigation/native";
-
-const { height, width } = Dimensions.get("window");
+import getSize from "../AdjustSizeByScreenSize";
 
 
 const ChartSection = () => {
@@ -29,19 +28,23 @@ const ChartSection = () => {
 
   useEffect(() => {
     const fetchChartTrack = async () => {
-      const itemDisplayed = 8;
-      const url = process.env.EXPO_PUBLIC_BASE_URL + `track/country?limit=${itemDisplayed}`;
-      console.log(url);
       try {
+        const itemDisplayed = 8;
+        const url = Platform.OS === "ios"
+            ? process.env.EXPO_PUBLIC_BASE_URL + `track/country?limit=${itemDisplayed}`
+            : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `track/country?limit=${itemDisplayed}`;
+
         const result = await fetch(url);
         if (result.ok) {
           const data = await result.json();
-          setTopTrackByCountryList(data.data);
-
-          // save the color
-          setChartColor(data.data.map(data => RandomColor()))
+          const resultData = data.data;
+          if (data && Array.isArray(resultData)) {
+            setTopTrackByCountryList(resultData);
+            setChartColor(resultData.map((data) => RandomColor()));
+          } else {
+              console.error('Invalid data structure:', data);
+          }
         }
-
       } catch (error) {
         console.log(error);
       }
@@ -62,26 +65,27 @@ const ChartSection = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {topTrackByCountryList.map((data, index) => {
-          return (
-            <View key={data._id}>
-              <Pressable onPress={() => navigateToAlbumInfoPage(data.countryItem, chartColor[index])}>
-                <LinearGradient colors={chartColor[index]} style={styles.chartItem}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}>
-                  <View style={[styles.chartImage, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
-                    <Text style={styles.title}>Top 50</Text>
-                    <Text style={styles.region}>{data.countryItem}</Text>
+          {topTrackByCountryList.map((data, index) => {
+              return (
+                  <View key={data._id}>
+                      <Pressable onPress={() => navigateToAlbumInfoPage(data.countryItem, chartColor[index])}>
+                        <View
+                            style={[styles.chartItem, { backgroundColor: chartColor[index] }]}
+                        >
+                              <View style={[styles.chartImage, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
+                                  <Text style={styles.title}>Top 50</Text>
+                                  <Text style={styles.region}>{data.countryItem}</Text>
+                              </View>
+                          </View>
+                      </Pressable>
+                      <View>
+                          <Text style={styles.subscription}>Monthly chart-toppers</Text>
+                          <Text style={styles.status}>update</Text>
+                      </View>
                   </View>
-                </LinearGradient>
-              </Pressable>
-              <View>
-                <Text style={styles.subscription}>Monthly chart-toppers</Text>
-                <Text style={styles.status}>update</Text>
-              </View>
-            </View>
-          );
-        })}
+              );
+          })}
+
       </ScrollView>
     </View>
   );
@@ -98,11 +102,11 @@ const styles = StyleSheet.create({
   seeAll: {
     color: "gray",
     marginTop: 10,
-    fontSize: height > 100 && height < 800 ? 17 : 22,
+    fontSize: getSize(17,20,22),
     fontWeight: "thin",
   },
   heading: {
-    fontSize: height > 100 && height < 800 ? 20 : 40,
+    fontSize: getSize(20,30,40),
     fontWeight: "bold",
     color: "black",
     marginTop: 10,
@@ -113,31 +117,25 @@ const styles = StyleSheet.create({
   chartItem: {
     flexDirection: "column",
     marginRight: 20,
-    height: height > 100 && height < 800 ? 100 : 200,
-    width: height > 100 && height < 800 ? 100 : 200,
+    height: getSize(100,150,200),
+    width: getSize(100,150,200),
     opacity: 0.5,
-    marginTop: height > 100 && height < 800 ? 15 : 20,
+    marginTop: getSize(15,18,20),
     borderRadius: 20,
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: -1 },
-    shadowRadius: 1,
     shadowOpacity: 0.8, // Add shadowOpacity for better control
     elevation: 5,
   },
   title: {
-    fontSize: height > 100 && height < 800 ? 14 : 20,
+    fontSize: getSize(14,16,20),
     color: "white",
     margin: 10,
     fontWeight: "bold",
   },
   region: {
-    fontSize: height > 100 && height < 800 ? 18 : 30,
+    fontSize: getSize(18,24,30),
     color: "white",
     margin: 10,
     fontWeight: "bold",
-    textShadowColor: "black",
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 1,
   },
   chartImage: {
     flex: 1,
@@ -150,14 +148,14 @@ const styles = StyleSheet.create({
   subscription: {
     marginRight: 20,
     marginTop: 10,
-    fontSize: height > 100 && height < 800 ? 13 : 20,
+    fontSize: getSize(13,15,20),
     color: "gray",
   },
   status: {
     marginRight: 20,
     marginTop: 10,
     color: "gray",
-    fontSize: height > 100 && height < 800 ? 11 : 18,
+    fontSize: getSize(11,13,18),
   },
 });
 

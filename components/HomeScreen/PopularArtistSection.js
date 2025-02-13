@@ -5,9 +5,10 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
-  Dimensions,
+  Dimensions, Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import getSize from "../AdjustSizeByScreenSize";
 
 import ArtistItem from "@/components/ArtistItem";
 
@@ -25,8 +26,10 @@ const PopularArtistSection = () => {
   useEffect(() => {
     const fetchArtistList = async () => {
       const artistCount = 8;
-      const url = process.env.EXPO_PUBLIC_BASE_URL + `artist?limit=${artistCount}`
-      //console.log(url)
+      const url = Platform.OS === "ios"
+          ? process.env.EXPO_PUBLIC_BASE_URL + `artist?limit=${artistCount}`
+          : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `artist?limit=${artistCount}`;
+
       try {
         const result = await fetch(url);
         const data = await result.json();
@@ -62,8 +65,8 @@ const PopularArtistSection = () => {
               <ArtistItem
                 artistData={data}
                 allowFollowButton={true}
-                imageWidth={height > 100 && height < 800 ? 100 : 180}
-                imageHeight={height > 100 && height < 800 ? 100 : 180}
+                imageWidth={getSize(100, 140, 180)}
+                imageHeight={getSize(100, 140, 180)}
                 displayFollower={false}
               />
             </Pressable>
@@ -95,11 +98,11 @@ const styles = StyleSheet.create({
   seeAll: {
     color: "gray",
     marginTop: 10,
-    fontSize: height > 100 && height < 800 ? 17 : 22,
+    fontSize: getSize(17, 20, 22),
     fontWeight: "thin",
   },
   heading: {
-    fontSize: height > 100 && height < 800 ? 20 : 40,
+    fontSize: getSize(20, 30, 40),
     fontWeight: "bold",
     color: "black",
     marginTop: 10,

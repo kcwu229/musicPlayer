@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import { View, Pressable, StyleSheet, Dimensions } from "react-native";
-
+import {View, Pressable, StyleSheet, Dimensions, Platform} from "react-native";
 import ArtistItem from "@/components/ArtistItem";
 import AlbumItem from "@/components/AlbumItem";
 import TrackItem from "@/components/TrackItem";
+import getSize from "../AdjustSizeByScreenSize";
 
 const {height} = Dimensions.get("window")
 
@@ -18,11 +18,19 @@ const SearchResultPage = ({ setSelectedTrack }) => {
 
   useEffect(() => {
     const albumCount = 8;
-    const getAlbumListUrl = process.env.EXPO_PUBLIC_BASE_URL + `album?limit=${albumCount}`;
+    const getAlbumListUrl = Platform.OS === "ios"
+        ? process.env.EXPO_PUBLIC_BASE_URL + `album?limit=${albumCount}`
+        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `album?limit=${albumCount}`
+
     const artistCount = 8;
-    const getArtistListUrl = process.env.EXPO_PUBLIC_BASE_URL + `artist?limit=${artistCount}`;
+    const getArtistListUrl = Platform.OS === "ios"
+        ? process.env.EXPO_PUBLIC_BASE_URL + `artist?limit=${artistCount}`
+        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `artist?limit=${artistCount}`
+
     const trackCount = 8;
-    const getTrackListUrl = process.env.EXPO_PUBLIC_BASE_URL + `track?limit=${trackCount}`;
+    const getTrackListUrl = Platform.OS === "ios"
+        ? process.env.EXPO_PUBLIC_BASE_URL + `track?limit=${trackCount}`
+        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `track?limit=${trackCount}`
 
     try {
       const fetchResultArtist = async () => {
@@ -58,7 +66,6 @@ const SearchResultPage = ({ setSelectedTrack }) => {
           console.log(err)
         }
       }
-
       fetchResultTrack();
       fetchResultArtist();
       fetchResultAlbums();
@@ -76,8 +83,8 @@ const SearchResultPage = ({ setSelectedTrack }) => {
           <Pressable key={artist._id} onPress={handleArtist}>
             <ArtistItem
               artistData={artist}
-              imageWidth={height > 800 ? 100: 60}
-              imageHeight={height > 800 ? 100: 60}
+              imageWidth={getSize(60, 70, 100)}
+              imageHeight={getSize(60, 70, 100)}
               shownOnResultList={true}
               allowFollowButton={true}
               displayFollower={true}
@@ -90,8 +97,8 @@ const SearchResultPage = ({ setSelectedTrack }) => {
           <Pressable key={album._id} onPress={() => setSelectedTrack(album)}>
             <AlbumItem
               albumData={album}
-              imageWidth={height > 800 ? 100: 60}
-              imageHeight={height > 800 ? 100: 60}
+              imageWidth={getSize(60, 70, 100)}
+              imageHeight={getSize(60, 70, 100)}
               shownOnResultList={true}
               setSelectedTrack={setSelectedTrack}
               showViewAndDuration={true}

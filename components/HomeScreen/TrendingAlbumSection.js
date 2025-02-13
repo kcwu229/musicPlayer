@@ -5,9 +5,10 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
-  Dimensions,
+  Dimensions, Platform,
 } from "react-native";
 import AlbumItem from "@/components/AlbumItem";
+import getSize from "../AdjustSizeByScreenSize";
 
 const { height, width } = Dimensions.get("window");
 
@@ -16,7 +17,9 @@ const TrendingAlbumSection = () => {
   const [albumList, setAlbumList] = useState([]);
   useEffect(() => {
     const albumCount = 8;
-    const url = process.env.EXPO_PUBLIC_BASE_URL + `album?limit=${albumCount}`;
+    const url = Platform.OS === "ios"
+        ? process.env.EXPO_PUBLIC_BASE_URL + `album?limit=${albumCount}`
+        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `album?limit=${albumCount}`;
 
    try {
      const fetchTrendingAlbums = async () => {
@@ -56,8 +59,8 @@ const TrendingAlbumSection = () => {
             >
               <AlbumItem
                 albumData={data}
-                imageWidth={height > 100 && height < 800 ? 100 : 200}
-                imageHeight={height > 100 && height < 800 ? 100 : 200}
+                imageWidth={getSize(100, 150, 200)}
+                imageHeight={getSize(100, 150, 200)}
                 style={styles.albumItem}
               />
             </Pressable>
@@ -79,11 +82,11 @@ const styles = StyleSheet.create({
   seeAll: {
     color: "gray",
     marginTop: 10,
-    fontSize: height > 100 && height < 800 ? 17 : 22,
+    fontSize: getSize(17, 20, 22),
     fontWeight: "thin",
   },
   heading: {
-    fontSize: height > 100 && height < 800 ? 20 : 40,
+    fontSize: getSize(20, 30, 40),
     fontWeight: "bold",
     color: "black",
     marginTop: 10,

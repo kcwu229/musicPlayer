@@ -8,6 +8,7 @@ import {
   Alert,
   Dimensions,
 } from "react-native";
+import getSize  from "../AdjustSizeByScreenSize";
 const userIcon = require("../../assets/images/icon.jpg");
 const { height, width } = Dimensions.get("window");
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -40,7 +41,7 @@ const TopBanner = () => {
       <Pressable onPress={handleNotification}>
         <FontAwesome
           name="bell-o"
-          size={width > 100 && width < 600 ? 28 : 45}
+          size={getSize(28,32,45)}
           style={styles.notification}
         />
       </Pressable>
@@ -62,24 +63,24 @@ const styles = StyleSheet.create({
   notificationCount: {
     backgroundColor: "red",
     borderRadius: 100,
-    height: width > 100 && width < 600 ? 18 : 25,
-    width: width > 100 && width < 600 ? 18 : 25,
+    height: getSize(18, 20, 25),
+    width: getSize(18, 20, 25),
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
-    right: width > 100 && width < 600 ? 58 : 95,
-    top: width > 100 && width < 600 ? 6 : 8,
+    right: getSize(58, 70, 95),
+    top: getSize(6, 7, 8),
   },
   notificationCountText: {
     color: "white",
   },
   Home: {
-    fontSize: height > 100 && height < 800 ? 35 : 50,
+    fontSize: getSize(32,35, 50),
     fontWeight: "bold",
   },
   userIcon: {
-    width: width > 100 && width < 600 ? 45 : 80,
-    height: width > 100 && width < 600 ? 45 : 80,
+    width: getSize(45,55,80),
+    height: getSize(45,55,80),
     borderRadius: 100,
     margin: 5,
     borderColor: "purple",

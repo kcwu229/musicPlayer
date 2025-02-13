@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {useNavigation} from "@react-navigation/native";
+import getSize from "./AdjustSizeByScreenSize";
 const { height, width } = Dimensions.get("window");
 const AlbumItem = ({
   albumData,
@@ -146,13 +147,13 @@ const styles = StyleSheet.create({
   },
 
   name: {
-    fontSize: height > 800 ? 25 :15,
+    fontSize: getSize(15, 20,25),
     margin: 10,
     color: "black",
   },
 
   title: {
-    fontSize: height > 100 && height < 800 ? 14 : 25,
+    fontSize: getSize(15, 20,25),
     color: "black",
     marginTop: 10,
   },
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
   artist: {
     marginTop: 10,
     color: "gray",
-    fontSize: height > 100 && height < 800 ? 12 : 20,
+    fontSize: getSize(12, 16,20),
   },
 
   albumImage: {

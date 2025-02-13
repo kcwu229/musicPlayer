@@ -7,8 +7,9 @@ import {
   Image,
   Pressable,
   Dimensions,
-  ScrollView,
+  ScrollView, Platform,
 } from "react-native";
+import getSize from "../components/AdjustSizeByScreenSize";
 
 import TrackItem from "@/components/TrackItem";
 import React, {useEffect, useState} from "react";
@@ -89,7 +90,11 @@ const ChartInfo = ({ route }) => {
   useEffect(() => {
     const fetchTrackList = async (countryName) => {
       const resultLimit = 50;
-      const url = process.env.EXPO_PUBLIC_BASE_URL + `track/country/${countryName}?limit=${resultLimit}`
+
+      const url = Platform.OS === "ios"
+          ? process.env.EXPO_PUBLIC_BASE_URL + `track/country/${countryName}?limit=${resultLimit}`
+          : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `track/country/${countryName}?limit=${resultLimit}`;
+
       try {
         const result = await fetch(url);
         const data = await result.json();
@@ -143,14 +148,14 @@ const ChartInfo = ({ route }) => {
               
               <View style={{ width: "10%" }}></View>
               <Pressable onPress={handleRandomPlaying}>
-                <FontAwesome name="random" size={screenHeight > 800 ? 30 : 18} style={styles.btn} />
+                <FontAwesome name="random" size={getSize(18, 22, 30)} style={styles.btn} />
               </Pressable>
 
               <Pressable onPress={() => handlePlaying(trackList)}>
               {isPlaying === true && hasPlayedInthisPage === true? (
                   <FontAwesome
                     name="pause-circle"
-                    size={screenHeight > 800 ? 80 : 50}
+                    size={getSize(50, 65, 80)}
                     style={styles.btn}
                   />
 
@@ -158,7 +163,7 @@ const ChartInfo = ({ route }) => {
 
                   <FontAwesome
                     name="play-circle"
-                    size={screenHeight > 800 ? 80 : 50}
+                    size={getSize(50, 65, 80)}
                     style={styles.btn}
                   />
 
@@ -183,8 +188,8 @@ const ChartInfo = ({ route }) => {
                       <TrackItem
                           trackData={track}
                           selectedTrack={selectedTrack}
-                          imageWidth={screenHeight > 800 ? 140 : 60}
-                          imageHeight={screenHeight > 800 ? 140 : 60}
+                          imageWidth={getSize(60, 90, 140)}
+                          imageHeight={getSize(60, 89, 140)}
                           shownOnResultList={true}
                           showViewAndDuration={true}
                           setSelectedTrack={setSelectedTrack}
@@ -222,13 +227,13 @@ const ChartInfo = ({ route }) => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: screenHeight > 100 && screenHeight < 800 ? 14 : 20,
+    fontSize: getSize(14, 16, 20),
     color: "white",
     margin: 10,
     fontWeight: "bold",
   },
   region: {
-    fontSize: screenHeight > 100 && screenHeight < 800 ? 18 : 30,
+    fontSize: getSize(18, 22, 30),
     color: "white",
     margin: 10,
     fontWeight: "bold",
@@ -239,10 +244,10 @@ const styles = StyleSheet.create({
   chartItem: {
     flexDirection: "column",
     marginRight: 20,
-    height: screenHeight > 100 && screenHeight < 800 ? 100 : 200,
-    width: screenHeight > 100 && screenHeight < 800 ? 100 : 200,
+    height: getSize(100, 150, 200),
+    width: getSize(100, 150, 200),
     opacity: 0.5,
-    marginTop: screenHeight > 100 && screenHeight < 800 ? 15 : 20,
+    marginTop: getSize(15, 18, 20),
     borderRadius: 20,
     shadowColor: "black",
     shadowOffset: { width: 1, height: -1 },
@@ -253,7 +258,7 @@ const styles = StyleSheet.create({
   seeAll: {
     color: "gray",
     marginTop: 10,
-    fontSize: screenHeight > 100 && screenHeight < 800 ? 17 : 25,
+    fontSize: getSize(17, 20 , 25),
     fontWeight: "thin",
   },
   fullScreen: {
@@ -276,7 +281,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   popularText: {
-    fontSize: screenHeight > 800 ? 35 :26,
+    fontSize: getSize(26, 30, 35),
     fontWeight: "bold",
   },
   buttonContainer: {
@@ -297,14 +302,14 @@ const styles = StyleSheet.create({
 
   name: {
     fontWeight: "bold",
-    marginTop: screenHeight > 800 ? 20 : 10,
-    fontSize: screenHeight > 800 ? 45 : 30
+    marginTop: getSize(10,15,20),
+    fontSize: getSize(30,35,45),
   },
 
   playCount: {
     fontWeight: "200",
-    marginTop: screenHeight > 800 ? 20 : 10,
-    fontSize: screenHeight > 800 ? 28 : 16
+    marginTop: getSize(10,15,20),
+    fontSize: getSize(16, 22, 28),
   },
 
   space: {
@@ -316,19 +321,19 @@ const styles = StyleSheet.create({
   },
   image: {
     marginTop: "8%",
-    height: screenHeight > 800 ? 250 : 160,
-    width: screenHeight > 800 ? 250 : 160,
+    height: getSize(160, 200,250),
+    width: getSize(160, 200,250),
     borderRadius: 20,
     marginBottom: "3%",
   },
 
   likeText: {
     color: "grey",
-    fontSize: screenHeight > 800 ? 22 : 16
+    fontSize: getSize(16, 18,22)
   },
   unLikeText: {
     color: "red",
-    fontSize: screenHeight > 800 ? 22 : 16
+    fontSize: getSize(16, 18,22)
   },
   likeBtn: {
     borderRadius: 20,

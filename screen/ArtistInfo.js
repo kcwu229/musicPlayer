@@ -7,7 +7,7 @@ import {
   Image,
   Pressable,
   Dimensions,
-  ScrollView,
+  ScrollView, Platform,
 } from "react-native";
 import TrackItem from "@/components/TrackItem";
 import React, {useEffect, useState} from "react";
@@ -15,6 +15,7 @@ import AlbumItem from "@/components/AlbumItem";
 const screenHeight = Dimensions.get("window").height;
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
 import CreateAlert from "@/components/AlertComponent";
+import getSize from "../components/AdjustSizeByScreenSize";
 
 const ArtistInfo = ({ route }) => {
   const { artistData } = route.params;
@@ -112,7 +113,10 @@ const ArtistInfo = ({ route }) => {
   useEffect(() => {
     const fetchAlbumList = async (artistId) => {
       const artistCount = 8;
-      const getAlbumUrl = process.env.EXPO_PUBLIC_BASE_URL + `album/artist/${artistId}?limit=${artistCount}`
+      const getAlbumUrl = Platform.OS === "ios"
+          ? process.env.EXPO_PUBLIC_BASE_URL + `album/artist/${artistId}?limit=${artistCount}`
+          : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `album/artist/${artistId}?limit=${artistCount}`;
+
 
       try {
         const result = await fetch(getAlbumUrl);
@@ -126,8 +130,11 @@ const ArtistInfo = ({ route }) => {
 
     const fetchTrackList = async (artistId) => {
       const trackCount = 8;
-      const getTrackUrl = process.env.EXPO_PUBLIC_BASE_URL + `track/artist/${artistId}?limit=${trackCount}`
-      //console.log(url)
+
+      const getTrackUrl = Platform.OS === "ios"
+          ? process.env.EXPO_PUBLIC_BASE_URL + `track/artist/${artistId}?limit=${trackCount}`
+          : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `track/artist/${artistId}?limit=${trackCount}`;
+
       try {
         const result = await fetch(getTrackUrl);
         const data = await result.json();
@@ -160,7 +167,6 @@ const ArtistInfo = ({ route }) => {
               </Text>
             </View>
 
-
             <View style={styles.tagContainer}>
               {genres.length > 0 && (
                   genres.map((genre) => (
@@ -185,20 +191,20 @@ const ArtistInfo = ({ route }) => {
               </Pressable>
               <View style={{ width: "10%" }}></View>
               <Pressable onPress={handleRandomPlaying}>
-                <FontAwesome name="random" size={screenHeight > 800 ? 34 : 18} style={styles.btn} />
+                <FontAwesome name="random" size={getSize(18, 26, 34)} style={styles.btn} />
               </Pressable>
 
               <Pressable onPress={() => handlePlaying(trackList)}>
               {isPlaying === true && hasPlayedInthisPage === true ? (
                   <FontAwesome
                     name="pause-circle"
-                    size={screenHeight > 800 ? 80 : 50}
+                    size={getSize(50, 65, 80)}
                     style={styles.btn}
                   />
               ) : (
                   <FontAwesome
                     name="play-circle"
-                    size={screenHeight > 800 ? 80 : 50}
+                    size={getSize(50, 65, 80)}
                     style={styles.btn}
                   />
               )}
@@ -229,10 +235,10 @@ const ArtistInfo = ({ route }) => {
                   >
                     <AlbumItem
                       albumData={album}
-                      imageWidth={screenHeight > 800 ? 140 :100}
-                      imageHeight={screenHeight > 800 ? 140 :100}
+                      imageWidth={getSize(100,100,140)}
+                      imageHeight={getSize(100,100,140)}
                       artistFontSize={12}
-                      titleFontSize={screenHeight > 800 ? 22 : 14}
+                      titleFontSize={getSize(14,18,22)}
                       shownOnResultList={false}
                       setSelectedTrack={setSelectedTrack}
                     />
@@ -258,8 +264,8 @@ const ArtistInfo = ({ route }) => {
                       <TrackItem
                           trackData={track}
                           selectedTrack={selectedTrack}
-                          imageWidth={screenHeight > 800 ? 140 :100}
-                          imageHeight={screenHeight > 800 ? 140 :100}
+                          imageWidth={getSize(100 , 100, 140)}
+                          imageHeight={getSize(100 , 100, 140)}
                           shownOnResultList={true}
                           showViewAndDuration={true}
                           setSelectedTrack={setSelectedTrack}
@@ -300,9 +306,9 @@ const ArtistInfo = ({ route }) => {
 const styles = StyleSheet.create({
   descriptionText: {
     color: "grey",
-    fontSize: screenHeight > 800 ? 25 : 17,
+    fontSize: getSize(17,20,25),
     marginTop: 15,
-    lineHeight: screenHeight > 800 ? 35 : 30,
+    lineHeight: getSize(30,32,35),
   },
   aboutImage: {
     marginTop: 20,
@@ -313,7 +319,7 @@ const styles = StyleSheet.create({
   seeAll: {
     color: "gray",
     marginTop: 10,
-    fontSize: screenHeight > 100 && screenHeight < 800 ? 17 : 25,
+    fontSize: getSize(17, 22, 25),
     fontWeight: "thin",
   },
   fullScreen: {
@@ -336,14 +342,19 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   popularText: {
-    fontSize: screenHeight > 800 ? 35 :26,
+    fontSize: getSize(26, 30,35),
     fontWeight: "bold",
   },
   buttonContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
+
   tagContainer: {
+    flexWrap: "wrap",
+    gap: 3,
+    justifyContent:"center",
+    marginHorizontal: "2%",
     marginTop: "2%",
     flexDirection: "row",
     alignItems: "center",
@@ -360,14 +371,14 @@ const styles = StyleSheet.create({
 
   name: {
     fontWeight: "bold",
-    marginTop: screenHeight > 800 ? 20 : 10,
-    fontSize: screenHeight > 800 ? 45 : 30,
+    marginTop: getSize(10,15,20),
+    fontSize: getSize(30,31,45)
   },
 
   followerCount: {
     fontWeight: "200",
     marginTop: 10,
-    fontSize: screenHeight > 800 ? 34 : 16,
+    fontSize: getSize(16,22,34),
   },
 
   space: {
@@ -380,18 +391,19 @@ const styles = StyleSheet.create({
 
   image: {
     marginTop: "8%",
-    height: screenHeight > 800 ? 200 : 160,
-    width: screenHeight > 800 ? 200 : 160,
+    height: getSize(160,180,200),
+    width: getSize(160,180,200),
     borderRadius: 100,
   },
 
   followText: {
     color: "grey",
-    fontSize: screenHeight > 800 ? 24 : 14
+    fontSize: getSize(14,16,24),
+    textTransform: "uppercase"
   },
   unfollowText: {
     color: "red",
-    fontSize: screenHeight > 800 ? 24 : 14
+    fontSize: getSize(14,16,24),
   },
   genreBadge: {
     borderRadius: 10,

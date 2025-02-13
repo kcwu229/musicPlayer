@@ -11,6 +11,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 const { height, width } = Dimensions.get("window");
 import CreateAlert from "@/components/AlertComponent";
+import getSize from "./AdjustSizeByScreenSize";
 import { useNavigation } from "@react-navigation/native";
 
 const ArtistIcon = ({
@@ -84,11 +85,11 @@ const ArtistIcon = ({
 const styles = StyleSheet.create({
   followText: {
     color: "grey",
-    fontSize: height > 800 ? 22 :15,
+    fontSize: getSize(15, 16,22),
   },
   unfollowText: {
     color: "red",
-    fontSize: height > 800 ? 22 :15,
+    fontSize: getSize(15, 16,22),
   },
   space: {
     flexGrow: 2,
@@ -140,8 +141,8 @@ const styles = StyleSheet.create({
 
   artistItem: {
     flexDirection: "column",
-    marginRight: height > 100 && height < 800 ? 10 : 20,
-    marginTop: height > 100 && height < 800 ? 5 : 20,
+    marginRight: getSize(10, 15,20),
+    marginTop: getSize(5, 13,20),
     alignItems: "center",
   },
   nameOnList: {
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   name: {
-    fontSize: height > 100 && height < 800 ? 13 : 25,
+    fontSize: getSize(13, 18,25),
     margin: 10,
     color: "black",
   },

@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import getSize from "./AdjustSizeByScreenSize";
 import {useMusicPlayer} from "@/context/MusicPlayerContext";
 const { height, width } = Dimensions.get("window");
 
@@ -112,13 +113,13 @@ const TrackItem = ({
         <View style={shownOnResultList ? styles.playCountAndDuration : null}>
           {playCount != null && showViewAndDuration ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <FontAwesome name="play" size={height > 800? 20 :15} style={styles.play} />
+              <FontAwesome name="play" size={getSize(15, 18,20)} style={styles.play} />
               <Text style={styles.playCount}>{formatplayCount(playCount)}</Text>
             </View>
           ) : null}
           {duration != null && showViewAndDuration ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <FontAwesome name="circle" size={height > 800? 15 : 10} style={styles.circle} />
+              <FontAwesome name="circle" size={getSize(10, 12,15)} style={styles.circle} />
               <Text style={styles.duration}>{formatDuration(duration)}</Text>
             </View>
           ) : null}
@@ -152,31 +153,31 @@ const styles = StyleSheet.create({
   artistOnList: {
     marginVertical: 3,
     color: "grey",
-    fontSize: height > 800 ? 23 : 10
+    fontSize: getSize(10, 15,23),
   },
   playCountAndDuration: {
     flexDirection: "row",
     alignItems: "center",
   },
   viewOnList: {
-    marginLeft: height > 800 ? 20 : 10,
+    marginLeft: getSize(10, 15,20),
     marginTop: 10,
-    gap: height > 800 ? 4 : 1
+    gap: getSize(1, 2,4),
   },
   playCount: {
     color: "grey",
     marginLeft: 8,
-    fontSize: height > 800 ? 20 : 15,
+    fontSize: getSize(15, 18,20),
   },
   duration: {
     marginLeft: 10,
-    fontSize: height > 800 ? 20 : 15,
+    fontSize: getSize(15, 18,20),
   },
 
   TrackItem: {
     flexDirection: "column",
     marginRight: 20,
-    marginTop: 100 && height < 800 ? 3 : 8,
+    marginTop: getSize(3, 5,8),
   },
 
   TrackItemOnList: {
@@ -193,20 +194,20 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: height > 100 && height < 800 ? 14 : 22,
+    fontSize: getSize(14, 14,22),
     color: "black",
     marginTop: 10,
   },
 
   titleOnList: {
-    fontSize: height > 800 ? 32: 25,
+    fontSize: getSize(25, 21,32),
     color: "black",
   },
 
   artist: {
     marginTop: 10,
     color: "gray",
-    fontSize: height > 100 && height < 800 ? 12 : 18,
+    fontSize: getSize(12, 14,18),
   },
 
   trackImage: {
