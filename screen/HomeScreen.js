@@ -7,6 +7,7 @@ import TrendingAlbumSection from "@/components/HomeScreen/TrendingAlbumSection";
 import PopularArtistSection from "@/components/HomeScreen/PopularArtistSection";
 import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
 import { useMusicPlayer } from "../context/MusicPlayerContext";
+import {useUserContext} from "@/context/UserContext";
 
 const HomeScreen = () => {
   const {
@@ -19,6 +20,8 @@ const HomeScreen = () => {
     isPlaying,
     setIsPlaying
   } = useMusicPlayer();
+
+  const {username} = useUserContext();
 
   const checkTime = () => {
     let helloWord = "Good Morning";
@@ -36,7 +39,7 @@ const HomeScreen = () => {
         <View style={styles.container}>
           <TopBanner />
           <Text style={styles.text}>{checkTime()},</Text>
-          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name}>{username ? username : name}</Text>
           <SuggestionSection setSelectedTrack={setSelectedTrack} setTrackUrl={setTrackUrl} handlePlayTrack={handlePlayTrack} isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
           <ChartSection />
           <TrendingAlbumSection/>

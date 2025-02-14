@@ -8,28 +8,18 @@ import {
     Platform
 } from 'react-native';
 import {BlurView} from "expo-blur";
-import {useUserContext} from "@/context/UserContext";
 import { LinearGradient } from "expo-linear-gradient";
-import React, {useState, useEffect} from "react";
-const backgroundImage = require("../assets/images/loginBg.jpg");
-import getSize from "../components/AdjustSizeByScreenSize";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import React, {useState} from "react";
+const backgroundImage = require("../../assets/images/loginBg.jpg");
+import getSize from "../../components/AdjustSizeByScreenSize";
 
-const LoginScreen = ({ navigation, route }) => {
-    const [_username, _setUsername] = useState("");
+const GenreList = ({ navigation }) => {
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({username: "", password: ""})
     const [usernameFail, setUsernameFail] = useState(false);
     const [passwordFail, setPasswordFail] = useState(false);
-    const [serverError, setServerError] = useState("");
-    const {setUserId, setToken, setUsername} = useUserContext();
-
-    useEffect(() => {
-        if (route.params && route.params.loginData) {
-            const loginData = route.params.loginData;
-            setPassword(loginData.password);
-            _setUsername(loginData.username);
-        }
-    }, [route.params]);
 
     const handleNavigateToSignUpPage = () => {
         navigation.navigate("SignUpScreen", {
@@ -37,7 +27,7 @@ const LoginScreen = ({ navigation, route }) => {
         })
     }
     const handleInputUsername = (text) => {
-        _setUsername(text)
+        setUsername(text)
     }
 
     const handleInputPassword = (text) => {
@@ -47,7 +37,8 @@ const LoginScreen = ({ navigation, route }) => {
     const formValidation = () => {
         setPasswordFail(false)
         setUsernameFail(false)
-        if (_username === "") {
+        console.log("ssss")
+        if (username === "") {
             console.log("Username is empty")
             setErrors(prevErrors => ({ ...prevErrors, username: "Username is empty" }));
             setUsernameFail(true)
@@ -64,18 +55,16 @@ const LoginScreen = ({ navigation, route }) => {
     const submitLoginForm = async () => {
         const {usernameFail, passwordFail} = formValidation();
         if (!usernameFail && !passwordFail ) {
-            _setUsername("");
-            setPassword("");
-            setServerError("");
+            console.log("well done")
 
             const loginData = {
-                username: _username,
+                username: username,
                 password: password
             }
 
             const url = Platform.OS === "ios"
-                ? process.env.EXPO_PUBLIC_BASE_URL + `auth/login`
-                : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `auth/login`;
+                ? process.env.EXPO_PUBLIC_BASE_URL + `auth/sign-up`
+                : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `auth/sign-up`;
 
             try {
                 const result = await fetch(url, {
@@ -87,21 +76,6 @@ const LoginScreen = ({ navigation, route }) => {
                 })
                 if (result.ok) {
                     const data = await result.json();
-                    const token = data.data.token;
-                    const username = data.data.username;
-                    setToken(token);
-                    setUsername(username);
-                    navigation.navigate("LibraryScreen");
-                }
-
-                else if (result.status === 403) {
-                    const data = await result.json();
-                    setServerError(data.message);
-                }
-
-                else if (result.status === 404) {
-                    const data = await result.json();
-                    setServerError(data.message);
                 }
             }
             catch (error) {
@@ -128,7 +102,7 @@ const LoginScreen = ({ navigation, route }) => {
                     <Text style={styles.heading}>LOGIN</Text>
                         <View style={{ flexGrow: 2 }}></View>
                         <View>
-                            <TextInput style={styles.textField} placeholder="Username" placeholderTextColor="white" value={_username} onChangeText={handleInputUsername} />
+                            <TextInput style={styles.textField} placeholder="Username" placeholderTextColor="white" value={username} onChangeText={handleInputUsername} />
                             { usernameFail ? <Text style={[styles.errorText, {color: "pink"}]}>* {errors.username}</Text> : null }
                         </View>
                         <View style={{marginTop: 20}}>
@@ -136,9 +110,7 @@ const LoginScreen = ({ navigation, route }) => {
                                        value={password} onChangeText={handleInputPassword} secureTextEntry/>
                             { passwordFail ? <Text style={[styles.errorText,{color: "pink"}]}>* {errors.password}</Text> : null }
                         </View>
-                        { serverError.length > 0 ? <Text style={[styles.errorText,{color: "pink", marginTop: 10}]}>* {serverError}</Text> : null }
                         <View style={{ flexGrow: 1 }}></View>
-
                         <View style={{borderRadius: 20, overflow: "hidden"}}>
                             <Pressable style={{ zIndex: 2}} onPress={() => submitLoginForm()}>
                                 <Text style={styles.submitBtn}>LOGIN</Text>
@@ -193,7 +165,7 @@ const styles = StyleSheet.create({
         zIndex: 2,
     },
     errorText: {
-        fontWeight: "400",
+        fontWeight: "300",
         fontSize: getSize(10, 16,16),
         zIndex: 2
     },
@@ -244,4 +216,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LoginScreen;
+export default GenreList;

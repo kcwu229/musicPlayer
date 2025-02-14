@@ -8,11 +8,12 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStackNavigator from "@/screen/HomeStackNavigator";
 import FeedScreen from "@/screen/FeedScreen";
-import LibraryScreen from "@/screen/LibraryScreen";
+import {UserProvider} from "@/context/UserContext";
 import SearchScreen from "@/screen/SearchScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { MusicPlayerProvider } from "@/context/MusicPlayerContext";
 import getSize from "@/components/AdjustSizeByScreenSize";
+import LibraryScreenNavigator from "@/screen/LibraryScreenNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +23,7 @@ export default function Page() {
       <GestureHandlerRootView>
         <SafeAreaView style={{ flex: 1 }}>
             <StatusBar barStyle="light-content" backgroundColor="black" />
+            <UserProvider>
               <MusicPlayerProvider>
                 <NavigationContainer>
                         <Tab.Navigator
@@ -98,7 +100,7 @@ export default function Page() {
                             />
                             <Tab.Screen
                                 name="Library"
-                                component={LibraryScreen}
+                                component={LibraryScreenNavigator}
                                 options={{
                                     tabBarIcon: ({ focused }) => (
                                         <Ionicons
@@ -118,6 +120,7 @@ export default function Page() {
                         </Tab.Navigator>
                 </NavigationContainer>
               </MusicPlayerProvider>
+            </UserProvider>
         </SafeAreaView>
       </GestureHandlerRootView>
     </NavigationIndependentTree>

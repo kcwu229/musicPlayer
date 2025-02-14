@@ -1,9 +1,9 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet } from "react-native";
-import LoginScreen from "@/screen/LoginScreen";
+import LoginScreenNavigator from "@/screen/LoginScreenNavigator";
 
 const FeedScreen = () => {
-    return <LoginScreen/>;
+    return <LoginScreenNavigator/>;
 }
 const styles = StyleSheet.create({
   container: {

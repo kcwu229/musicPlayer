@@ -52,14 +52,13 @@ const SignUpScreen = () => {
             setErrors(prevErrors => ({ ...prevErrors, password: "Password is empty" }));
             setPasswordFail(true)
         }
-
         return {usernameFail, passwordFail};
     }
     const submitLoginForm = async () => {
         const {usernameFail, passwordFail} = formValidation();
         if (!usernameFail && !passwordFail ) {
-            console.log("well done")
-
+            setUsername("");
+            setPassword("");
             const loginData = {
                 username: username,
                 password: password
@@ -68,7 +67,6 @@ const SignUpScreen = () => {
             const url = Platform.OS === "ios"
                 ? process.env.EXPO_PUBLIC_BASE_URL + `auth/sign-up`
                 : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `auth/sign-up`;
-
 
             try {
                 const result = await fetch(url, {
@@ -79,7 +77,12 @@ const SignUpScreen = () => {
                     body: JSON.stringify(loginData)
                 })
                 if (result.ok) {
-                    const data = await result.json();
+                    navigation.navigate("LoginScreen", {
+                        loginData: loginData
+                    })
+                }
+                else if (result.status === 403 ) {
+                    console.log("already exist !")
                 }
             }
 
@@ -109,21 +112,11 @@ const SignUpScreen = () => {
                         <View style={{ flexGrow: 1 }}></View>
                         <View>
                             <TextInput style={styles.textField} placeholder="Username" placeholderTextColor="white" value={username} onChangeText={handleInputUsername} />
-                            <FontAwesome
-                                name="user"
-                                size={getSize(15,20,35)}
-                                style={styles.icon}
-                            />
                             { usernameFail ? <Text style={[styles.errorText, {color: "pink"}]}>* {errors.username}</Text> : null }
                         </View>
                         <View style={{marginTop: 20}}>
                             <TextInput style={styles.textField} placeholder="Password" placeholderTextColor="white"
                                        value={password} onChangeText={handleInputPassword} secureTextEntry/>
-                            <FontAwesome
-                                name="lock"
-                                size={getSize(15,20,35)}
-                                style={styles.icon}
-                            />
                             { passwordFail ? <Text style={[styles.errorText,{color: "pink"}]}>* {errors.password}</Text> : null }
                         </View>
                         <View style={{ flexGrow: 1 }}></View>
@@ -171,36 +164,36 @@ const styles = StyleSheet.create({
     heading: {
         color: 'white',
         fontWeight: "bold",
-        fontSize: getSize(25, 40, 70),
+        fontSize: getSize(25, 40, 40),
         zIndex: 2,
     },
     errorText: {
         fontWeight: "300",
-        fontSize: getSize(10, 16,30),
+        fontSize: getSize(10, 16,16),
         zIndex: 2
     },
     subHeading: {
         color: 'white',
         fontWeight: "200",
         marginTop: 5,
-        fontSize: getSize(14, 18,35),
+        fontSize: getSize(14, 18,18),
         zIndex: 2
     },
     submitBtn: {
         color: 'black',
         fontWeight: "bold",
         textAlign: "left", // Add this line
-        fontSize: getSize(15,17, 30),
+        fontSize: getSize(15,17, 17),
         zIndex: 2,
         borderRadius: 20,
         backgroundColor: "white",
-        paddingVertical: getSize(9, 10, 18),
+        paddingVertical: getSize(9, 10, 10),
         paddingHorizontal: getSize("20%", "20%","20%"),
     },
     smallFont: {
         color: 'white',
         fontWeight: "300",
-        fontSize: getSize(12, 18, 24),
+        fontSize: getSize(12, 18, 18),
         zIndex: 2,
     },
     imageBg: {
@@ -208,16 +201,15 @@ const styles = StyleSheet.create({
         left: 0,
         width: '100%',
         height: '100%',
-        position: "relative"
     },
     textField: {
         color: 'white',
         position: "relative",
-        fontSize: getSize(20,18,50),
+        fontSize: getSize(20,18,18),
         zIndex: 2,
         fontWeight: "200",
-        backgroundColor: "rgba(128, 128, 128, 0.33)",
-        width: getSize("80%", "60%", "80%"),
+        backgroundColor: "rgba(128, 128, 128, 0.18)",
+        width: getSize("98%", "98%", "98%"),
         borderColor: "white",
         borderWidth:1,
         paddingHorizontal:getSize(30,80,80) ,
@@ -231,13 +223,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         opacity: 0.8
-    },
-    icon: {
-        margin: 15,
-        color: "white",
-        top: -5,
-        position: "absolute",
-        zIndex: 2,
     },
 });
 
