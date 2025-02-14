@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import TrackItem from "@/components/TrackItem";
 import React, {useEffect, useState} from "react";
-const screenHeight = Dimensions.get("window").height;
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
 import getSize from "../components/AdjustSizeByScreenSize";
 import CreateAlert from "@/components/AlertComponent";

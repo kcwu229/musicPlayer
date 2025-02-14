@@ -1,14 +1,34 @@
-import {Dimensions} from "react-native";
+import { Dimensions, PixelRatio } from "react-native";
 const { height, width } = Dimensions.get("window");
+const aspectRatio = height / width;
+const pixelDensity = PixelRatio.get();
 
 const getSize = (expectedSmallNum, expectedMiddleNum, expectedLargeNum) => {
-    if (height > 100 && height < 800 && width > 100 && width <= 400) {
+    if (pixelDensity <= 1) {
+        // Low-density screens
         return expectedSmallNum;
-    } else if (height >= 800 && height < 1200 && width > 400 && width <= 800) {
-        return expectedMiddleNum;
-    }
-    return expectedLargeNum;
-}
 
+    } else if (pixelDensity > 1 && pixelDensity <= 2) {
+        // Medium-density screens
+        if (aspectRatio > 1.6) {
+            // Taller screens
+            return expectedMiddleNum;
+
+        } else {
+            // Wider screens
+            return expectedSmallNum;
+        }
+    } else {
+        // High-density screens
+        if (aspectRatio > 1.6) {
+            // Taller screens
+            return expectedLargeNum;
+
+        } else {
+            // Wider screens
+            return expectedMiddleNum;
+        }
+    }
+};
 
 export default getSize;

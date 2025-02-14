@@ -12,9 +12,9 @@ import LibraryScreen from "@/screen/LibraryScreen";
 import SearchScreen from "@/screen/SearchScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { MusicPlayerProvider } from "@/context/MusicPlayerContext";
+import getSize from "@/components/AdjustSizeByScreenSize";
 
 const Tab = createBottomTabNavigator();
-const { height } = Dimensions.get("window");
 
 export default function Page() {
   return (
@@ -30,7 +30,7 @@ export default function Page() {
                                 tabBarActiveTintColor: "white",
                                 tabBarInactiveTintColor: "grey",
                                 tabBarStyle: {
-                                    height: height > 800 ? 130 : 70,
+                                    height: getSize(70, 90, 130),
                                     paddingVertical: 5,
                                     backgroundColor: "black",
                                 },
@@ -53,8 +53,8 @@ export default function Page() {
                                         tabBarLabel: "Home",
                                         headerShown: false,
                                         tabBarLabelStyle: {
-                                            fontSize: height > 800 ? 20 : 12,
-                                            margin: height > 800 ? 2 : 5,
+                                            fontSize: getSize(12,16,20),
+                                            margin: getSize(2,3,5),
                                         },
                                     }}
                                 />
@@ -72,8 +72,8 @@ export default function Page() {
                                     tabBarLabel: "Search",
                                     headerShown: false,
                                     tabBarLabelStyle: {
-                                        fontSize: height > 800 ? 20 : 12,
-                                        margin: height > 800 ? 2 : 5,
+                                        fontSize: getSize(12,16,20),
+                                        margin: getSize(2,3,5),
                                     },
                                 }}
                             />
@@ -91,8 +91,8 @@ export default function Page() {
                                     tabBarLabel: "Feed",
                                     headerShown: false,
                                     tabBarLabelStyle: {
-                                        fontSize: height > 800 ? 20 : 12,
-                                        margin: height > 800 ? 2 : 5,
+                                        fontSize: getSize(12,16,20),
+                                        margin: getSize(2,3,5),
                                     },
                                 }}
                             />
@@ -110,8 +110,8 @@ export default function Page() {
                                     tabBarLabel: "Library",
                                     headerShown: false,
                                     tabBarLabelStyle: {
-                                        fontSize: height > 800 ? 20 : 12,
-                                        margin: height > 800 ? 2 : 5,
+                                        fontSize: getSize(12,16,20),
+                                        margin: getSize(2,3,5),
                                     },
                                 }}
                             />

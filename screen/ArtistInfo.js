@@ -32,10 +32,8 @@ const ArtistInfo = ({ route }) => {
       setIsPlaying,
       handlePlayTrack,
   } = useMusicPlayer();
-  const [initialPlayMusic, setInitialPlayMusic] = useState(false);
   const [hasFollowed, setHasFollow] = useState(false);
   const [hasPlayedInthisPage, setHasPlayedInthisPage] = useState(false);
-  //const [isPlaying, setIsPlaying] = useState(false);
 
   const handleFollow = (name) => {
     if (true) {

@@ -28,6 +28,8 @@ const SuggectionSection = ({ setSelectedTrack, handlePlayTrack, setTrackUrl, set
           ? process.env.EXPO_PUBLIC_BASE_URL + `track?limit=${itemDisplayed}`
           : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `track?limit=${itemDisplayed}`;
 
+      console.log(url)
+
       try {
         const result = await fetch(url);
         if (result.ok) {

@@ -4,7 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   Pressable,
   Dimensions,
   ScrollView, Platform,
@@ -13,7 +12,6 @@ import getSize from "../components/AdjustSizeByScreenSize";
 
 import TrackItem from "@/components/TrackItem";
 import React, {useEffect, useState} from "react";
-const screenHeight = Dimensions.get("window").height;
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
 import {LinearGradient} from "expo-linear-gradient";
 import albumItem from "@/components/AlbumItem";

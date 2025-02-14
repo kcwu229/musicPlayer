@@ -1,18 +1,33 @@
-import {View, Text, Button, ImageBackground, StyleSheet, Dimensions, TextInput, Pressable} from 'react-native';
+import {
+    View,
+    Text,
+    ImageBackground,
+    StyleSheet,
+    TextInput,
+    Pressable,
+    Platform
+} from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
+import {useNavigation} from "@react-navigation/native";
 
 const backgroundImage = require("../assets/images/signUpBG.jpg");
-import randomColor from "@/components/RandomColor";
 import getSize from "../components/AdjustSizeByScreenSize";
-const { height, width } = Dimensions.get("window");
-
-const SignUpScreen = ({ navigation }) => {
+import {BlurView} from "expo-blur";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+const SignUpScreen = () => {
+    const navigation = useNavigation();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({username: "", password: ""})
     const [usernameFail, setUsernameFail] = useState(false);
     const [passwordFail, setPasswordFail] = useState(false);
+
+    const handleNavigateToLoginPage = () => {
+        navigation.navigate("LoginScreen", {
+            LoginData: {}
+        })
+    }
 
     const handleInputUsername = (text) => {
         setUsername(text)
@@ -50,8 +65,10 @@ const SignUpScreen = ({ navigation }) => {
                 password: password
             }
 
-            const url =  process.env.EXPO_PUBLIC_BASE_URL + "auth/sign-up";
-            console.log(url)
+            const url = Platform.OS === "ios"
+                ? process.env.EXPO_PUBLIC_BASE_URL + `auth/sign-up`
+                : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `auth/sign-up`;
+
 
             try {
                 const result = await fetch(url, {
@@ -73,74 +90,126 @@ const SignUpScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
-            <ImageBackground source={backgroundImage} resizeMode="cover" style={styles.imageBg} >
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <View style={{ flexGrow: 4 }}></View>
-                    <Text style={styles.heading}>SignUp</Text>
-                    <Text style={styles.subHeading}>Enjoy your musical journey</Text>
-                    <TextInput style={styles.textField} placeholder="Username" placeholderTextColor="white" value={username} onChangeText={handleInputUsername} />
-                    { usernameFail ? <Text style={[styles.subHeading, {color: "white"}]}>*{errors.username}</Text> : null }
-                    <TextInput style={styles.textField} placeholder="Password" placeholderTextColor="white" value={password} onChangeText={handleInputPassword}/>
-                    { passwordFail ? <Text style={[styles.subHeading,{color: "white"}]}>*{errors.password}</Text> : null }
-
-                    <View style={{ flexGrow: 1 }}></View>
-
-                    <LinearGradient
-                        colors={[
-                            "rgba(255, 0, 0, 0.85)",  // Red
-                            "rgba(0, 0, 255, 0.85)"   // Blue
-                        ]}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={{borderRadius: 20}}
-                    >
-                        <Pressable style={{ zIndex: 2}} onPress={() => submitLoginForm()}>
-                            <Text style={styles.submitBtn}>Login</Text>
-                        </Pressable>
-                    </LinearGradient>
-
-                    <View style={{ flexGrow: 2 }}></View>
-                </View>
+        <>
+            <ImageBackground source={backgroundImage} resizeMode="cover" style={styles.imageBg} blurRadius={Platform === "ios" ? 4 : 2 } >
             </ImageBackground>
             <LinearGradient
-                colors={["rgba(128, 0, 128, 0.7)", "rgba(255, 165, 0, 0.7)"]}
+                colors={["rgba(128, 0, 128, 0.5)", "rgba(255, 165, 0, 0.3)"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.colorFilter}>
             </LinearGradient>
-        </View>
+            <View style={styles.container}>
+                <View style={{ flexGrow: 3 }}></View>
+                <BlurView intensity={10} style={{ overflow: "hidden", borderRadius: 20}}>
+                    <View style={styles.blurContainer}>
+                        <View style={{ flexGrow: 1 }}></View>
+                        <Text style={styles.heading}>SIGN UP</Text>
+                        <Text style={styles.subHeading}>Here our journey begin </Text>
+                        <View style={{ flexGrow: 1 }}></View>
+                        <View>
+                            <TextInput style={styles.textField} placeholder="Username" placeholderTextColor="white" value={username} onChangeText={handleInputUsername} />
+                            <FontAwesome
+                                name="user"
+                                size={getSize(15,20,35)}
+                                style={styles.icon}
+                            />
+                            { usernameFail ? <Text style={[styles.errorText, {color: "pink"}]}>* {errors.username}</Text> : null }
+                        </View>
+                        <View style={{marginTop: 20}}>
+                            <TextInput style={styles.textField} placeholder="Password" placeholderTextColor="white"
+                                       value={password} onChangeText={handleInputPassword} secureTextEntry/>
+                            <FontAwesome
+                                name="lock"
+                                size={getSize(15,20,35)}
+                                style={styles.icon}
+                            />
+                            { passwordFail ? <Text style={[styles.errorText,{color: "pink"}]}>* {errors.password}</Text> : null }
+                        </View>
+                        <View style={{ flexGrow: 1 }}></View>
+                        <LinearGradient
+                            colors={[
+                                "rgba(255, 0, 0, 1)",  // Red
+                                "rgba(0, 0, 255, 1)"   // Blue
+                            ]}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            style={{borderRadius: 20}}
+                        >
+                            <Pressable style={{ zIndex: 2}} onPress={() => submitLoginForm()}>
+                                <Text style={styles.submitBtn}>SIGN UP</Text>
+                            </Pressable>
+                        </LinearGradient>
+                        <View style={{flexDirection: "row", marginTop: 30}}>
+                            <Text style={styles.smallFont}>Got an account ? </Text>
+                            <View style={{ flexGrow: 1 }}></View>
+                            <Pressable onPress={() => handleNavigateToLoginPage()}>
+                                <Text style={[styles.smallFont, {fontWeight: "bold"}]}>Login</Text>
+                            </Pressable>
+                        </View>
+                        <View style={{ flexGrow: 2 }}></View>
+
+                    </View>
+                </BlurView>
+            </View>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        position: "absolute",
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: "10%",
+        left: "5%",
+        right: "5%",
+        bottom: "10%"
+    },
+    blurContainer: {
+        justifyContent: 'center',
+        backgroundColor: "rgba(46,110,70,0.1)",
+        alignItems: 'center',
+        paddingHorizontal: 40,
+        borderColor: "rgba(255,255,255,0.25)",
+        borderWidth: 2,
+        borderRadius: 20
+    },
     heading: {
         color: 'white',
-        fontWeight: "300",
-        fontSize: getSize(25, 35, 70),
+        fontWeight: "bold",
+        fontSize: getSize(25, 40, 70),
         zIndex: 2,
+    },
+    errorText: {
+        fontWeight: "300",
+        fontSize: getSize(10, 16,30),
+        zIndex: 2
     },
     subHeading: {
         color: 'white',
         fontWeight: "200",
-        fontSize: getSize(10, 20,30),
+        marginTop: 5,
+        fontSize: getSize(14, 18,35),
         zIndex: 2
     },
     submitBtn: {
-        color: 'white',
-        fontWeight: "200",
+        color: 'black',
+        fontWeight: "bold",
         textAlign: "left", // Add this line
         fontSize: getSize(15,17, 30),
         zIndex: 2,
         borderRadius: 20,
-        paddingVertical: getSize(7, 7, 15),
-        paddingHorizontal: getSize(14, 19,30),
+        backgroundColor: "white",
+        paddingVertical: getSize(9, 10, 18),
+        paddingHorizontal: getSize("20%", "20%","20%"),
     },
-    container: {
-        flexDirection: 'column',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+    smallFont: {
+        color: 'white',
+        fontWeight: "300",
+        fontSize: getSize(12, 18, 24),
+        zIndex: 2,
     },
     imageBg: {
         top: 0,
@@ -151,17 +220,17 @@ const styles = StyleSheet.create({
     },
     textField: {
         color: 'white',
-        fontSize: getSize(14,18,30),
+        position: "relative",
+        fontSize: getSize(20,18,50),
         zIndex: 2,
         fontWeight: "200",
-        marginTop: getSize(15,25,40),
         backgroundColor: "rgba(128, 128, 128, 0.33)",
-        width: getSize("45%", "50%", "50%"),
+        width: getSize("80%", "60%", "80%"),
         borderColor: "white",
         borderWidth:1,
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        borderRadius: 10
+        paddingHorizontal:getSize(30,80,80) ,
+        paddingVertical: 5,
+        borderRadius: 10,
     },
     colorFilter: {
         position: 'absolute',
@@ -169,14 +238,15 @@ const styles = StyleSheet.create({
         left: 0,
         width: '100%',
         height: '100%',
-        opacity: 0.4
+        opacity: 0.8
     },
-    loginBtn: {
-        color: 'white',
-        fontWeight: "200",
-        fontSize: getSize(20,18,50),
-        marginTop: getSize(10, 30,50), zIndex: 2
-    }
+    icon: {
+        margin: 15,
+        color: "white",
+        top: -5,
+        position: "absolute",
+        zIndex: 2,
+    },
 });
 
 export default SignUpScreen;

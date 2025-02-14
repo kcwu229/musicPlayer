@@ -74,7 +74,9 @@ const ChartSection = () => {
                         >
                               <View style={[styles.chartImage, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
                                   <Text style={styles.title}>Top 50</Text>
-                                  <Text style={styles.region}>{data.countryItem}</Text>
+                                  <Text style={styles.region}>
+                                    { data.countryItem}
+                                  </Text>
                               </View>
                           </View>
                       </Pressable>
@@ -135,6 +137,7 @@ const styles = StyleSheet.create({
     fontSize: getSize(18,24,30),
     color: "white",
     margin: 10,
+    maxWidth: getSize(100,150,200),
     fontWeight: "bold",
   },
   chartImage: {
@@ -143,11 +146,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     alignContent: "center",
+    maxWidth: getSize(100,150,200),
     padding: 10,
   },
   subscription: {
     marginRight: 20,
     marginTop: 10,
+    maxWidth: getSize(100,150,200),
     fontSize: getSize(13,15,20),
     color: "gray",
   },

@@ -1,12 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "@/screen/HomeScreen";
-import { Dimensions } from "react-native";
 import ArtistInfo from "@/screen/ArtistInfo";
 import AlbumInfo from "@/screen/AlbumInfo";
 import ChartInfo from "@/screen/ChartInfo";
-
-const { height, width } = Dimensions.get("window");
+import getSize from "@/components/AdjustSizeByScreenSize";
 
 const Stack = createStackNavigator();
 
@@ -24,10 +22,10 @@ const HomeStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            height: 120, // Adjust the height value as needed
+            height: getSize(40, 80, 120), // Adjust the height value as needed
           },
           headerTitleStyle: {
-            fontSize: width > 800 ? 35 : 24, // Adjust the font size as needed
+            fontSize: getSize(24, 28,35), // Adjust the font size as needed
           },
         }}
         initialParams={{ artistData: {} }}
@@ -38,11 +36,11 @@ const HomeStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            height: 120,
+            height: getSize(40, 80, 120),
             // Adjust the height value as needed
           },
           headerTitleStyle: {
-            fontSize: width > 800 ? 35 : 24, // Adjust the font size as needed
+            fontSize: getSize(16, 22,35),// Adjust the font size as needed
           },
         }}
         initialParams={{ albumData: {} }}
@@ -53,11 +51,11 @@ const HomeStackNavigator = () => {
             options={{
                 headerShown: true,
                 headerStyle: {
-                    height: 120,
+                    height: getSize(40, 80, 120),
                     // Adjust the height value as needed
                 },
                 headerTitleStyle: {
-                    fontSize: width > 800 ? 35 : 24, // Adjust the font size as needed
+                    fontSize: getSize(16, 22,35),// Adjust the font size as needed
                 },
             }}
             initialParams={{ albumData: {} }}

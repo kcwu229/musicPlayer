@@ -14,6 +14,7 @@ import CreateAlert from "@/components/AlertComponent";
 import getSize from "./AdjustSizeByScreenSize";
 import { useNavigation } from "@react-navigation/native";
 
+
 const ArtistIcon = ({
   artistData,
   allowFollowButton = false,
@@ -25,6 +26,14 @@ const ArtistIcon = ({
   const { followerCount, imageUrl, artist, name } = artistData;
   const [hasFollowed, setHasFollow] = useState(false);
   const navigation = useNavigation();
+
+
+  const formatFollowerCount = (count) => {
+    if (count < 1000) return count.toString();
+    if (count >= 1000 && count < 1000000) return (count / 1000).toFixed(1) + "K";
+    if (count >= 1000000) return (count / 1000000).toFixed(1) + "M";
+    return count.toString();
+  };
 
 
   const handleFollow = (artistName) => {
@@ -60,7 +69,7 @@ const ArtistIcon = ({
         {followerCount != null && displayFollower == true ? (
           <View style={shownOnResultList ? styles.followerRow : null}>
             <FontAwesome name="user" size={15} style={styles.user} />
-            <Text style={styles.followerCount}>{followerCount} Followers </Text>
+            <Text style={styles.followerCount}>{formatFollowerCount(followerCount)} Followers </Text>
           </View>
         ) : null}
       </View>
