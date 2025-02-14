@@ -86,7 +86,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.sam.musicplayer"
+    namespace 'com.sam.musicplayer'
     defaultConfig {
         applicationId 'com.sam.musicplayer'
         minSdkVersion rootProject.ext.minSdkVersion
@@ -124,11 +124,6 @@ android {
     androidResources {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
     }
-
-     buildFeatures {
-        viewBinding true
-    }
-    
 }
 
 // Apply static values from `gradle.properties` to the `android.packagingOptions`
@@ -154,9 +149,6 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation('com.github.Dimezis:BlurView:version-2.0.4')
-    implementation "androidx.compose.compiler:compiler:1.5.15"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";

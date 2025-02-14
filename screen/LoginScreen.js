@@ -123,9 +123,11 @@ const LoginScreen = () => {
                             { passwordFail ? <Text style={[styles.errorText,{color: "pink"}]}>* {errors.password}</Text> : null }
                         </View>
                         <View style={{ flexGrow: 1 }}></View>
-                        <Pressable style={{ zIndex: 2}} onPress={() => submitLoginForm()}>
-                            <Text style={styles.submitBtn}>LOGIN</Text>
-                        </Pressable>
+                        <View style={{borderRadius: 20, overflow: "hidden"}}>
+                            <Pressable style={{ zIndex: 2}} onPress={() => submitLoginForm()}>
+                                <Text style={styles.submitBtn}>LOGIN</Text>
+                            </Pressable>
+                        </View>
                         <View style={{flexDirection: "row", marginTop: 30}}>
                             <Text style={styles.smallFont}>No account yet ? </Text>
                             <View style={{ flexGrow: 1 }}></View>
@@ -148,9 +150,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         top: "10%",
-        left: "5%",
-        right: "5%",
+        left: "2%",
+        right: "2%",
         bottom: "10%"
+
     },
     blurContainer: {
         justifyContent: 'center',
@@ -186,8 +189,7 @@ const styles = StyleSheet.create({
     },
     submitBtn: {
         color: 'black',
-        fontWeight: "bold",
-        textAlign: "left", // Add this line
+        fontWeight: "bold", // Add this line
         fontSize: getSize(15,17, 30),
         zIndex: 2,
         borderRadius: 20,
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
         zIndex: 2,
         fontWeight: "200",
         backgroundColor: "rgba(128, 128, 128, 0.18)",
-        width: getSize("80%", "60%", "80%"),
+        width: getSize("80%", "80%", "80%"),
         borderColor: "white",
         borderWidth:1,
         paddingHorizontal:getSize(30,80,80) ,

@@ -40,7 +40,7 @@ const ChartSection = () => {
           const resultData = data.data;
           if (data && Array.isArray(resultData)) {
             setTopTrackByCountryList(resultData);
-            setChartColor(resultData.map((data) => RandomColor()));
+            setChartColor(resultData.map(data => RandomColor()));
           } else {
               console.error('Invalid data structure:', data);
           }

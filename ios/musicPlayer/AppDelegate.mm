@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
 
@@ -7,6 +8,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  // Config AVAudioSession
+  AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+  NSError *setCategoryError = nil;
+  [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&setCategoryError];
+  
+  if (setCategoryError) {
+         NSLog(@"Error setting audio session category: %@", setCategoryError.localizedDescription);
+     }
+  
   self.moduleName = @"main";
 
   // You can add your custom initial props in the dictionary below.
@@ -28,6 +38,34 @@
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+
+- (void)configureAudioSession {
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    NSError *error = nil;
+
+    // Set the audio session category
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord
+             withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker
+                   error:&error];
+    if (error) {
+        NSLog(@"Error setting category: %@", error.localizedDescription);
+        return;
+    }
+
+    // Activate the audio session
+    [session setActive:YES error:&error];
+    if (error) {
+        NSLog(@"Error activating session: %@", error.localizedDescription);
+        return;
+    }
+
+    // Check if the device has echo cancellation
+    BOOL hasEchoCancellation = [session isInputGainSettable];
+    if (!hasEchoCancellation) {
+        NSLog(@"Echo cancellation is not available on this device.");
+    }
 }
 
 // Linking API

@@ -5,6 +5,7 @@ import ArtistInfo from "@/screen/ArtistInfo";
 import AlbumInfo from "@/screen/AlbumInfo";
 import ChartInfo from "@/screen/ChartInfo";
 import getSize from "@/components/AdjustSizeByScreenSize";
+import {SafeAreaView} from "react-native";
 
 const Stack = createStackNavigator();
 
@@ -22,7 +23,7 @@ const HomeStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            height: getSize(40, 80, 120), // Adjust the height value as needed
+            height: getSize(40, 100, 120), // Adjust the height value as needed
           },
           headerTitleStyle: {
             fontSize: getSize(24, 28,35), // Adjust the font size as needed
@@ -36,7 +37,7 @@ const HomeStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            height: getSize(40, 80, 120),
+            height: getSize(40, 100, 120),
             // Adjust the height value as needed
           },
           headerTitleStyle: {
@@ -51,7 +52,7 @@ const HomeStackNavigator = () => {
             options={{
                 headerShown: true,
                 headerStyle: {
-                    height: getSize(40, 80, 120),
+                    height: getSize(40, 100, 120),
                     // Adjust the height value as needed
                 },
                 headerTitleStyle: {

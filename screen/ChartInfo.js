@@ -114,14 +114,14 @@ const ChartInfo = ({ route }) => {
       >
         <View>
           <View style={styles.container}>
-            <LinearGradient colors={colorData} style={styles.chartItem}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}>
+            <View
+                style={[styles.chartItem, { backgroundColor: colorData }]}
+            >
               <View style={[styles.chartImage, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
                 <Text style={styles.title}>Top 50</Text>
                 <Text style={styles.region}>{countryData}</Text>
               </View>
-            </LinearGradient>
+            </View>
 
             <Text style={styles.name}>Top 50 {countryData} Tracks</Text>
 

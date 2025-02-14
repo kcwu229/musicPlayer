@@ -127,19 +127,11 @@ const SignUpScreen = () => {
                             { passwordFail ? <Text style={[styles.errorText,{color: "pink"}]}>* {errors.password}</Text> : null }
                         </View>
                         <View style={{ flexGrow: 1 }}></View>
-                        <LinearGradient
-                            colors={[
-                                "rgba(255, 0, 0, 1)",  // Red
-                                "rgba(0, 0, 255, 1)"   // Blue
-                            ]}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}
-                            style={{borderRadius: 20}}
-                        >
+                        <View style={{borderRadius: 20, overflow: "hidden"}}>
                             <Pressable style={{ zIndex: 2}} onPress={() => submitLoginForm()}>
-                                <Text style={styles.submitBtn}>SIGN UP</Text>
+                                <Text style={styles.submitBtn}>LOGIN</Text>
                             </Pressable>
-                        </LinearGradient>
+                        </View>
                         <View style={{flexDirection: "row", marginTop: 30}}>
                             <Text style={styles.smallFont}>Got an account ? </Text>
                             <View style={{ flexGrow: 1 }}></View>

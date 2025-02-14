@@ -21,7 +21,7 @@ export default function Page() {
     <NavigationIndependentTree>
       <GestureHandlerRootView>
         <SafeAreaView style={{ flex: 1 }}>
-            <StatusBar barStyle="light-content" backgroundColor="#27364E" />
+            <StatusBar barStyle="light-content" backgroundColor="black" />
               <MusicPlayerProvider>
                 <NavigationContainer>
                         <Tab.Navigator
