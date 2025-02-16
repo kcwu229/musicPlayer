@@ -9,7 +9,7 @@ import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
 import { useMusicPlayer } from "../context/MusicPlayerContext";
 import {useUserContext} from "@/context/UserContext";
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const {
     selectedTrack,
     setSelectedTrack,
@@ -21,7 +21,7 @@ const HomeScreen = () => {
     setIsPlaying
   } = useMusicPlayer();
 
-  const {username} = useUserContext();
+  const {username, token, userId, logout} = useUserContext();
 
   const checkTime = () => {
     let helloWord = "Good Morning";
@@ -37,13 +37,13 @@ const HomeScreen = () => {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={styles.container}>
-          <TopBanner />
+          <TopBanner token={token} navigation={navigation} logout={logout}/>
           <Text style={styles.text}>{checkTime()},</Text>
           <Text style={styles.name}>{username ? username : name}</Text>
           <SuggestionSection setSelectedTrack={setSelectedTrack} setTrackUrl={setTrackUrl} handlePlayTrack={handlePlayTrack} isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
           <ChartSection />
           <TrendingAlbumSection/>
-          <PopularArtistSection/>
+          <PopularArtistSection navigation={navigation}/>
           <View style={{ marginTop: 120 }}></View>
         </View>
       </ScrollView>

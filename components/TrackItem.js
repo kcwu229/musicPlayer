@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {
   View,
   Text,
@@ -6,11 +6,14 @@ import {
   Pressable,
   Image,
   Button,
-  Dimensions,
+  Dimensions, Platform,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import getSize from "./AdjustSizeByScreenSize";
 import {useMusicPlayer} from "@/context/MusicPlayerContext";
+import {useUserContext} from "@/context/UserContext";
+import CreateAlert from "@/components/AlertComponent";
+
 const { height, width } = Dimensions.get("window");
 
 const formatDuration = (durationInSeconds) => {
@@ -46,7 +49,9 @@ const TrackItem = ({
     handlePlayTrack,
   } = useMusicPlayer();
 
-  const { name, playCount, imageUrl, duration } = trackData;
+  const { userId, token} = useUserContext();
+  const { name, playCount, imageUrl, duration, likeUserId } = trackData;
+  const [hasLiked,setHasLiked] = useState(likeUserId.includes(userId))
 
   const handlePlaying = (data) => {
     isPlaying === true ? console.log("now play") : console.log("paused !");
@@ -55,9 +60,35 @@ const TrackItem = ({
     handlePlayTrack(data.soundTrackUrl);
   }
 
-  const handleOption = () => {
-    console.log("handleOption !");
-  };
+  const handleLike= (trackData) => {
+    if (token.length === 0) {
+      CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
+    } else {
+      console.log(hasLiked ? `You have unlike track - ${trackData.name}` : `You have like track - ${trackData.name}`);
+      setHasLiked(!hasLiked)
+      fetchLikeAction(trackData._id)
+    }
+  }
+
+  const fetchLikeAction = async (trackId) => {
+    const url = Platform.OS === "ios"
+        ? process.env.EXPO_PUBLIC_BASE_URL + `user/like/track/${trackId}`
+        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/like/track/${trackId}`;
+
+    try {
+      await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+    }
+    catch (err) {
+      console.log();
+    }
+  }
+
   return (
     <View style={shownOnResultList ? styles.TrackItemOnList : styles.TrackItem}>
       <Pressable
@@ -87,8 +118,10 @@ const TrackItem = ({
             </View>)
             : null}
       </Pressable>
-      <View style={shownOnResultList ? styles.viewOnList : null}>
+      <View style={[shownOnResultList ? styles.viewOnList : null, {width: "50%"}]}>
         <Text
+            numberOfLines={1}
+            ellipsizeMode={"tail"}
           style={
             shownOnResultList
               ? styles.titleOnList
@@ -97,7 +130,7 @@ const TrackItem = ({
               : styles.title
           }
         >
-          {name.length > 10 ? name.substring(0, 10) : name}
+          {name}
         </Text>
         <Text
           style={
@@ -126,11 +159,11 @@ const TrackItem = ({
         </View>
       </View>
       {shownOnResultList ? <View style={{ flexGrow: 3 }}></View> : null}
-      {shownOnResultList ? (
-        <Pressable onPress={handleOption}>
-          <FontAwesome name="ellipsis-h" size={20} />
-        </Pressable>
-      ) : null}
+      <Pressable onPress={() => handleLike(trackData)}>
+        <View style={[styles.followBtn, {borderColor: hasLiked ? "red" : "grey"}]}>
+          <Text style={[styles.followText, {color: hasLiked ? "red" : "grey"}]}>{ hasLiked ? "Unlike" : "Like"}</Text>
+        </View>
+      </Pressable>
     </View>
   );
 };
@@ -185,6 +218,7 @@ const styles = StyleSheet.create({
     margin: 5,
     alignItems: "center",
     paddingVertical: 4,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 
   name: {
@@ -212,12 +246,20 @@ const styles = StyleSheet.create({
 
   trackImage: {
     position: "relative",
-
     shadowColor: "black",
     shadowOffset: { width: 1, height: -1 },
     shadowRadius: 1,
     shadowOpacity: 0.8, // Add shadowOpacity for better control
     elevation: 5,
+  },
+  followBtn: {
+    borderRadius: 20,
+    borderWidth: 1,
+    padding: 10,
+    paddingHorizontal: 20,
+  },
+  followText: {
+    fontSize: getSize(15, 16,22),
   },
 });
 

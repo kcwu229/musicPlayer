@@ -7,9 +7,15 @@ import getSize from "../AdjustSizeByScreenSize";
 
 const {height} = Dimensions.get("window")
 
-const SearchResultPage = ({ setSelectedTrack }) => {
+const SearchResultPage = ({ setSelectedTrack, navigation }) => {
   const handleArtist = () => {
     console.log(`Artist`);
+  };
+
+  const navigateToArtistInfoPage = (selectedArtistData) => {
+    navigation.navigate("ArtistInfo", {
+      artistData: { selectedArtistData },
+    });
   };
 
   const [albumList, setAlbumList] = useState([]);
@@ -80,7 +86,7 @@ const SearchResultPage = ({ setSelectedTrack }) => {
     <View style={styles.container}>
       {artistList &&
           artistList.map((artist) => (
-          <Pressable key={artist._id} onPress={handleArtist}>
+          <Pressable key={artist._id} onPress={() => navigateToArtistInfoPage(artist)}>
             <ArtistItem
               artistData={artist}
               imageWidth={getSize(60, 70, 100)}
@@ -94,16 +100,14 @@ const SearchResultPage = ({ setSelectedTrack }) => {
 
       {albumList &&
         albumList.map((album) => (
-          <Pressable key={album._id} onPress={() => setSelectedTrack(album)}>
-            <AlbumItem
-              albumData={album}
+            <AlbumItem key={album._id}
+                       albumData={album}
               imageWidth={getSize(60, 70, 100)}
               imageHeight={getSize(60, 70, 100)}
               shownOnResultList={true}
               setSelectedTrack={setSelectedTrack}
               showViewAndDuration={true}
             />
-          </Pressable>
         ))}
 
       {/*. Need to fix

@@ -28,8 +28,6 @@ const SuggectionSection = ({ setSelectedTrack, handlePlayTrack, setTrackUrl, set
           ? process.env.EXPO_PUBLIC_BASE_URL + `track?limit=${itemDisplayed}`
           : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `track?limit=${itemDisplayed}`;
 
-      console.log(url)
-
       try {
         const result = await fetch(url);
         if (result.ok) {
@@ -81,8 +79,8 @@ const styles = StyleSheet.create({
     marginTop: getSize(25, 30,40),
   },
   image: {
-    height: getSize(height * 0.33, height * 0.3,height * 0.25),
-    width: getSize(height * 0.4, height * 0.25,height * 0.2),
+    height: getSize(height * 0.33, height * 0.25,height * 0.25),
+    width: getSize(height * 0.4, height * 0.2,height * 0.2),
     borderRadius: 20,
     shadowColor: "black",
     shadowOffset: { width: 1, height: -1 },

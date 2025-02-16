@@ -125,116 +125,117 @@ const AlbumInfo = ({ route }) => {
   }, [])
 
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView
-        style={{ flex: 1, backgroundColor: "white" }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View>
-          <View style={styles.container}>
-            <Image source={{uri: imageUrl}} style={styles.image} />
-            <View style={styles.textContainer}>
-              <Text style={styles.name}>{albumName}</Text>
-              <Text style={styles.playCount}>
-                {formatplayCount(playCount)} views
-              </Text>
-            </View>
+   <>
+     <View style={{ flex: 1 }}>
+       <ScrollView
+           style={{ flex: 1, backgroundColor: "white" }}
+           showsVerticalScrollIndicator={false}
+       >
+         <View>
+           <View style={styles.container}>
+             <Image source={{uri: imageUrl}} style={styles.image} />
+             <View style={styles.textContainer}>
+               <Text style={styles.name}>{albumName}</Text>
+               <Text style={styles.playCount}>
+                 {formatplayCount(playCount)} views
+               </Text>
+             </View>
 
-            <View style={styles.buttonContainer}>
-              <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                <Pressable onPress={() => handleLike(albumName)}>
-                  {isLiked === true ? (
-                      <View style={[styles.unLikeBtn]}>
-                        <Text style={styles.unLikeText}>
-                          UNLIKE
-                        </Text>
-                      </View>
-                  ) : (
-                      <View style={styles.likeBtn}>
-                        <Text style={styles.likeText}>
-                          LIKE
-                        </Text>
-                      </View>
-                  )}
-                </Pressable>
-              </View>
-              
-              <View style={{ width: "10%" }}></View>
-              <Pressable onPress={handleRandomPlaying}>
-                <FontAwesome name="random" size={getSize(18, 24, 30)} style={styles.btn} />
-              </Pressable>
+             <View style={styles.buttonContainer}>
+               <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                 <Pressable onPress={() => handleLike(albumName)}>
+                   {isLiked === true ? (
+                       <View style={[styles.unLikeBtn]}>
+                         <Text style={styles.unLikeText}>
+                           UNLIKE
+                         </Text>
+                       </View>
+                   ) : (
+                       <View style={styles.likeBtn}>
+                         <Text style={styles.likeText}>
+                           LIKE
+                         </Text>
+                       </View>
+                   )}
+                 </Pressable>
+               </View>
 
-              <Pressable onPress={() => handlePlaying(trackList)}>
-              {isPlaying === true && hasPlayedInthisPage === true?  (
-                  <FontAwesome
-                    name="pause-circle"
-                    size={getSize(50, 65, 80)}
-                    style={styles.btn}
-                  />
-              ) : (
-                  <FontAwesome
-                    name="play-circle"
-                    size={getSize(50, 65, 80)}
-                    style={styles.btn}
-                  />
-              )}
-              </Pressable>
-            </View>
-          </View>
+               <View style={{ width: "10%" }}></View>
+               <Pressable onPress={handleRandomPlaying}>
+                 <FontAwesome name="random" size={getSize(18, 24, 30)} style={styles.btn} />
+               </Pressable>
+
+               <Pressable onPress={() => handlePlaying(trackList)}>
+                 {isPlaying === true && hasPlayedInthisPage === true?  (
+                     <FontAwesome
+                         name="pause-circle"
+                         size={getSize(50, 65, 80)}
+                         style={styles.btn}
+                     />
+                 ) : (
+                     <FontAwesome
+                         name="play-circle"
+                         size={getSize(50, 65, 80)}
+                         style={styles.btn}
+                     />
+                 )}
+               </Pressable>
+             </View>
+           </View>
 
 
-          <View style={{ margin: 24 }}>
-            <View style={{ flexDirection: "row", alignItems:"center"}}>
-              <Text style={styles.popularText}>Tracks</Text>
-              <View style={{ flexGrow: 1}}></View>
-              <Pressable onPress={() => handleSeeMoreTrack()}>
-                <Text style={styles.seeAll}>See all</Text>
-              </Pressable>
-            </View>
+           <View style={{ margin: 24 }}>
+             <View style={{ flexDirection: "row", alignItems:"center"}}>
+               <Text style={styles.popularText}>Tracks</Text>
+               <View style={{ flexGrow: 1}}></View>
+               <Pressable onPress={() => handleSeeMoreTrack()}>
+                 <Text style={styles.seeAll}>See all</Text>
+               </Pressable>
+             </View>
 
-            { trackList &&
-                trackList.slice(0, seeMoreTrack? trackList.length: 6).map((track) => (
-                    <Pressable
-                        key={track._id}
-                        onPress={() => handlePlayMusic(track)}
-                    >
-                        <View>
-                          <TrackItem
-                              trackData={track}
-                              selectedTrack={selectedTrack}
-                              imageWidth={getSize(60, 100, 140)}
-                              imageHeight={getSize(60, 100, 140)}
-                              shownOnResultList={true}
-                              showViewAndDuration={true}
+             { trackList &&
+                 trackList.slice(0, seeMoreTrack? trackList.length: 6).map((track) => (
+                     <Pressable
+                         key={track._id}
+                         onPress={() => handlePlayMusic(track)}
+                     >
+                       <View>
+                         <TrackItem
+                             trackData={track}
+                             selectedTrack={selectedTrack}
+                             imageWidth={getSize(60 , 80, 100)}
+                             imageHeight={getSize(60 , 80, 100)}
+                             shownOnResultList={true}
+                             showViewAndDuration={true}
+                             setSelectedTrack={setSelectedTrack}
+                         />
+                       </View>
+                     </Pressable>)
+                 )}
 
-                              setSelectedTrack={setSelectedTrack}
-                          />
-                        </View>
-                    </Pressable>)
-                )}
+           </View>
 
-          </View>
-
-        </View>
-      </ScrollView>
-
-      {selectedTrack && (
-        <View
-          style={
-            isMinimized
-              ? styles.minimizedScreenContainer
-              : styles.fullScreenContainer
-          }
-        >
-          <MusicPlayerScreen
-              isPlaying={isPlaying}
-            trackData={selectedTrack}
-            isMinimized={isMinimized}
-            handleMinimizedScreen={handleMinimizedScreen}
-          />
-        </View>
-      )}
-    </View>
+         </View>
+         <View style={{marginTop: 100}}></View>
+       </ScrollView>
+     </View>
+     {selectedTrack && (
+         <View
+             style={
+               [isMinimized
+                   ? styles.minimizedScreenContainer
+                   : styles.fullScreenContainer
+             ]}
+         >
+           <MusicPlayerScreen
+               isPlaying={isPlaying}
+               trackData={selectedTrack}
+               isMinimized={isMinimized}
+               handleMinimizedScreen={handleMinimizedScreen}
+           />
+         </View>
+     )}
+   </>
   );
 };
 
@@ -287,13 +288,13 @@ const styles = StyleSheet.create({
   name: {
     fontWeight: "bold",
     marginTop: 10,
-    fontSize: getSize(30, 32, 45),
+    fontSize: getSize(20, 20, 45),
   },
 
   playCount: {
     fontWeight: "200",
     marginTop: getSize(10, 15, 20),
-    fontSize: getSize(16, 22, 28),
+    fontSize: getSize(16, 18, 22),
   },
 
   space: {
@@ -306,19 +307,19 @@ const styles = StyleSheet.create({
 
   image: {
     marginTop: "8%",
-    height: getSize(160, 190, 250),
-    width: getSize(160, 190, 250),
+    height: getSize(160, 160, 250),
+    width: getSize(160, 160, 250),
     borderRadius: 20,
     marginBottom: "3%",
   },
 
   likeText: {
     color: "grey",
-    fontSize: getSize(16, 20, 26),
+    fontSize: getSize(14, 14, 26),
   },
   unLikeText: {
     color: "red",
-    fontSize: getSize(16, 20, 26),
+    fontSize: getSize(14, 14, 26),
   },
   likeBtn: {
     borderRadius: 20,

@@ -26,7 +26,7 @@ const MusicPlayerContent = ({
     setIsPlaying
 }) => {
   //console.log(JSON.stringify(trackData))
-  const {name, likeCount, commentCount, imageUrl } = trackData;
+  const {name, imageUrl, likeUserId, _id, likeCount } = trackData;
   const artistName = trackData.artistId.name;
   const translateY = useSharedValue(0);
 
@@ -93,7 +93,7 @@ const MusicPlayerContent = ({
               <View style={{ flexGrow: 1 }}></View>
               <ButtonGroup  trackData={trackData}/>
               <View style={{ flexGrow: 1 }}></View>
-              <CommentSection likeCount={likeCount} commentCount={commentCount} />
+              <CommentSection likeUserId={likeUserId} trackId={_id} likeCount={likeCount}/>
             </LinearGradient>
           </Animated.View>
         </GestureDetector>

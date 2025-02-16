@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { MusicPlayerProvider } from "@/context/MusicPlayerContext";
 import getSize from "@/components/AdjustSizeByScreenSize";
 import LibraryScreenNavigator from "@/screen/LibraryScreenNavigator";
+import SearchScreenNavigator from "@/screen/SearchScreenNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -62,7 +63,7 @@ export default function Page() {
                                 />
                             <Tab.Screen
                                 name="Search"
-                                component={SearchScreen}
+                                component={SearchScreenNavigator}
                                 options={{
                                     tabBarIcon: ({ focused }) => (
                                         <Ionicons

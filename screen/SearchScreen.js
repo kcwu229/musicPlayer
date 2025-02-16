@@ -8,7 +8,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import getSize from "../components/AdjustSizeByScreenSize";
 const { height } = Dimensions.get("window");
 
-const SearchScreen = () => {
+const SearchScreen = ({navigation}) => {
   const {
     selectedTrack,
     setSelectedTrack,
@@ -21,7 +21,8 @@ const SearchScreen = () => {
       <ScrollView style={{ padding: 24 }} showsVerticalScrollIndicator={false}>
         <Text style={styles.search}>Search</Text>
         <SearchBar />
-        <SearchResultPage setSelectedTrack={setSelectedTrack} />
+        <SearchResultPage setSelectedTrack={setSelectedTrack} navigation={navigation}/>
+        <View style={{marginTop: 150}}></View>
       </ScrollView>
 
       <View style={{ flex: 1 }}>
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: "white"
   },
   fullScreenContainer: {
     position: "absolute",

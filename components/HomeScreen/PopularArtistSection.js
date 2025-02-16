@@ -14,8 +14,7 @@ import ArtistItem from "@/components/ArtistItem";
 
 const { height, width } = Dimensions.get("window");
 
-const PopularArtistSection = () => {
-  const navigation = useNavigation();
+const PopularArtistSection = ({navigation}) => {
   const navigateToArtistInfoPage = (selectedArtistData) => {
     navigation.navigate("ArtistInfo", {
       artistData: { selectedArtistData },
@@ -33,7 +32,6 @@ const PopularArtistSection = () => {
       try {
         const result = await fetch(url);
         const data = await result.json();
-        //console.log(data.data)
         setArtistList(data.data);
 
       } catch (err) {
@@ -63,10 +61,11 @@ const PopularArtistSection = () => {
               onPress={() => navigateToArtistInfoPage(data)}
             >
               <ArtistItem
+                  navigation={navigation}
                 artistData={data}
                 allowFollowButton={true}
-                imageWidth={getSize(100, 140, 180)}
-                imageHeight={getSize(100, 140, 180)}
+                imageWidth={getSize(100, 120, 160)}
+                imageHeight={getSize(100, 120, 160)}
                 displayFollower={false}
               />
             </Pressable>

@@ -1,9 +1,12 @@
 import React from "react";
-import { SafeAreaView, View, Text, StyleSheet } from "react-native";
+import { SafeAreaView, View, Text, StyleSheet, Image } from "react-native";
 import LoginScreenNavigator from "@/screen/LoginScreenNavigator";
+import comingSoonImage from "@/assets/images/comingSoon.png"
 
 const FeedScreen = () => {
-    return <LoginScreenNavigator/>;
+    return <>
+        <Image source={comingSoonImage} resizeMode="cover" style={{ flex: 1, width: "100%" }} />
+    </>;
 }
 const styles = StyleSheet.create({
   container: {

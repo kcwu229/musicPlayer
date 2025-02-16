@@ -15,12 +15,15 @@ import AlbumItem from "@/components/AlbumItem";
 const screenHeight = Dimensions.get("window").height;
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
 import CreateAlert from "@/components/AlertComponent";
+import {useUserContext} from "@/context/UserContext";
 import getSize from "../components/AdjustSizeByScreenSize";
 
 const ArtistInfo = ({ route }) => {
   const { artistData } = route.params;
+  const {userId, token} = useUserContext()
   const { selectedArtistData } = artistData;
-  const artistId = selectedArtistData._id;
+  const artistId = selectedArtistData._id ;
+  const followerList = selectedArtistData.followerId;
   const { imageUrl, followerCount, description, genres } = selectedArtistData;
   const artistName = selectedArtistData.name;
   const {
@@ -32,24 +35,43 @@ const ArtistInfo = ({ route }) => {
       setIsPlaying,
       handlePlayTrack,
   } = useMusicPlayer();
-  const [hasFollowed, setHasFollow] = useState(false);
+  const [hasFollowed, setHasFollow] = useState(followerList.toString().includes(userId));
   const [hasPlayedInthisPage, setHasPlayedInthisPage] = useState(false);
 
-  const handleFollow = (name) => {
-    if (true) {
-      CreateAlert("Authentication Error", "Require login to follow artist");
+
+  const fetchFollowAction = async (artistId) => {
+    const url = Platform.OS === "ios"
+        ? process.env.EXPO_PUBLIC_BASE_URL + `user/follow/${artistId}`
+        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/follow/${artistId}`;
+    try {
+      const result = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
     }
 
-    else {
-      if (hasFollowed === true) {
-        console.log(`You haved unfollow artist - ${name}`);
-        setHasFollow(!hasFollowed);
+    catch (err) {
+      console.log();
+    }
+  }
+
+  const handleFollow = (name) => {
+      if (token.length === 0) {
+        CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
       } else {
-        console.log(`You haved follow artist - ${name}`);
-        setHasFollow(!hasFollowed);
+        if (hasFollowed === true) {
+          console.log(`You haved unfollow artist - ${artistName}`);
+          setHasFollow(!hasFollowed);
+        } else {
+          console.log(`You haved follow artist - ${artistName}`);
+          setHasFollow(!hasFollowed);
+        }
+        fetchFollowAction(artistId)
       }
     }
-  };
 
   const formatFollowerCount = (count) => {
     if (count < 1000) return count.toString();
@@ -57,7 +79,6 @@ const ArtistInfo = ({ route }) => {
     if (count >= 1000000) return (count / 1000000).toFixed(1) + "M";
     return count.toString();
   };
-
 
   const handleRandomPlaying = () => {
     console.log("random playing");
@@ -84,7 +105,6 @@ const ArtistInfo = ({ route }) => {
     else {
       console.error("Error: trackList is null or undefined");
     }
-
   };
 
   const handleSelectSong = (trackData) => {
@@ -169,7 +189,7 @@ const ArtistInfo = ({ route }) => {
               {genres.length > 0 && (
                   genres.map((genre) => (
                       <View key={genre._id} style={[styles.genreBadge]}>
-                        <Text style={[styles.followText, {color: "orange"}]}>{genre.name}</Text>
+                        <Text style={[styles.genreText, {color: "orange"}]}>{genre.name}</Text>
                       </View>
                   ))
               )}
@@ -233,8 +253,8 @@ const ArtistInfo = ({ route }) => {
                   >
                     <AlbumItem
                       albumData={album}
-                      imageWidth={getSize(100,100,140)}
-                      imageHeight={getSize(100,100,140)}
+                      imageWidth={getSize(60 , 80, 100)}
+                      imageHeight={getSize(60 , 80, 100)}
                       artistFontSize={12}
                       titleFontSize={getSize(14,18,22)}
                       shownOnResultList={false}
@@ -262,8 +282,8 @@ const ArtistInfo = ({ route }) => {
                       <TrackItem
                           trackData={track}
                           selectedTrack={selectedTrack}
-                          imageWidth={getSize(100 , 100, 140)}
-                          imageHeight={getSize(100 , 100, 140)}
+                          imageWidth={getSize(60 , 80, 100)}
+                          imageHeight={getSize(60 , 80, 100)}
                           shownOnResultList={true}
                           showViewAndDuration={true}
                           setSelectedTrack={setSelectedTrack}
@@ -278,8 +298,8 @@ const ArtistInfo = ({ route }) => {
             <Text style={styles.descriptionText}>{description}</Text>
           </View>
         </View>
+        <View style={{marginTop: 100}}></View>
       </ScrollView>
-
       {selectedTrack && (
         <View
           style={
@@ -389,19 +409,22 @@ const styles = StyleSheet.create({
 
   image: {
     marginTop: "8%",
-    height: getSize(160,180,200),
-    width: getSize(160,180,200),
+    height: getSize(100,120,160),
+    width: getSize(100,120,160),
     borderRadius: 100,
   },
-
+  genreText: {
+    color: "grey",
+    textTransform: "uppercase",
+    fontSize: getSize(12,14,16),
+  },
   followText: {
     color: "grey",
-    fontSize: getSize(14,16,24),
-    textTransform: "uppercase"
+    fontSize: getSize(12,14,16),
   },
   unfollowText: {
     color: "red",
-    fontSize: getSize(14,16,24),
+    fontSize: getSize(12,14,16),
   },
   genreBadge: {
     borderRadius: 10,

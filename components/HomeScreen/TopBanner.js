@@ -9,12 +9,14 @@ import {
   Dimensions,
 } from "react-native";
 import getSize  from "../AdjustSizeByScreenSize";
-const userIcon = require("../../assets/images/icon.jpg");
+import {useUserContext} from "@/context/UserContext";
 const { height, width } = Dimensions.get("window");
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import unknownUserIcon from "@/assets/images/unknown.png";
 
-const TopBanner = () => {
+const TopBanner = ({token, navigation, logout}) => {
   const notificationData = [{ notification: "Welcome to Sam Music Player !" }];
+  const {username} = useUserContext();
 
   const checkForNotification = () => {
     if (notificationData) {
@@ -52,8 +54,13 @@ const TopBanner = () => {
           </Text>
         </View>
       )}
-      <Pressable onPress={() => console.log("click the user")}>
-        <Image source={userIcon} style={styles.userIcon} />
+      <Pressable onPress={() => token.length === 0  ? navigation.navigate("LoginScreen", {
+        name: "Home "
+      }) : logout()}>
+        {token
+            ? <View style={[styles.userIcon, { justifyContent: "center", alignItems: "center" }]}><Text style={{fontSize: 28}}>{username.substring(0, 1)}</Text></View>
+            : <Image source={unknownUserIcon} style={styles.userIcon} />
+        }
       </Pressable>
     </View>
   );

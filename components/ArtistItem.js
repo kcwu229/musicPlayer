@@ -5,28 +5,27 @@ import {
   StyleSheet,
   Pressable,
   Image,
-  Dimensions,
+  Dimensions, Platform,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 const { height, width } = Dimensions.get("window");
 import CreateAlert from "@/components/AlertComponent";
 import getSize from "./AdjustSizeByScreenSize";
-import { useNavigation } from "@react-navigation/native";
+import {useUserContext} from "@/context/UserContext";
 
-
-const ArtistIcon = ({
+const ArtistItem = ({
   artistData,
   allowFollowButton = false,
   imageWidth,
   imageHeight,
   shownOnResultList = false,
   displayFollower = false,
+    navigation
 }) => {
-  const { followerCount, imageUrl, artist, name } = artistData;
-  const [hasFollowed, setHasFollow] = useState(false);
-  const navigation = useNavigation();
-
+  const {token, userId} = useUserContext();
+  const { followerCount, imageUrl, name, _id, followerId } = artistData;
+  const [hasFollowed, setHasFollow] = useState(followerId.toString().includes(userId));
 
   const formatFollowerCount = (count) => {
     if (count < 1000) return count.toString();
@@ -35,13 +34,33 @@ const ArtistIcon = ({
     return count.toString();
   };
 
+  const fetchFollowAction = async (artistId) => {
+    const url = Platform.OS === "ios"
+        ? process.env.EXPO_PUBLIC_BASE_URL + `user/follow/${artistId}`
+        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/follow/${artistId}`;
 
-  const handleFollow = (artistName) => {
-    if (true) {
-      CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
+    console.log(url)
+
+    try {
+      const result = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
     }
 
-    else {
+      catch (err) {
+        console.log();
+    }
+  }
+
+
+  const handleFollow = (artistName) => {
+    if (token.length === 0) {
+      CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
+    } else {
       if (hasFollowed === true) {
         console.log(`You haved unfollow artist - ${artistName}`);
         setHasFollow(!hasFollowed);
@@ -49,8 +68,9 @@ const ArtistIcon = ({
         console.log(`You haved follow artist - ${artistName}`);
         setHasFollow(!hasFollowed);
       }
-    }
-  };
+      fetchFollowAction(_id)
+    };
+  }
 
   return (
     <View
@@ -62,8 +82,10 @@ const ArtistIcon = ({
           style={[styles.image, { width: imageWidth, height: imageHeight }]}
         />
       </View>
-      <View>
-        <Text style={shownOnResultList ? styles.nameOnList : styles.name}>
+      <View style={{ width: shownOnResultList ? "50%" : imageWidth}}>
+        <Text
+            style={shownOnResultList ? styles.nameOnList : styles.name}
+            numberOfLines={1} ellipsizeMode={"tail"}>
           {name}
         </Text>
         {followerCount != null && displayFollower == true ? (
@@ -76,15 +98,11 @@ const ArtistIcon = ({
       {allowFollowButton ? <View style={styles.space}></View> : null}
       {allowFollowButton ? (
         <Pressable onPress={() => handleFollow(name)}>
-          {hasFollowed === true ? (
-            <View style={styles.unfollowBtn}>
-              <Text style={styles.unfollowText}>Unfollow</Text>
+            <View style={[styles.followBtn, {borderColor: hasFollowed ? "rgba(255, 0, 0, 0.8)" : "grey"}]}>
+              <Text style={[styles.followText, {color: hasFollowed ? "red" : "grey"}]}>
+                {hasFollowed ? "Unfollow" : "Follow"}
+              </Text>
             </View>
-          ) : (
-            <View style={styles.followBtn}>
-              <Text style={styles.followText}>Follow</Text>
-            </View>
-          )}
         </Pressable>
       ) : null}
     </View>
@@ -105,6 +123,7 @@ const styles = StyleSheet.create({
   },
   user: {
     marginLeft: 10,
+    color: "purple"
   },
   followerRow: {
     flexDirection: "row",
@@ -116,7 +135,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     paddingVertical: 4,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: StyleSheet.hairlineWidth,
   },
   followerCount: {
     color: "grey",
@@ -164,6 +182,7 @@ const styles = StyleSheet.create({
     fontSize: getSize(13, 18,25),
     margin: 10,
     color: "black",
+    textAlign: "center"
   },
 
   description: {
@@ -174,4 +193,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ArtistIcon;
+export default ArtistItem;

@@ -5,214 +5,214 @@ import {
     StyleSheet,
     TextInput,
     Pressable,
-    Platform
+    Platform,
+    Image,
+    FlatList
 } from 'react-native';
-import {BlurView} from "expo-blur";
-import { LinearGradient } from "expo-linear-gradient";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {useUserContext} from "@/context/UserContext";
+
 const backgroundImage = require("../../assets/images/loginBg.jpg");
 import getSize from "../../components/AdjustSizeByScreenSize";
+import CreateAlert from "@/components/AlertComponent";
 
 const ArtistListScreen = ({ navigation }) => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState({username: "", password: ""})
-    const [usernameFail, setUsernameFail] = useState(false);
-    const [passwordFail, setPasswordFail] = useState(false);
+    const [followedArtist, setFollowedArtist] = useState([]);
+    const [hasFollowed, setHasFollowed] = useState([])
+    const {userId, token} = useUserContext();
 
-    const handleNavigateToSignUpPage = () => {
-        navigation.navigate("SignUpScreen", {
-            signUpData: {}
-        })
-    }
-    const handleInputUsername = (text) => {
-        setUsername(text)
-    }
-
-    const handleInputPassword = (text) => {
-        setPassword(text)
-    }
-
-    const formValidation = () => {
-        setPasswordFail(false)
-        setUsernameFail(false)
-        console.log("ssss")
-        if (username === "") {
-            console.log("Username is empty")
-            setErrors(prevErrors => ({ ...prevErrors, username: "Username is empty" }));
-            setUsernameFail(true)
-        }
-
-        if (password === "") {
-            console.log("Password is empty")
-            setErrors(prevErrors => ({ ...prevErrors, password: "Password is empty" }));
-            setPasswordFail(true)
-        }
-
-        return {usernameFail, passwordFail};
-    }
-    const submitLoginForm = async () => {
-        const {usernameFail, passwordFail} = formValidation();
-        if (!usernameFail && !passwordFail ) {
-            console.log("well done")
-
-            const loginData = {
-                username: username,
-                password: password
+    const handleNavigateToArtistInfo = (artistData) => {
+        navigation.navigate("ArtistInfo", {
+            artistData: {
+                selectedArtistData: artistData
             }
+        });
 
-            const url = Platform.OS === "ios"
-                ? process.env.EXPO_PUBLIC_BASE_URL + `auth/sign-up`
-                : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `auth/sign-up`;
+    }
 
+    const handleFollow = (artistData, index) => {
+        if (token.length === 0) {
+            CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
+        } else {
+            if (hasFollowed) {
+                console.log(`You haved unfollow artist - ${artistData.name}`);
+                setHasFollowed(prevState => {
+                    const newFollowState = [...prevState];
+                    newFollowState[index] = !newFollowState[index];
+                    return newFollowState;
+                })
+                fetchFollowAction(artistData._id)
+            }
+        };
+    }
+
+    const fetchFollowAction = async (artistId) => {
+        const url = Platform.OS === "ios"
+            ? process.env.EXPO_PUBLIC_BASE_URL + `user/follow/${artistId}`
+            : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/follow/${artistId}`;
+
+        try {
+            await fetch(url, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            })
+        }
+        catch (err) {
+            console.log();
+        }
+    }
+
+    useEffect(() => {
+        const fetchFollowedArtist = async (userId) => {
             try {
+                const url = Platform.OS === "ios"
+                    ? process.env.EXPO_PUBLIC_BASE_URL + `user/followedArtists`
+                    : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/followedArtists`;
+
                 const result = await fetch(url, {
-                    method: "POST",
                     headers: {
+                        "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(loginData)
                 })
+
                 if (result.ok) {
                     const data = await result.json();
+                    const hasFollowList = data.data.map(followedData => {
+                        return true;
+                    })
+                    setHasFollowed(hasFollowList)
+                    setFollowedArtist(data.data)
                 }
             }
-            catch (error) {
-                console.log(error)
+            catch (err) {
+                console.log();
             }
         }
-    }
+        fetchFollowedArtist();
+    }, [hasFollowed])
 
-    return (
-        <>
-            <ImageBackground source={backgroundImage} resizeMode="cover" style={styles.imageBg} blurRadius={Platform === "ios" ? 6 : 3 } >
-            </ImageBackground>
-            <LinearGradient
-                colors={["rgba(128, 0, 128, 0.3)", "rgba(255, 165, 0, 0.21)"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.colorFilter}>
-            </LinearGradient>
-            <View style={styles.container}>
-                <View style={{ flexGrow: 3 }}></View>
-                <BlurView intensity={10} style={{ overflow: "hidden", borderRadius: 20}}>
-                    <View style={styles.blurContainer}>
-                    <View style={{ flexGrow: 1 }}></View>
-                    <Text style={styles.heading}>LOGIN</Text>
-                        <View style={{ flexGrow: 2 }}></View>
-                        <View>
-                            <TextInput style={styles.textField} placeholder="Username" placeholderTextColor="white" value={username} onChangeText={handleInputUsername} />
-                            { usernameFail ? <Text style={[styles.errorText, {color: "pink"}]}>* {errors.username}</Text> : null }
-                        </View>
-                        <View style={{marginTop: 20}}>
-                            <TextInput style={styles.textField} placeholder="Password" placeholderTextColor="white"
-                                       value={password} onChangeText={handleInputPassword} secureTextEntry/>
-                            { passwordFail ? <Text style={[styles.errorText,{color: "pink"}]}>* {errors.password}</Text> : null }
-                        </View>
-                        <View style={{ flexGrow: 1 }}></View>
-                        <View style={{borderRadius: 20, overflow: "hidden"}}>
-                            <Pressable style={{ zIndex: 2}} onPress={() => submitLoginForm()}>
-                                <Text style={styles.submitBtn}>LOGIN</Text>
+    return(
+        <FlatList
+            data={followedArtist}
+            style={{backgroundColor: "white", paddingHorizontal: 20}}
+            renderItem={({ item, index }) => (
+                            <Pressable onPress={() => handleNavigateToArtistInfo(item)}>
+                                <View style={styles.artistItemOnList}>
+                                    <View>
+                                        <Image
+                                            source={{uri: item.imageUrl}}
+                                            style={[styles.image, {
+                                                width: getSize(60, 70, 100),
+                                                height: getSize(60, 70, 100)
+                                            }]}
+                                        />
+                                    </View>
+                                    <View>
+                                        <Text style={styles.nameOnList}>
+                                            {item.name}
+                                        </Text>
+                                    </View>
+                                    {<View style={styles.space}></View>}
+                                    {
+                                        <Pressable onPress={() => handleFollow(item, index)}>
+                                            {hasFollowed[index] && (
+                                                <View style={styles.unfollowBtn}>
+                                                    <Text style={styles.unfollowText}>Unfollow</Text>
+                                                </View>
+                                            )}
+                                        </Pressable>
+                                    }
+                                </View>
                             </Pressable>
-                        </View>
-                        <View style={{flexDirection: "row", marginTop: 30}}>
-                            <Text style={styles.smallFont}>No account yet ? </Text>
-                            <View style={{ flexGrow: 1 }}></View>
-                            <Pressable onPress={() => handleNavigateToSignUpPage()}>
-                                <Text style={[styles.smallFont, {fontWeight: "bold"}]}>Sign Up</Text>
-                            </Pressable>
-                        </View>
-                        <View style={{ flexGrow: 2 }}></View>
-                    </View>
-                </BlurView>
-            </View>
-        </>
-    );
-}
+            )}
+            keyExtractor={item => item._id} />
+);
+};
 
 const styles = StyleSheet.create({
-    container: {
-        position: "absolute",
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        top: "10%",
-        left: "2%",
-        right: "2%",
-        bottom: "10%"
+    followText: {
+        color: "grey",
+        fontSize: getSize(15, 16,22),
+    },
+    unfollowText: {
+        color: "red",
+        fontSize: getSize(15, 16,22),
+    },
+    space: {
+        flexGrow: 2,
+    },
+    user: {
+        marginLeft: 10,
+    },
+    followerRow: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    artistItemOnList: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginHorizontal: 10,
+        paddingVertical: 4,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        marginBottom: StyleSheet.hairlineWidth,
+    },
+    followerCount: {
+        color: "grey",
+        fontSize: 15,
+        marginLeft: 10,
+    },
+    followBtn: {
+        borderRadius: 20,
+        borderColor: "grey",
+        borderWidth: 1,
+        padding: 10,
+        paddingHorizontal: 20,
+    },
+    unfollowBtn: {
+        borderRadius: 20,
+        borderColor: "red",
+        borderWidth: 1,
+        padding: 10,
+        paddingHorizontal: 20,
+    },
+    image: {
+        borderRadius: 100,
+        backgroundColor: "black",
+        marginTop: 15,
+        shadowColor: "black",
+        shadowOffset: { width: 1, height: -1 },
+        shadowRadius: 1,
+        shadowOpacity: 0.8, // Add shadowOpacity for better control
+        elevation: 5,
+    },
 
+    artistItem: {
+        flexDirection: "column",
+        marginRight: getSize(10, 15,20),
+        marginTop: getSize(5, 13,20),
+        alignItems: "center",
     },
-    blurContainer: {
-        justifyContent: 'center',
-        backgroundColor: "rgba(195,80,143,0.14)",
-        alignItems: 'center',
-        paddingHorizontal: 40,
-        borderColor: "rgba(255,255,255,0.25)",
-        borderWidth: 2,
-        borderRadius: 20,
+    nameOnList: {
+        fontSize: 20,
+        margin: 10,
+        color: "black",
+        marginLeft: 10,
     },
-    heading: {
-        color: 'white',
-        fontWeight: "bold",
-        fontSize: getSize(25, 40, 40),
-        zIndex: 2,
+    name: {
+        fontSize: getSize(13, 18,25),
+        margin: 10,
+        color: "black",
     },
-    smallFont: {
-        color: 'white',
-        fontWeight: "300",
-        fontSize: getSize(12, 18, 18),
-        zIndex: 2,
-    },
-    errorText: {
-        fontWeight: "300",
-        fontSize: getSize(10, 16,16),
-        zIndex: 2
-    },
-    subHeading: {
-        color: 'white',
-        fontWeight: "200",
-        fontSize: getSize(10, 16,30),
-        zIndex: 2
-    },
-    submitBtn: {
-        color: 'black',
-        fontWeight: "bold", // Add this line
-        fontSize: getSize(15,17, 17),
-        zIndex: 2,
-        borderRadius: 20,
-        backgroundColor: "white",
-        paddingVertical: getSize(9, 10, 10),
-        paddingHorizontal: getSize("20%", "20%","20%"),
-    },
-    imageBg: {
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        position: "relative"
-    },
-    textField: {
-        color: 'white',
-        position: "relative",
-        fontSize: getSize(20,18,18),
-        zIndex: 2,
-        fontWeight: "200",
-        backgroundColor: "rgba(128, 128, 128, 0.18)",
-        width: getSize("98%", "98%", "98%"),
-        borderColor: "white",
-        borderWidth:1,
-        paddingHorizontal:getSize(30,80,80) ,
-        paddingVertical: 5,
-        borderRadius: 10,
-    },
-    colorFilter: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        opacity: 0.8
+
+    description: {
+        alignItems: "center",
+        alignSelf: "center",
+        alignContent: "center",
+        width: "auto",
     },
 });
 

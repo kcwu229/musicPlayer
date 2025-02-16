@@ -11,7 +11,7 @@ export const MusicPlayerProvider = ({ children }) => {
   const [trackDuration, setTrackDuration] = useState(0);
   const [trackCurrentDuration, setTrackCurrentDuration] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
-  const [likeCount, setLikeCount] = useState(0);
+  const [likeCount, setLikeCount] = useState( 0);
   const [sound, setSound] = useState(null);
     const intervalRef = useRef(null);
     const [initialPlay, setInitialPlay] = useState(true);

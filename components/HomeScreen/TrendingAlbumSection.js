@@ -51,19 +51,12 @@ const TrendingAlbumSection = () => {
       >
         {albumList.map((data) => {
           return (
-            <Pressable
-              key={data._id}
-              onPress={() => {
-                () => handlePlayMusic(data);
-              }}
-            >
-              <AlbumItem
+              <AlbumItem key={data._id}
                 albumData={data}
-                imageWidth={getSize(100, 150, 200)}
-                imageHeight={getSize(100, 150, 200)}
+                imageWidth={getSize(100, 120, 160)}
+                imageHeight={getSize(100, 120, 160)}
                 style={styles.albumItem}
               />
-            </Pressable>
           );
         })}
       </ScrollView>

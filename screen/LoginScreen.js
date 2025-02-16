@@ -13,6 +13,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, {useState, useEffect} from "react";
 const backgroundImage = require("../assets/images/loginBg.jpg");
 import getSize from "../components/AdjustSizeByScreenSize";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation, route }) => {
     const [_username, _setUsername] = useState("");
@@ -21,7 +22,7 @@ const LoginScreen = ({ navigation, route }) => {
     const [usernameFail, setUsernameFail] = useState(false);
     const [passwordFail, setPasswordFail] = useState(false);
     const [serverError, setServerError] = useState("");
-    const {setUserId, setToken, setUsername} = useUserContext();
+    const { setToken, setUsername} = useUserContext();
 
     useEffect(() => {
         if (route.params && route.params.loginData) {
@@ -29,7 +30,15 @@ const LoginScreen = ({ navigation, route }) => {
             setPassword(loginData.password);
             _setUsername(loginData.username);
         }
-    }, [route.params]);
+    }, []);
+
+    const storeData = async (keyName, value) => {
+        try {
+            await AsyncStorage.setItem(keyName, value);
+        } catch (e) {
+            // saving error
+        }
+    };
 
     const handleNavigateToSignUpPage = () => {
         navigation.navigate("SignUpScreen", {
@@ -89,9 +98,19 @@ const LoginScreen = ({ navigation, route }) => {
                     const data = await result.json();
                     const token = data.data.token;
                     const username = data.data.username;
+                    const userId = data.data.userId;
                     setToken(token);
                     setUsername(username);
-                    navigation.navigate("LibraryScreen");
+                    storeData("@accessToken", token);
+                    storeData("@username", username);
+                    storeData("@userId", userId);
+
+                    if (route.params && route.params.name) {
+                        navigation.navigate(route.params.name)
+                    }
+                    else {
+                        navigation.navigate("Library");
+                    }
                 }
 
                 else if (result.status === 403) {

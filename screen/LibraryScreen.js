@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {View, StyleSheet, Text, Platform, StatusBar, Image, Pressable} from "react-native";
-import SignUpScreen from "@/screen/SignUpScreen";
 import {ScrollView} from "react-native-gesture-handler";
 import SearchBar from "@/components/HomeScreen/SearchBar";
 import SearchResultPage from "@/components/SearchScreen/SearchResultPage";
@@ -15,7 +14,7 @@ import unknownUserIcon from "@/assets/images/unknown.png";
 const LibraryScreen = ({navigation}) => {
 
   const screenList = ["Playlists", "Artists", "Albums", "Tracks", "Genres"];
-  const navigateScreenList = ["PlayListScreen", "ArtistScreen","AlbumScreen","TrackScreen","GenreScreen"]
+  const navigateScreenList = ["Playlists", "Artists","Albums","Tracks","Genres"]
   const logoList = ["list", "microphone", "cube", "music", "tags"];
   const [recentAddedList, setRecentAddedList] = useState(null);
 
@@ -24,9 +23,13 @@ const LibraryScreen = ({navigation}) => {
     setSelectedTrack,
     isMinimized,
     handleMinimizedScreen,
+    handlePlayTrack,
+    setTrackUrl,
+    isPlaying,
+    setIsPlaying
   } = useMusicPlayer();
 
-  const {token} = useUserContext()
+  const {token, logout, username} = useUserContext()
 
   useEffect(() => {
     try {
@@ -44,9 +47,9 @@ const LibraryScreen = ({navigation}) => {
           <View style={styles.topBannerContainer}>
             <Text style={styles.libraryText}>Library</Text>
             <View style={{flexGrow:1}}></View>
-            <Pressable onPress={() => token.length === 0  ? navigation.navigate("LoginScreen") : console.log("click the user")}>
+            <Pressable onPress={() => token.length === 0  ? navigation.navigate("LoginScreen") : logout()}>
               {token
-                  ? <Image source={userIcon} style={styles.userIcon} />
+                  ? <View style={[styles.userIcon, { justifyContent: "center", alignItems: "center" }]}><Text style={{fontSize: 28}}>{username.substring(0, 1)}</Text></View>
                   : <Image source={unknownUserIcon} style={styles.userIcon} />
              }
             </Pressable>
@@ -77,6 +80,23 @@ const LibraryScreen = ({navigation}) => {
             )
           }
         </ScrollView>
+        {selectedTrack && (
+            <View
+                style={
+                  isMinimized
+                      ? styles.minimizedScreenContainer
+                      : styles.fullScreenContainer
+                }
+            >
+              <MusicPlayerScreen
+                  trackData={selectedTrack}
+                  isMinimized={isMinimized}
+                  handleMinimizedScreen={handleMinimizedScreen}
+                  isPlaying={isPlaying}
+                  setIsPlaying={setIsPlaying}
+              />
+            </View>
+        )}
       </View>
   );
 };
@@ -123,6 +143,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor:"white"
   },
   fullScreenContainer: {
     position: "absolute",
