@@ -93,7 +93,7 @@ const ArtistListScreen = ({ navigation }) => {
             }
         }
         fetchFollowedArtist();
-    }, [hasFollowed])
+    }, [])
 
     return(
         <FlatList

@@ -18,7 +18,7 @@ const MusicPlayerScreen = ({
       duration: 500,
       useNativeDriver: true,
     }).start();
-  }, [isMinimized, isPlaying]);
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>

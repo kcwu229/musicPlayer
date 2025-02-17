@@ -37,7 +37,6 @@ const AlbumItem = ({
 
 
   const handleLike= (albumData) => {
-    console.log("ccc")
     if (token.length === 0) {
       CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
     } else {

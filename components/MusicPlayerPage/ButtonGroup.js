@@ -1,6 +1,7 @@
 import { View, StyleSheet, Pressable, Dimensions } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import getSize from "@/components/AdjustSizeByScreenSize";
 
 const { height, width } = Dimensions.get("window");
 import {useMusicPlayer} from "@/context/MusicPlayerContext";
@@ -41,17 +42,10 @@ const ButtonGroup = ({trackData}) => {
 
   return (
     <View style={styles.musicControlList}>
-      <Pressable onPress={handleRandomPlaying}>
-        <FontAwesome
-          name="random"
-          size={width > 100 && width < 600 ? 15 : 25}
-          style={styles.btnColor}
-        />
-      </Pressable>
       <Pressable onPress={handlePreviousSong}>
         <FontAwesome
           name="step-backward"
-          size={width > 100 && width < 600 ? 15 : 25}
+          size={getSize(15,25, 35)}
           style={styles.btnColor}
         />
       </Pressable>
@@ -60,13 +54,13 @@ const ButtonGroup = ({trackData}) => {
         {isPlaying === true ? (
           <AntDesign
             name="pausecircle"
-            size={width > 100 && width < 600 ? 60 : 80}
+            size={getSize(60,80, 80)}
             style={styles.btnColor}
           />
         ) : (
           <AntDesign
             name="playcircleo"
-            size={width > 100 && width < 600 ? 60 : 80}
+            size={getSize(60,80, 80)}
             style={styles.btnColor}
           />
         )}
@@ -75,18 +69,11 @@ const ButtonGroup = ({trackData}) => {
       <Pressable onPress={handleNextSong}>
         <FontAwesome
           name="step-forward"
-          size={width > 100 && width < 600 ? 15 : 25}
+          size={getSize(15,25, 35)}
           style={[styles.btnColor]}
         />
       </Pressable>
 
-      <Pressable onPress={handleMoreOption}>
-        <FontAwesome
-          name="ellipsis-h"
-          size={width > 100 && width < 600 ? 15 : 25}
-          style={styles.btnColor}
-        />
-      </Pressable>
     </View>
   );
 };

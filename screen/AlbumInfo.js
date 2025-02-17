@@ -14,6 +14,7 @@ import React, {useEffect, useState} from "react";
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
 import getSize from "../components/AdjustSizeByScreenSize";
 import CreateAlert from "@/components/AlertComponent";
+import {useUserContext} from "@/context/UserContext";
 
 const AlbumInfo = ({ route }) => {
   const { albumData } = route.params;
@@ -21,7 +22,7 @@ const AlbumInfo = ({ route }) => {
   const selectedAlbumId = selectedAlbumData._id;
   const { imageUrl, playCount } = selectedAlbumData;
   const albumName = selectedAlbumData.name;
-
+  const {token, userId} = useUserContext();
   const {
     selectedTrack,
     setSelectedTrack,
@@ -37,21 +38,43 @@ const AlbumInfo = ({ route }) => {
   const [seeMoreTrack, setSeeMoreTrack] = useState(false);
   const [hasPlayedInthisPage, setHasPlayedInthisPage] = useState(false);
 
-  const handleLike = (name) => {
+  const handleLike = (albumData) => {
 
-    if (true) {
+    if (token.length === 0) {
       CreateAlert("Authentication Error", "Require login to follow artist");
     }
     else {
       if (isLiked === true) {
-        console.log(`You haved unliked artist - ${albumName}`);
+        //console.log(`You haved unliked artist - ${albumData.name}`);
         setIsLiked(!isLiked);
       } else {
-        console.log(`You haved liked artist - ${albumName}`);
+        //console.log(`You haved liked artist - ${albumData.name}`);
         setIsLiked(!isLiked);
       }
+      fetchLikeAction(albumData._id)
     }
   };
+
+const fetchLikeAction = async (albumId) => {
+  const url = Platform.OS === "ios"
+      ? process.env.EXPO_PUBLIC_BASE_URL + `user/like/album/${albumId}`
+      : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/like/album/${albumId}`;
+
+  try {
+    await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+
+
 
   const formatplayCount = (count) => {
     if (count < 1000) return count.toString();
@@ -85,7 +108,6 @@ const AlbumInfo = ({ route }) => {
     else {
       console.error("Error: trackList is null or undefined");
     }
-
   };
 
   const handlePlayMusic = (data) => {
@@ -112,10 +134,7 @@ const AlbumInfo = ({ route }) => {
       try {
         const result = await fetch(url);
         const data = await result.json();
-        //console.log(data.data)
         setTrackList(data.data);
-        //console.log(data.data)
-
       } catch (err) {
         console.log(err)
       }
@@ -143,7 +162,7 @@ const AlbumInfo = ({ route }) => {
 
              <View style={styles.buttonContainer}>
                <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                 <Pressable onPress={() => handleLike(albumName)}>
+                 <Pressable onPress={() => handleLike(selectedAlbumData)}>
                    {isLiked === true ? (
                        <View style={[styles.unLikeBtn]}>
                          <Text style={styles.unLikeText}>
@@ -193,7 +212,7 @@ const AlbumInfo = ({ route }) => {
                </Pressable>
              </View>
 
-             { trackList &&
+             {
                  trackList.slice(0, seeMoreTrack? trackList.length: 6).map((track) => (
                      <Pressable
                          key={track._id}

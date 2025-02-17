@@ -15,11 +15,6 @@ import ArtistItem from "@/components/ArtistItem";
 const { height, width } = Dimensions.get("window");
 
 const PopularArtistSection = ({navigation}) => {
-  const navigateToArtistInfoPage = (selectedArtistData) => {
-    navigation.navigate("ArtistInfo", {
-      artistData: { selectedArtistData },
-    });
-  };
   const [artistList, setArtistList] = useState([]);
 
   useEffect(() => {
@@ -56,11 +51,8 @@ const PopularArtistSection = ({navigation}) => {
       >
         {artistList.map((data) => {
           return (
-            <Pressable
-              key={data._id}
-              onPress={() => navigateToArtistInfoPage(data)}
-            >
               <ArtistItem
+                  key={data._id}
                   navigation={navigation}
                 artistData={data}
                 allowFollowButton={true}
@@ -68,7 +60,6 @@ const PopularArtistSection = ({navigation}) => {
                 imageHeight={getSize(100, 120, 160)}
                 displayFollower={false}
               />
-            </Pressable>
           );
         })}
       </ScrollView>

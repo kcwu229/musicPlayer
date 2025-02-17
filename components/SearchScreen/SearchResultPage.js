@@ -3,7 +3,7 @@ import {View, Pressable, StyleSheet, Dimensions, Platform} from "react-native";
 import ArtistItem from "@/components/ArtistItem";
 import AlbumItem from "@/components/AlbumItem";
 import TrackItem from "@/components/TrackItem";
-import getSize from "../AdjustSizeByScreenSize";
+import getSize from "@/components/AdjustSizeByScreenSize";
 
 const {height} = Dimensions.get("window")
 

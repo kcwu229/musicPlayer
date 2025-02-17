@@ -22,10 +22,13 @@ const ArtistInfo = ({ route }) => {
   const { artistData } = route.params;
   const {userId, token} = useUserContext()
   const { selectedArtistData } = artistData;
+  console.log( selectedArtistData);
   const artistId = selectedArtistData._id ;
   const followerList = selectedArtistData.followerId;
+  const [hasFollowed, setHasFollow] = useState(followerList.toString().includes(userId));
   const { imageUrl, followerCount, description, genres } = selectedArtistData;
   const artistName = selectedArtistData.name;
+  const [hasPlayedInthisPage, setHasPlayedInthisPage] = useState(false);
   const {
     selectedTrack,
     setSelectedTrack,
@@ -35,9 +38,6 @@ const ArtistInfo = ({ route }) => {
       setIsPlaying,
       handlePlayTrack,
   } = useMusicPlayer();
-  const [hasFollowed, setHasFollow] = useState(followerList.toString().includes(userId));
-  const [hasPlayedInthisPage, setHasPlayedInthisPage] = useState(false);
-
 
   const fetchFollowAction = async (artistId) => {
     const url = Platform.OS === "ios"
@@ -58,18 +58,16 @@ const ArtistInfo = ({ route }) => {
     }
   }
 
+  useEffect(()=>{
+
+  }, [hasFollowed])
   const handleFollow = (name) => {
       if (token.length === 0) {
         CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
       } else {
-        if (hasFollowed === true) {
-          console.log(`You haved unfollow artist - ${artistName}`);
-          setHasFollow(!hasFollowed);
-        } else {
-          console.log(`You haved follow artist - ${artistName}`);
-          setHasFollow(!hasFollowed);
-        }
-        fetchFollowAction(artistId)
+        setHasFollow(!hasFollowed);
+        //_setHasFollowed(!_hasFollowed);
+        fetchFollowAction(artistId);
       }
     }
 
@@ -167,7 +165,7 @@ const ArtistInfo = ({ route }) => {
 
     fetchAlbumList(artistId);
     fetchTrackList(artistId)
-  }, [])
+  }, [hasFollowed])
 
   return (
     <View style={{ flex: 1 }}>
@@ -246,22 +244,24 @@ const ArtistInfo = ({ route }) => {
               showsHorizontalScrollIndicator={false}
             >
               {albumList &&
-                  albumList.slice(0, seeMoreAlbum ? albumList.length : 6).map((album) => (
-                  <Pressable
-                    key={album._id}
-                    onPress={() => navigateToAlbumInfoPage(album)}
-                  >
-                    <AlbumItem
-                      albumData={album}
-                      imageWidth={getSize(60 , 80, 100)}
-                      imageHeight={getSize(60 , 80, 100)}
-                      artistFontSize={12}
-                      titleFontSize={getSize(14,18,22)}
-                      shownOnResultList={false}
-                      setSelectedTrack={setSelectedTrack}
-                    />
-                  </Pressable>
-                ))}
+                  albumList.slice(0, seeMoreAlbum ? albumList.length : 6).map((album) => {
+                    return (
+                        <Pressable
+                            key={album._id}
+                            onPress={() => navigateToAlbumInfoPage(album)}
+                        >
+                          <AlbumItem
+                              albumData={album}
+                              imageWidth={getSize(60 , 80, 100)}
+                              imageHeight={getSize(60 , 80, 100)}
+                              artistFontSize={12}
+                              titleFontSize={getSize(14,18,22)}
+                              shownOnResultList={false}
+                              setSelectedTrack={setSelectedTrack}
+                          />
+                        </Pressable>
+                    )
+                  })}
             </ScrollView>
           </View>
 

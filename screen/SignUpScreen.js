@@ -40,7 +40,6 @@ const SignUpScreen = () => {
     const formValidation = () => {
         setPasswordFail(false)
         setUsernameFail(false)
-        console.log("ssss")
         if (username === "") {
             console.log("Username is empty")
             setErrors(prevErrors => ({ ...prevErrors, username: "Username is empty" }));

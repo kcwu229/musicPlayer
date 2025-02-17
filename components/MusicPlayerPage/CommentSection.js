@@ -4,6 +4,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
 const {height, width} = Dimensions.get("window");
 import {useUserContext} from "@/context/UserContext";
+import getSize from "@/components/AdjustSizeByScreenSize";
 
 
 const CommentSection = ({likeUserId, trackId, likeCount}) => {
@@ -28,8 +29,8 @@ const CommentSection = ({likeUserId, trackId, likeCount}) => {
 
   const fetchLikeAction = async (trackId) => {
     const url = Platform.OS === "ios"
-        ? process.env.EXPO_PUBLIC_BASE_URL + `user/like/${trackId}`
-        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/like/${trackId}`;
+        ? process.env.EXPO_PUBLIC_BASE_URL + `user/like/track/${trackId}`
+        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/like/track/${trackId}`;
 
     console.log(url)
 
@@ -61,18 +62,18 @@ const CommentSection = ({likeUserId, trackId, likeCount}) => {
       <Pressable onPress={() => handleLike(trackId)}>
             <FontAwesome
               name= {isLiked ? "heart" : "heart-o"}
-              size={height > 100 && height < 800 ? 22 : 35}
+              size={getSize(22, 25, 30)}
               style={[styles.btnColor, { color: isLiked ? "red" : "white" }]}
             />
         </Pressable>
       <Text style={styles.likeText}>{_likeCount}</Text>
       <Pressable onPress={handleComment}>
-        <FontAwesome name="comments" size={height > 100 && height < 800 ? 22 : 35} style={styles.btnColor} />
+        <FontAwesome name="comments" size={getSize(22, 25, 30)} style={styles.btnColor} />
       </Pressable>
       <Text style={styles.commentText}> {commentCount}</Text>
       <View style={styles.space}></View>
       <Pressable onPress={handleShare}>
-        <FontAwesome name="share-alt" size={height > 100 && height < 800 ? 22 : 35} style={styles.btnColor} />
+        <FontAwesome name="share-alt" size={getSize(22, 25, 30)} style={styles.btnColor} />
       </Pressable>
     </View>
   );
@@ -89,8 +90,12 @@ const styles = StyleSheet.create({
     color: "white",
     margin: 15,
   },
-  likeText: { fontSize: height > 100 && height < 800 ? 15 : 20, color: "white" },
-  commentText: { fontSize: height > 100 && height < 800 ? 15 : 20, color: "white" },
+  likeText: {
+    fontSize: getSize(10, 15, 20),
+    color: "white" },
+  commentText: {
+    fontSize: getSize(10, 15, 20),
+    color: "white" },
   space: {
     flexGrow: 1,
   },

@@ -17,17 +17,24 @@ export const MusicPlayerProvider = ({ children }) => {
     const [initialPlay, setInitialPlay] = useState(true);
 
     useEffect(() => {
-    }, [trackUrl]);
-
+    }, []);
 
   const handleMinimizedScreen = () => {
     setIsMinimized((prev) => !prev);
   };
 
+    const enableAudio = async () => {
+        await Audio.setAudioModeAsync({
+            playsInSilentModeIOS: true,
+            staysActiveInBackground: false,
+            shouldDuckAndroid: false,
+        })}
+
 
   const handlePlayTrack = async (trackUrl) => {
       try {
           // Unload the current sound if it is playing
+          enableAudio();
           if (sound) {
               await sound.unloadAsync();
           }
@@ -35,7 +42,7 @@ export const MusicPlayerProvider = ({ children }) => {
           // Load the new track
           const { sound: newSound } = await Audio.Sound.createAsync(
               { uri: trackUrl },
-              { shouldPlay: false }
+              { shouldPlay: true }
           );
           const totalDuration = await newSound.getStatusAsync();
           setSound(newSound);

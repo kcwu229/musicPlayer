@@ -4,12 +4,12 @@ import {
   NavigationIndependentTree,
 } from "@react-navigation/native";
 import "react-native-gesture-handler";
+import {FollowProvider} from "@/context/UseFollowContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStackNavigator from "@/screen/HomeStackNavigator";
 import FeedScreen from "@/screen/FeedScreen";
 import {UserProvider} from "@/context/UserContext";
-import SearchScreen from "@/screen/SearchScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { MusicPlayerProvider } from "@/context/MusicPlayerContext";
 import getSize from "@/components/AdjustSizeByScreenSize";
@@ -25,6 +25,7 @@ export default function Page() {
         <SafeAreaView style={{ flex: 1 }}>
             <StatusBar barStyle="light-content" backgroundColor="black" />
             <UserProvider>
+                <FollowProvider>
               <MusicPlayerProvider>
                 <NavigationContainer>
                         <Tab.Navigator
@@ -121,6 +122,7 @@ export default function Page() {
                         </Tab.Navigator>
                 </NavigationContainer>
               </MusicPlayerProvider>
+                </FollowProvider>
             </UserProvider>
         </SafeAreaView>
       </GestureHandlerRootView>

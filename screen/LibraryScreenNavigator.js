@@ -12,6 +12,7 @@ import SignUpScreen from "@/screen/SignUpScreen";
 import HomeScreen from "@/screen/HomeScreen";
 import ArtistInfo from "@/screen/ArtistInfo";
 import AlbumInfo from "@/screen/AlbumInfo";
+import GenreResultPage from "@/screen/Library/GenreResultPage";
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ const LibraryScreenNavigator = () => {
               <Stack.Screen name="Albums" component={AlbumListScreen} />
               <Stack.Screen name="Tracks" component={TrackListScreen} />
               <Stack.Screen name="Genres" component={GenreListScreen} />
+              <Stack.Screen name="GenreResult" component={GenreResultPage} />
               <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }}/>
               <Stack.Screen name="SignUpScreen" component={SignUpScreen} options={{ headerShown: false }}/>
               <Stack.Screen

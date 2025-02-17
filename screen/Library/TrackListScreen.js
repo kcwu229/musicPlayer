@@ -67,7 +67,7 @@ const TrackListScreen = ({ navigation }) => {
             }
         }
         fetchLikeTracks();
-    }, [likedTrackList]) // todo find a more effective and less waste resource method
+    }, []) // todo find a more effective and less waste resource method
 
     return(
         <>

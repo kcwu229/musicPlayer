@@ -70,7 +70,7 @@ const AlbumListScreen = ({ navigation }) => {
             }
         }
         fetchLikeAlbums();
-    }, [setLikedAlbumList])
+    }, [])
 
     return(
         <>

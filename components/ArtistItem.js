@@ -14,6 +14,7 @@ import CreateAlert from "@/components/AlertComponent";
 import getSize from "./AdjustSizeByScreenSize";
 import {useUserContext} from "@/context/UserContext";
 
+
 const ArtistItem = ({
   artistData,
   allowFollowButton = false,
@@ -38,9 +39,6 @@ const ArtistItem = ({
     const url = Platform.OS === "ios"
         ? process.env.EXPO_PUBLIC_BASE_URL + `user/follow/${artistId}`
         : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/follow/${artistId}`;
-
-    console.log(url)
-
     try {
       const result = await fetch(url, {
         method: "PUT",
@@ -52,9 +50,15 @@ const ArtistItem = ({
     }
 
       catch (err) {
-        console.log();
+        console.log(err);
     }
   }
+
+  const navigateToArtistInfoPage = (selectedArtistData) => {
+    navigation.navigate("ArtistInfo", {
+      artistData: { selectedArtistData },
+    });
+  };
 
 
   const handleFollow = (artistName) => {
@@ -73,6 +77,7 @@ const ArtistItem = ({
   }
 
   return (
+      <Pressable onPress={() => navigateToArtistInfoPage(artistData)}>
     <View
       style={shownOnResultList ? styles.artistItemOnList : styles.artistItem}
     >
@@ -106,6 +111,7 @@ const ArtistItem = ({
         </Pressable>
       ) : null}
     </View>
+      </Pressable>
   );
 };
 
