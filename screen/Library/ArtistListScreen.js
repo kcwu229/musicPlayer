@@ -27,7 +27,6 @@ const ArtistListScreen = ({ navigation }) => {
                 selectedArtistData: artistData
             }
         });
-
     }
 
     const handleFollow = (artistData, index) => {
@@ -95,10 +94,13 @@ const ArtistListScreen = ({ navigation }) => {
         fetchFollowedArtist();
     }, [])
 
+    useEffect(() => {}, [followedArtist])
+
     return(
         <FlatList
             data={followedArtist}
             style={{backgroundColor: "white", paddingHorizontal: 20}}
+            contentContainerStyle={{paddingBottom: 100}}
             renderItem={({ item, index }) => (
                             <Pressable onPress={() => handleNavigateToArtistInfo(item)}>
                                 <View style={styles.artistItemOnList}>

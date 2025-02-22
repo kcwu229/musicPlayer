@@ -11,10 +11,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, {useState} from "react";
 import {useNavigation} from "@react-navigation/native";
 
-const backgroundImage = require("../assets/images/signUpBG.jpg");
+const backgroundImage = require("../assets/images/signUpBG.png");
 import getSize from "../components/AdjustSizeByScreenSize";
 import {BlurView} from "expo-blur";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 const SignUpScreen = () => {
     const navigation = useNavigation();
     const [username, setUsername] = useState("");
@@ -107,14 +106,13 @@ const SignUpScreen = () => {
                     <View style={styles.blurContainer}>
                         <View style={{ flexGrow: 1 }}></View>
                         <Text style={styles.heading}>SIGN UP</Text>
-                        <Text style={styles.subHeading}>Here our journey begin </Text>
                         <View style={{ flexGrow: 1 }}></View>
                         <View>
-                            <TextInput style={styles.textField} placeholder="Username" placeholderTextColor="white" value={username} onChangeText={handleInputUsername} />
+                            <TextInput style={styles.textField} placeholder="Username" placeholderTextColor="rgba(0,0,0,0.8)" value={username} onChangeText={handleInputUsername} />
                             { usernameFail ? <Text style={[styles.errorText, {color: "pink"}]}>* {errors.username}</Text> : null }
                         </View>
                         <View style={{marginTop: 20}}>
-                            <TextInput style={styles.textField} placeholder="Password" placeholderTextColor="white"
+                            <TextInput style={styles.textField} placeholder="Password" placeholderTextColor="rgba(0,0,0,0.8)"
                                        value={password} onChangeText={handleInputPassword} secureTextEntry/>
                             { passwordFail ? <Text style={[styles.errorText,{color: "pink"}]}>* {errors.password}</Text> : null }
                         </View>
@@ -147,72 +145,71 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         top: "10%",
-        left: "5%",
-        right: "5%",
+        left: "2%",
+        right: "2%",
         bottom: "10%"
+
     },
     blurContainer: {
-        justifyContent: 'center',
-        backgroundColor: "rgba(46,110,70,0.1)",
-        alignItems: 'center',
-        paddingHorizontal: 40,
-        borderColor: "rgba(255,255,255,0.25)",
-        borderWidth: 2,
-        borderRadius: 20
+        backgroundColor: "rgba(255,255,255,0.08)",
+        paddingHorizontal: 70,
+        paddingVertical: 20,
+        borderRadius: 20,
     },
     heading: {
-        color: 'white',
+        color: "rgba(0,0,0,0.9)",
         fontWeight: "bold",
+        textAlign:"center",
         fontSize: getSize(25, 40, 40),
         zIndex: 2,
     },
-    errorText: {
+    smallFont: {
+        color: "rgba(0,0,0,0.9)",
         fontWeight: "300",
+        fontSize: getSize(12, 18, 18),
+        zIndex: 2,
+    },
+    errorText: {
+        fontWeight: "400",
         fontSize: getSize(10, 16,16),
         zIndex: 2
     },
     subHeading: {
-        color: 'white',
-        fontWeight: "200",
-        marginTop: 5,
-        fontSize: getSize(14, 18,18),
+        color: "rgba(0,0,0,0.9)",
+        fontWeight: "400",
+        fontSize: getSize(10, 16,30),
         zIndex: 2
     },
     submitBtn: {
-        color: 'black',
-        fontWeight: "bold",
-        textAlign: "left", // Add this line
+        color: "white",
+        fontWeight: "bold", // Add this line
         fontSize: getSize(15,17, 17),
         zIndex: 2,
+        textAlign:"center",
         borderRadius: 20,
-        backgroundColor: "white",
+        backgroundColor: "rgba(0,0,0,0.9)",
         paddingVertical: getSize(9, 10, 10),
         paddingHorizontal: getSize("20%", "20%","20%"),
-    },
-    smallFont: {
-        color: 'white',
-        fontWeight: "300",
-        fontSize: getSize(12, 18, 18),
-        zIndex: 2,
     },
     imageBg: {
         top: 0,
         left: 0,
         width: '100%',
         height: '100%',
+        position: "relative"
     },
     textField: {
         color: 'white',
         position: "relative",
-        fontSize: getSize(20,18,18),
+        fontSize: getSize(12,14,16),
         zIndex: 2,
-        fontWeight: "200",
-        backgroundColor: "rgba(128, 128, 128, 0.18)",
+        fontWeight: "400",
+        backgroundColor: "rgba(255, 255, 255, 0.14)",
         width: getSize("98%", "98%", "98%"),
-        borderColor: "white",
+        borderColor: "rgba(0,0,0,0.9)",
         borderWidth:1,
-        paddingHorizontal:getSize(30,80,80) ,
-        paddingVertical: 5,
+        paddingHorizontal:getSize(10,15,20) ,
+        paddingVertical: 8,
         borderRadius: 10,
     },
     colorFilter: {
@@ -221,7 +218,7 @@ const styles = StyleSheet.create({
         left: 0,
         width: '100%',
         height: '100%',
-        opacity: 0.8
+        opacity: 0.7
     },
 });
 

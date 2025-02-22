@@ -70,15 +70,6 @@ const LibraryScreen = ({navigation}) => {
             </View>)
           })}
 
-          <Text style={[styles.recentlyAdded, { marginTop: 20}]}>Recently Added</Text>
-          {
-            recentAddedList !== null ? null
-           : (
-                <View style={{ alignItems: "center"}}>
-                  <Text style={styles.NoFoundText}>No found</Text>
-                </View>
-            )
-          }
         </ScrollView>
         {selectedTrack && (
             <View

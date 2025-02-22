@@ -7,9 +7,6 @@ import {
     Pressable,
     Platform, FlatList, Image
 } from 'react-native';
-import {BlurView} from "expo-blur";
-import { LinearGradient } from "expo-linear-gradient";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import React, {useEffect, useState} from "react";
 const backgroundImage = require("../../assets/images/loginBg.jpg");
 import getSize from "../../components/AdjustSizeByScreenSize";
@@ -104,40 +101,7 @@ const PlayListScreen = ({ navigation }) => {
     }, [])
 
     return(
-        <FlatList
-            data={followedArtist}
-            style={{backgroundColor: "white"}}
-            renderItem={({ item, index }) => (
-                <Pressable onPress={() => handleNavigateToArtistInfo(item)}>
-                    <View style={styles.artistItemOnList}>
-                        <View>
-                            <Image
-                                source={{uri: item.imageUrl}}
-                                style={[styles.image, {
-                                    width: getSize(60, 70, 100),
-                                    height: getSize(60, 70, 100)
-                                }]}
-                            />
-                        </View>
-                        <View>
-                            <Text style={styles.nameOnList}>
-                                {item.name}
-                            </Text>
-                        </View>
-                        {<View style={styles.space}></View>}
-                        {
-                            <Pressable onPress={() => handleFollow(item, index)}>
-                                {hasFollowed[index] && (
-                                    <View style={styles.unfollowBtn}>
-                                        <Text style={styles.unfollowText}>Unfollow</Text>
-                                    </View>
-                                )}
-                            </Pressable>
-                        }
-                    </View>
-                </Pressable>
-            )}
-            keyExtractor={item => item._id} />
+        <Text style={{flex: 1, backgroundColor: "white"}}>Not yet developed</Text>
     );
 };
 

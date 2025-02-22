@@ -57,6 +57,7 @@ const GenreList = ({ navigation }) => {
     return(
         <FlatList
             data={genreList}
+            contentContainerStyle={{paddingBottom: 100}}
             style={{backgroundColor: "white"}}
             renderItem={({ item, index }) => (
                 <Pressable onPress={() => handleNavigateToGenreResult(item)}>

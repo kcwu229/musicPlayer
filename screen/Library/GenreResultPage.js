@@ -34,7 +34,7 @@ const GenreResultPage = ({ setSelectedTrack, navigation, route }) => {
           });
           const data = await result.json();
           setArtistList(data.data);
-          console.log(data.data)
+          //console.log(data.data)
 
         } catch (err) {
           console.log(err)

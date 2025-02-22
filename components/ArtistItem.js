@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, memo} from "react";
 import {
   View,
   Text,
@@ -8,25 +8,27 @@ import {
   Dimensions, Platform,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 const { height, width } = Dimensions.get("window");
 import CreateAlert from "@/components/AlertComponent";
 import getSize from "./AdjustSizeByScreenSize";
 import {useUserContext} from "@/context/UserContext";
-
-
 const ArtistItem = ({
   artistData,
   allowFollowButton = false,
   imageWidth,
+                      updateFollowedArtists,
+                      followedArtists,
   imageHeight,
   shownOnResultList = false,
   displayFollower = false,
+                      setFollowedArtists,
     navigation
 }) => {
-  const {token, userId} = useUserContext();
-  const { followerCount, imageUrl, name, _id, followerId } = artistData;
-  const [hasFollowed, setHasFollow] = useState(followerId.toString().includes(userId));
+
+  const {token, userId, fetchUserData} = useUserContext();
+  const { followerCount, imageUrl, name, _id } = artistData;
+  const [hasFollowed, setHasFollow] = useState(followedArtists != undefined && followedArtists.includes(_id));
 
   const formatFollowerCount = (count) => {
     if (count < 1000) return count.toString();
@@ -35,20 +37,30 @@ const ArtistItem = ({
     return count.toString();
   };
 
+  useEffect(() => {
+    if (followedArtists != undefined && followedArtists.includes(_id) !== hasFollowed) {
+      setHasFollow(followedArtists.includes(_id));
+    }
+  }, [followedArtists]);
+
   const fetchFollowAction = async (artistId) => {
     const url = Platform.OS === "ios"
         ? process.env.EXPO_PUBLIC_BASE_URL + `user/follow/${artistId}`
         : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/follow/${artistId}`;
     try {
-      const result = await fetch(url, {
+        const result = await fetch(url, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       })
-    }
 
+      if (result.ok) {
+        const data = await result.json();
+        updateFollowedArtists(data.userData);
+      }
+    }
       catch (err) {
         console.log(err);
     }
@@ -57,23 +69,19 @@ const ArtistItem = ({
   const navigateToArtistInfoPage = (selectedArtistData) => {
     navigation.navigate("ArtistInfo", {
       artistData: { selectedArtistData },
+      followParam: hasFollowed,
+      followedArtistListParam: followedArtists,
+      setFollowParam: setHasFollow,
+      setFollowedArtistListParam: setFollowedArtists
     });
   };
 
-
-  const handleFollow = (artistName) => {
+  const handleFollow = (artistId) => {
     if (token.length === 0) {
       CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
     } else {
-      if (hasFollowed === true) {
-        console.log(`You haved unfollow artist - ${artistName}`);
-        setHasFollow(!hasFollowed);
-      } else {
-        console.log(`You haved follow artist - ${artistName}`);
-        setHasFollow(!hasFollowed);
-      }
-      fetchFollowAction(_id)
-    };
+      fetchFollowAction(artistId);
+    }
   }
 
   return (
@@ -93,7 +101,7 @@ const ArtistItem = ({
             numberOfLines={1} ellipsizeMode={"tail"}>
           {name}
         </Text>
-        {followerCount != null && displayFollower == true ? (
+        {followerCount != null && displayFollower ? (
           <View style={shownOnResultList ? styles.followerRow : null}>
             <FontAwesome name="user" size={15} style={styles.user} />
             <Text style={styles.followerCount}>{formatFollowerCount(followerCount)} Followers </Text>
@@ -101,8 +109,8 @@ const ArtistItem = ({
         ) : null}
       </View>
       {allowFollowButton ? <View style={styles.space}></View> : null}
-      {allowFollowButton ? (
-        <Pressable onPress={() => handleFollow(name)}>
+      {allowFollowButton && userId ? (
+        <Pressable onPress={() => handleFollow(artistData._id)}>
             <View style={[styles.followBtn, {borderColor: hasFollowed ? "rgba(255, 0, 0, 0.8)" : "grey"}]}>
               <Text style={[styles.followText, {color: hasFollowed ? "red" : "grey"}]}>
                 {hasFollowed ? "Unfollow" : "Follow"}
@@ -165,11 +173,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: "black",
     marginTop: 15,
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: -1 },
-    shadowRadius: 1,
-    shadowOpacity: 0.8, // Add shadowOpacity for better control
-    elevation: 5,
   },
 
   artistItem: {
@@ -199,4 +202,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ArtistItem;
+export default memo(ArtistItem);

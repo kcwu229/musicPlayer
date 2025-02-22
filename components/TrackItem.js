@@ -49,13 +49,18 @@ const TrackItem = ({
     handlePlayTrack,
   } = useMusicPlayer();
 
-  const { userId, token} = useUserContext();
-  const { name, playCount, imageUrl, duration, likeUserId } = trackData;
-  const [hasLiked,setHasLiked] = useState(likeUserId.includes(userId))
+  const { userId, token, followedTracks, updateFollowedTracks,} = useUserContext();
+  const { name, playCount, imageUrl, duration, _id } = trackData;
+  const [hasLiked,setHasLiked] = useState(followedTracks !== undefined && followedTracks.includes(_id))
+
+  useEffect(()=> {
+    if (followedTracks != undefined && followedTracks.includes(_id) !== hasLiked) {
+      setHasLiked(followedTracks.includes(_id));
+    }
+  }, [followedTracks])
 
   const handlePlaying = (data) => {
     isPlaying === true ? console.log("now play") : console.log("paused !");
-    setIsPlaying(!isPlaying);
     setSelectedTrack(data);
     handlePlayTrack(data.soundTrackUrl);
   }
@@ -65,7 +70,6 @@ const TrackItem = ({
       CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
     } else {
       console.log(hasLiked ? `You have unlike track - ${trackData.name}` : `You have like track - ${trackData.name}`);
-      setHasLiked(!hasLiked)
       fetchLikeAction(trackData._id)
     }
   }
@@ -76,14 +80,18 @@ const TrackItem = ({
         : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/like/track/${trackId}`;
 
     try {
-      await fetch(url, {
+      const result = await fetch(url, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       })
-    }
+
+      if (result.ok) {
+        const data = await result.json();
+        updateFollowedTracks(data.userData)
+      }    }
     catch (err) {
       console.log();
     }
@@ -105,9 +113,6 @@ const TrackItem = ({
                 width: imageWidth,
                 height: imageHeight,
                 borderRadius: 20,
-                shadowColor: "black",
-                shadowOffset: { width: 1, height: -1 },
-                shadowRadius: 1,
               },
             ]}
           />
@@ -118,7 +123,7 @@ const TrackItem = ({
             </View>)
             : null}
       </Pressable>
-      <View style={[shownOnResultList ? styles.viewOnList : null, {width: "50%"}]}>
+      <View style={[shownOnResultList ? styles.viewOnList : null, { width: userId ?"50%" : "70%"}]}>
         <Text
             numberOfLines={1}
             ellipsizeMode={"tail"}
@@ -159,11 +164,11 @@ const TrackItem = ({
         </View>
       </View>
       {shownOnResultList ? <View style={{ flexGrow: 3 }}></View> : null}
-      <Pressable onPress={() => handleLike(trackData)}>
+      { userId.length > 0 && (<Pressable onPress={() => handleLike(trackData)}>
         <View style={[styles.followBtn, {borderColor: hasLiked ? "red" : "grey"}]}>
-          <Text style={[styles.followText, {color: hasLiked ? "red" : "grey"}]}>{ hasLiked ? "Unlike" : "Like"}</Text>
+          <Text style={[styles.followText, {color: hasLiked ? "red" : "grey"}]}>{hasLiked ? "Unlike" : "Like"}</Text>
         </View>
-      </Pressable>
+      </Pressable>)}
     </View>
   );
 };
@@ -246,11 +251,6 @@ const styles = StyleSheet.create({
 
   trackImage: {
     position: "relative",
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: -1 },
-    shadowRadius: 1,
-    shadowOpacity: 0.8, // Add shadowOpacity for better control
-    elevation: 5,
   },
   followBtn: {
     borderRadius: 20,

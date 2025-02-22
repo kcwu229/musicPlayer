@@ -4,9 +4,6 @@ import {useEffect} from "react";
 const { height, width } = Dimensions.get("window");
 
 const AlbumInfo = ({ name, artistName }) => {
-  useEffect(()=>{
-    console.log(name);
-  }, [])
   return (
     <View style={styles.infoList}>
       <Animated.Text style={styles.title}>{name.toUpperCase()}</Animated.Text>

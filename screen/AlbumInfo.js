@@ -17,12 +17,12 @@ import CreateAlert from "@/components/AlertComponent";
 import {useUserContext} from "@/context/UserContext";
 
 const AlbumInfo = ({ route }) => {
-  const { albumData } = route.params;
+  const { albumData, hasLiked, setHasLiked } = route.params;
   const { selectedAlbumData } = albumData;
   const selectedAlbumId = selectedAlbumData._id;
   const { imageUrl, playCount } = selectedAlbumData;
   const albumName = selectedAlbumData.name;
-  const {token, userId} = useUserContext();
+  const {token, userId, followedAlbums, updateFollowedAlbums} = useUserContext();
   const {
     selectedTrack,
     setSelectedTrack,
@@ -33,24 +33,23 @@ const AlbumInfo = ({ route }) => {
       setTrackUrl,
       handlePlayTrack,
   } = useMusicPlayer();
-  const [isLiked, setIsLiked] = useState(false);
+  const [localIsLiked, setLocalIsLiked] = useState(hasLiked);
   const [trackList, setTrackList] = useState([]);
   const [seeMoreTrack, setSeeMoreTrack] = useState(false);
   const [hasPlayedInthisPage, setHasPlayedInthisPage] = useState(false);
 
-  const handleLike = (albumData) => {
+  useEffect(() => {
 
+  }, [localIsLiked]);
+
+  const handleLike = (albumData) => {
     if (token.length === 0) {
       CreateAlert("Authentication Error", "Require login to follow artist");
     }
     else {
-      if (isLiked === true) {
-        //console.log(`You haved unliked artist - ${albumData.name}`);
-        setIsLiked(!isLiked);
-      } else {
-        //console.log(`You haved liked artist - ${albumData.name}`);
-        setIsLiked(!isLiked);
-      }
+      console.log(localIsLiked, hasLiked)
+      setHasLiked(!localIsLiked)
+      setLocalIsLiked(!localIsLiked)
       fetchLikeAction(albumData._id)
     }
   };
@@ -61,20 +60,24 @@ const fetchLikeAction = async (albumId) => {
       : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/like/album/${albumId}`;
 
   try {
-    await fetch(url, {
+    const result = await fetch(url, {
       method: "PUT",
       headers: {
         "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     })
+
+    if (result.ok) {
+      const data = await result.json();
+      updateFollowedAlbums(data.userData)
+    }
+
   }
   catch (err) {
     console.log(err);
   }
 }
-
-
 
   const formatplayCount = (count) => {
     if (count < 1000) return count.toString();
@@ -143,6 +146,7 @@ const fetchLikeAction = async (albumId) => {
     fetchTrackList(selectedAlbumId)
   }, [])
 
+
   return (
    <>
      <View style={{ flex: 1 }}>
@@ -163,19 +167,11 @@ const fetchLikeAction = async (albumId) => {
              <View style={styles.buttonContainer}>
                <View style={{ flexDirection: "row", justifyContent: "center" }}>
                  <Pressable onPress={() => handleLike(selectedAlbumData)}>
-                   {isLiked === true ? (
-                       <View style={[styles.unLikeBtn]}>
-                         <Text style={styles.unLikeText}>
-                           UNLIKE
-                         </Text>
-                       </View>
-                   ) : (
-                       <View style={styles.likeBtn}>
-                         <Text style={styles.likeText}>
-                           LIKE
-                         </Text>
-                       </View>
-                   )}
+                   <View style={!localIsLiked ? styles.likeBtn : styles.unLikeBtn}>
+                     <Text style={!localIsLiked ? styles.likeText: styles.unLikeText}>
+                       {!localIsLiked ? "LIKE" : "UNLIKE"}
+                     </Text>
+                   </View>
                  </Pressable>
                </View>
 

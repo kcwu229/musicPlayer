@@ -19,13 +19,11 @@ import {useUserContext} from "@/context/UserContext";
 import getSize from "../components/AdjustSizeByScreenSize";
 
 const ArtistInfo = ({ route }) => {
-  const { artistData } = route.params;
-  const {userId, token} = useUserContext()
+  const { artistData, setFollowParam, followedArtistListParam, setFollowedArtistListParam } = route.params;
+  const {userId, token, fetchUserData, followedArtistList} = useUserContext()
   const { selectedArtistData } = artistData;
-  console.log( selectedArtistData);
   const artistId = selectedArtistData._id ;
-  const followerList = selectedArtistData.followerId;
-  const [hasFollowed, setHasFollow] = useState(followerList.toString().includes(userId));
+  const [hasFollowed, setHasFollowed] = useState(route.params.followParam);
   const { imageUrl, followerCount, description, genres } = selectedArtistData;
   const artistName = selectedArtistData.name;
   const [hasPlayedInthisPage, setHasPlayedInthisPage] = useState(false);
@@ -51,25 +49,32 @@ const ArtistInfo = ({ route }) => {
           "Content-Type": "application/json",
         },
       })
+
+      if (result.ok) {
+        const data = await result.json();
+        setFollowedArtistListParam(data.userData);
+      }
     }
 
     catch (err) {
-      console.log();
+      console.log(err);
     }
   }
 
-  useEffect(()=>{
-
-  }, [hasFollowed])
-  const handleFollow = (name) => {
-      if (token.length === 0) {
-        CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
-      } else {
-        setHasFollow(!hasFollowed);
-        //_setHasFollowed(!_hasFollowed);
-        fetchFollowAction(artistId);
-      }
+  const handleFollow = async (name) => {
+    if (token.length === 0) {
+      CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
+    } else {
+      // change followed value in this page
+      setHasFollowed(prevHasFollowed => {
+        const newFollowStatus = !prevHasFollowed;
+        setFollowParam(!prevHasFollowed);
+        return newFollowStatus;
+      });
+      await fetchFollowAction(artistId);
+      await fetchUserData(token);
     }
+  }
 
   const formatFollowerCount = (count) => {
     if (count < 1000) return count.toString();
@@ -133,7 +138,6 @@ const ArtistInfo = ({ route }) => {
           ? process.env.EXPO_PUBLIC_BASE_URL + `album/artist/${artistId}?limit=${artistCount}`
           : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `album/artist/${artistId}?limit=${artistCount}`;
 
-
       try {
         const result = await fetch(getAlbumUrl);
         const data = await result.json();
@@ -154,10 +158,7 @@ const ArtistInfo = ({ route }) => {
       try {
         const result = await fetch(getTrackUrl);
         const data = await result.json();
-        //console.log(data.data)
         setTrackList(data.data);
-        //console.log(data.data)
-
       } catch (err) {
         console.log(err)
       }
@@ -165,7 +166,7 @@ const ArtistInfo = ({ route }) => {
 
     fetchAlbumList(artistId);
     fetchTrackList(artistId)
-  }, [hasFollowed])
+  }, [followedArtistList])
 
   return (
     <View style={{ flex: 1 }}>
@@ -194,17 +195,13 @@ const ArtistInfo = ({ route }) => {
             </View>
 
             <View style={styles.buttonContainer}>
-              <Pressable onPress={() => handleFollow(artistName)}>
-                {hasFollowed === true ? (
-                  <View style={[styles.unfollowBtn]}>
-                    <Text style={styles.unfollowText}>Unfollow</Text>
+              {userId &&
+             ( <Pressable onPress={() => handleFollow(artistName)}>
+                  <View style={[styles.followBtn, {borderColor: hasFollowed ? "red" : "grey"}]}>
+                    <Text style={[styles.followText, {color: hasFollowed ? "red" : "grey"}]}>{hasFollowed ? "Unfollow" : "Follow"}</Text>
                   </View>
-                ) : (
-                  <View style={styles.followBtn}>
-                    <Text style={styles.followText}>Follow</Text>
-                  </View>
-                )}
-              </Pressable>
+              </Pressable>)
+              }
               <View style={{ width: "10%" }}></View>
               <Pressable onPress={handleRandomPlaying}>
                 <FontAwesome name="random" size={getSize(18, 26, 34)} style={styles.btn} />
@@ -324,9 +321,9 @@ const ArtistInfo = ({ route }) => {
 const styles = StyleSheet.create({
   descriptionText: {
     color: "grey",
-    fontSize: getSize(17,20,25),
+    fontSize: getSize(12,18,22),
     marginTop: 15,
-    lineHeight: getSize(30,32,35),
+    lineHeight: getSize(30,30,35),
   },
   aboutImage: {
     marginTop: 20,
@@ -369,6 +366,7 @@ const styles = StyleSheet.create({
   },
 
   tagContainer: {
+    width: "80%",
     flexWrap: "wrap",
     gap: 3,
     justifyContent:"center",
@@ -416,7 +414,7 @@ const styles = StyleSheet.create({
   genreText: {
     color: "grey",
     textTransform: "uppercase",
-    fontSize: getSize(12,14,16),
+    fontSize: getSize(10,12,14),
   },
   followText: {
     color: "grey",
@@ -427,12 +425,12 @@ const styles = StyleSheet.create({
     fontSize: getSize(12,14,16),
   },
   genreBadge: {
-    borderRadius: 10,
+    borderRadius: 5,
     borderColor: "orange",
-    borderWidth: 2,
-    padding: 10,
-    paddingHorizontal: 20,
-    margin: "1%"
+    borderWidth: 1,
+    padding: 7,
+    paddingHorizontal: 10,
+    margin: "0.8%",
   },
   followBtn: {
     borderRadius: 20,

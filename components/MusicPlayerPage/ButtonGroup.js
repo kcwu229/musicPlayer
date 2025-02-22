@@ -15,14 +15,6 @@ const ButtonGroup = ({trackData}) => {
       selectedTrack,
   } = useMusicPlayer();
 
-  const handleMoreOption = () => {
-    console.log("more option !");
-  };
-
-  const handleRandomPlaying = () => {
-    console.log("random playing");
-  };
-
   const handleNextSong = () => {
     console.log("Next song ");
   };
@@ -54,14 +46,14 @@ const ButtonGroup = ({trackData}) => {
         {isPlaying === true ? (
           <AntDesign
             name="pausecircle"
-            size={getSize(60,80, 80)}
-            style={styles.btnColor}
+            size={getSize(60,70, 80)}
+            style={styles.playBtnColor}
           />
         ) : (
           <AntDesign
-            name="playcircleo"
-            size={getSize(60,80, 80)}
-            style={styles.btnColor}
+            name="play"
+            size={getSize(60,70, 80)}
+            style={styles.playBtnColor}
           />
         )}
       </Pressable>
@@ -118,6 +110,10 @@ const styles = StyleSheet.create({
   },
   btnColor: {
     color: "rgb(236, 236, 236)",
+    margin: 15,
+  },
+  playBtnColor: {
+    color: "white",
     margin: 15,
   },
   likeText: { fontSize: 15, color: "white" },

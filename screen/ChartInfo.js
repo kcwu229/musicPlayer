@@ -247,11 +247,6 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     marginTop: getSize(15, 18, 20),
     borderRadius: 20,
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: -1 },
-    shadowRadius: 1,
-    shadowOpacity: 0.8, // Add shadowOpacity for better control
-    elevation: 5,
   },
   seeAll: {
     color: "gray",

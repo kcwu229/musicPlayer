@@ -22,7 +22,7 @@ const LoginScreen = ({ navigation, route }) => {
     const [usernameFail, setUsernameFail] = useState(false);
     const [passwordFail, setPasswordFail] = useState(false);
     const [serverError, setServerError] = useState("");
-    const { setToken, setUsername} = useUserContext();
+    const { setToken, setUsername, setUserId} = useUserContext();
 
     useEffect(() => {
         if (route.params && route.params.loginData) {
@@ -101,6 +101,7 @@ const LoginScreen = ({ navigation, route }) => {
                     const userId = data.data.userId;
                     setToken(token);
                     setUsername(username);
+                    setUserId(userId);
                     storeData("@accessToken", token);
                     storeData("@username", username);
                     storeData("@userId", userId);
@@ -141,7 +142,7 @@ const LoginScreen = ({ navigation, route }) => {
             </LinearGradient>
             <View style={styles.container}>
                 <View style={{ flexGrow: 3 }}></View>
-                <BlurView intensity={10} style={{ overflow: "hidden", borderRadius: 20}}>
+                <BlurView intensity={15} style={{ overflow: "hidden", borderRadius: 20}}>
                     <View style={styles.blurContainer}>
                     <View style={{ flexGrow: 1 }}></View>
                     <Text style={styles.heading}>LOGIN</Text>
@@ -191,17 +192,15 @@ const styles = StyleSheet.create({
 
     },
     blurContainer: {
-        justifyContent: 'center',
-        backgroundColor: "rgba(195,80,143,0.14)",
-        alignItems: 'center',
-        paddingHorizontal: 40,
-        borderColor: "rgba(255,255,255,0.25)",
-        borderWidth: 2,
+        backgroundColor: "rgba(0,0,0,0.3)",
+        paddingHorizontal: 55,
+        paddingVertical: 20,
         borderRadius: 20,
     },
     heading: {
-        color: 'white',
+        color: 'rgba(255,255,255,0.8)',
         fontWeight: "bold",
+        textAlign:"center",
         fontSize: getSize(25, 40, 40),
         zIndex: 2,
     },
@@ -223,10 +222,11 @@ const styles = StyleSheet.create({
         zIndex: 2
     },
     submitBtn: {
-        color: 'black',
+        color: 'rgba(0,0,0,0.75)',
         fontWeight: "bold", // Add this line
         fontSize: getSize(15,17, 17),
         zIndex: 2,
+        textAlign:"center",
         borderRadius: 20,
         backgroundColor: "white",
         paddingVertical: getSize(9, 10, 10),
@@ -242,15 +242,15 @@ const styles = StyleSheet.create({
     textField: {
         color: 'white',
         position: "relative",
-        fontSize: getSize(20,18,18),
+        fontSize: getSize(12,14,16),
         zIndex: 2,
-        fontWeight: "200",
-        backgroundColor: "rgba(128, 128, 128, 0.18)",
+        fontWeight: "300",
+        backgroundColor: "rgba(128, 128, 128, 0.28)",
         width: getSize("98%", "98%", "98%"),
-        borderColor: "white",
+        borderColor: "rgba(255,255,255,0.8)",
         borderWidth:1,
-        paddingHorizontal:getSize(30,80,80) ,
-        paddingVertical: 5,
+        paddingHorizontal:getSize(10,15,20) ,
+        paddingVertical: 8,
         borderRadius: 10,
     },
     colorFilter: {

@@ -21,6 +21,7 @@ const HomeScreen = ({navigation}) => {
     setIsPlaying
   } = useMusicPlayer();
 
+
   const {username, token, userId, logout} = useUserContext();
 
   const checkTime = () => {

@@ -70,10 +70,11 @@ const TrackListScreen = ({ navigation }) => {
     }, []) // todo find a more effective and less waste resource method
 
     return(
-        <>
+        <View style={{backgroundColor: "white"}}>
         <FlatList
             data={likedTrackList}
             style={{backgroundColor: "white", paddingHorizontal: 20}}
+            contentContainerStyle={{paddingBottom: 100}}
             renderItem={({ item, index }) => (
                     <Pressable
                         onPress={() => handlePlayMusic(item)}
@@ -108,7 +109,7 @@ const TrackListScreen = ({ navigation }) => {
             />
         </View>
     )}
-        </>
+        </View>
     );
 };
 

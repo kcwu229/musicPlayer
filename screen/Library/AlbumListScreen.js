@@ -76,6 +76,7 @@ const AlbumListScreen = ({ navigation }) => {
         <>
             <FlatList
                 data={likedAlbumList}
+                contentContainerStyle={{paddingBottom: 100}}
                 style={{backgroundColor: "white", paddingHorizontal: 20}}
                 renderItem={({ item, index }) => (
                     <Pressable

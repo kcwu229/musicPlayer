@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import {View, Text, StyleSheet, Dimensions, StatusBar, Platform} from "react-native";
+import React, {useEffect, useState} from "react";
+import {View, Text, StyleSheet, Dimensions, StatusBar, Platform, FlatList} from "react-native";
 import SearchBar from "@/components/HomeScreen/SearchBar";
 import SearchResultPage from "@/components/SearchScreen/SearchResultPage";
 import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
@@ -7,6 +7,7 @@ import { useMusicPlayer } from "../context/MusicPlayerContext";
 import { ScrollView } from "react-native-gesture-handler";
 import getSize from "../components/AdjustSizeByScreenSize";
 const { height } = Dimensions.get("window");
+import {useUserContext} from "@/context/UserContext";
 
 const SearchScreen = ({navigation}) => {
   const {
@@ -16,14 +17,32 @@ const SearchScreen = ({navigation}) => {
     handleMinimizedScreen,
   } = useMusicPlayer();
 
+  const data = [{ key: 'search' }, { key: 'searchBar' }, { key: 'searchResultPage' }, { key: 'spacer' }];
+
+  const renderItem = ({ item }) => {
+    switch (item.key) {
+      case 'search':
+        return <Text style={styles.search}>Search</Text>;
+      case 'searchBar':
+        return <SearchBar />;
+      case 'searchResultPage':
+        return <SearchResultPage setSelectedTrack={setSelectedTrack} navigation={navigation} />;
+      case 'spacer':
+        return <View style={{ marginTop: 150 }} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <ScrollView style={{ padding: 24 }} showsVerticalScrollIndicator={false}>
-        <Text style={styles.search}>Search</Text>
-        <SearchBar />
-        <SearchResultPage setSelectedTrack={setSelectedTrack} navigation={navigation}/>
-        <View style={{marginTop: 150}}></View>
-      </ScrollView>
+      <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.key}
+          contentContainerStyle={{ padding: 24 }}
+          showsVerticalScrollIndicator={false}
+      />
 
       <View style={{ flex: 1 }}>
         {selectedTrack && (

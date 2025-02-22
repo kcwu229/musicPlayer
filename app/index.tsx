@@ -9,7 +9,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStackNavigator from "@/screen/HomeStackNavigator";
 import FeedScreen from "@/screen/FeedScreen";
-import {UserProvider} from "@/context/UserContext";
+import {UserProvider, useUserContext} from "@/context/UserContext";
 import { Ionicons } from "@expo/vector-icons";
 import { MusicPlayerProvider } from "@/context/MusicPlayerContext";
 import getSize from "@/components/AdjustSizeByScreenSize";
@@ -31,8 +31,8 @@ export default function Page() {
                         <Tab.Navigator
                             initialRouteName="Home"
                             screenOptions={{
-                                tabBarActiveTintColor: "white",
-                                tabBarInactiveTintColor: "grey",
+                                tabBarActiveTintColor: "orange",
+                                tabBarInactiveTintColor: "white",
                                 tabBarStyle: {
                                     height: getSize(70, 90, 130),
                                     paddingVertical: 5,
@@ -51,7 +51,7 @@ export default function Page() {
                                             <Ionicons
                                                 name="home"
                                                 size={30}
-                                                color={focused ? "white" : "grey"}
+                                                color={focused ? "orange" : "white"}
                                             />
                                         ),
                                         tabBarLabel: "Home",
@@ -70,7 +70,7 @@ export default function Page() {
                                         <Ionicons
                                             name="search"
                                             size={30}
-                                            color={focused ? "white" : "grey"}
+                                            color={focused ? "orange" : "white"}
                                         />
                                     ),
                                     tabBarLabel: "Search",
@@ -89,7 +89,7 @@ export default function Page() {
                                         <Ionicons
                                             name="disc"
                                             size={30}
-                                            color={focused ? "white" : "grey"}
+                                            color={focused ? "orange" : "white"}
                                         />
                                     ),
                                     tabBarLabel: "Feed",
@@ -108,7 +108,7 @@ export default function Page() {
                                         <Ionicons
                                             name="library"
                                             size={30}
-                                            color={focused ? "white" : "grey"}
+                                            color={focused ? "orange" : "white"}
                                         />
                                     ),
                                     tabBarLabel: "Library",

@@ -150,6 +150,6 @@ const styles = StyleSheet.create({
   minimizedImage: {
     width: width > 100 && width < 600 ? 40 : 80,
     height: width > 100 && width < 600 ? 40 : 80,
-    borderRadius: 20,
+    borderRadius: 5,
   },
 });

@@ -68,13 +68,11 @@ const MusicPlayerContent = ({
         <GestureDetector gesture={Gesture.Simultaneous(doubleTap, swipeDown)}>
           <Animated.View style={[{ flex: 1 }, animatedStyle]}>
             <LinearGradient
-              colors={["rgb(104, 97, 97)", "rgb(33, 31, 31)"]}
+                colors={["rgb(104, 97, 97)", "rgb(33, 31, 31)"]}
               style={{ flex: 1, alignContent: "center" }}
             >
               <FullScreenMusicPlayerHeader
-                handleMinimizedScreen={handleMinimizedScreen}
-              />
-
+                handleMinimizedScreen={handleMinimizedScreen} />
               <View style={{ flexGrow: 1 }}></View>
               <Image
                 source={{uri: imageUrl}}
@@ -82,14 +80,14 @@ const MusicPlayerContent = ({
                   styles.image,
                   {
                     height:
-                      width > 100 && width < 600 ? width * 0.45 : width * 0.4,
+                      width > 100 && width < 600 ? width : width * 0.4,
                     width:
-                      width > 100 && width < 600 ? width * 0.45 : width * 0.4,
+                      width > 100 && width < 600 ? width : width * 0.4,
+                    position: "relative",
                   },
                 ]}
               />
-              <View style={{ flexGrow: 1 }}></View>
-              <AlbumInfo name={name} artistName={artistName} />
+              <AlbumInfo name={name} artistName={artistName} style={{ position: "absolute", top: 20}}/>
               <View style={{ flexGrow: 1 }}></View>
               <ButtonGroup  trackData={trackData}/>
               <View style={{ flexGrow: 1 }}></View>
@@ -125,7 +123,7 @@ const styles = StyleSheet.create({
   commentText: { fontSize: 15, color: "white" },
   image: {
     alignSelf: "center",
-    borderRadius: 20,
+
   },
 });
 

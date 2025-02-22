@@ -7,8 +7,9 @@ import {
   Pressable,
   Dimensions, Platform,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import getSize from "../AdjustSizeByScreenSize";
+import {useUserContext} from "@/context/UserContext";
 
 import ArtistItem from "@/components/ArtistItem";
 
@@ -16,6 +17,7 @@ const { height, width } = Dimensions.get("window");
 
 const PopularArtistSection = ({navigation}) => {
   const [artistList, setArtistList] = useState([]);
+  const {followedArtists, updateFollowedArtists, setFollowedArtists} = useUserContext();
 
   useEffect(() => {
     const fetchArtistList = async () => {
@@ -36,6 +38,7 @@ const PopularArtistSection = ({navigation}) => {
     fetchArtistList();
   }, [])
 
+
   return (
     <View>
       <View style={styles.topHeading}>
@@ -45,17 +48,19 @@ const PopularArtistSection = ({navigation}) => {
         </Pressable>
       </View>
       <ScrollView
-        style={[styles.artistList, { overflow: "visible" }]}
-        horizontal
+        style={[styles.artistList, { overflow: "visible" }]} horizontal
         showsHorizontalScrollIndicator={false}
       >
         {artistList.map((data) => {
           return (
               <ArtistItem
+                  updateFollowedArtists={updateFollowedArtists}
+                  followedArtists={followedArtists}
                   key={data._id}
                   navigation={navigation}
                 artistData={data}
                 allowFollowButton={true}
+                  setFollowedArtists={setFollowedArtists}
                 imageWidth={getSize(100, 120, 160)}
                 imageHeight={getSize(100, 120, 160)}
                 displayFollower={false}

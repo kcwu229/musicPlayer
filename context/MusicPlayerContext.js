@@ -42,7 +42,7 @@ export const MusicPlayerProvider = ({ children }) => {
           // Load the new track
           const { sound: newSound } = await Audio.Sound.createAsync(
               { uri: trackUrl },
-              { shouldPlay: true }
+              { shouldPlay: false }
           );
           const totalDuration = await newSound.getStatusAsync();
           setSound(newSound);

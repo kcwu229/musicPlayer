@@ -23,25 +23,31 @@ const AlbumItem = ({
                      artistFontSize,
                      titleFontSize,
                    }) => {
-  const { name, viewCount, imageUrl, duration, likedUserId} = albumData;
+  const { name, viewCount, imageUrl, duration, likedUserId, _id} = albumData;
 
-  const {token, userId} = useUserContext();
-  const [hasLiked,setHasLiked] = useState(likedUserId.includes(userId))
+  const {token, userId, followedAlbums, updateFollowedAlbums} = useUserContext();
+  const [hasLiked,setHasLiked] = useState(followedAlbums !== undefined && likedUserId.includes(_id));
 
   const navigation = useNavigation();
   const navigateToAlbumInfoPage = (selectedAlbumData) => {
     navigation.navigate("AlbumInfo", {
       albumData: { selectedAlbumData },
+      hasLiked,
+      setHasLiked,
     });
   };
 
+  useEffect(()=> {
+    if (followedAlbums != undefined && followedAlbums.includes(_id) !== hasLiked) {
+      setHasLiked(followedAlbums.includes(_id));
+    }
+  }, [followedAlbums])
 
   const handleLike= (albumData) => {
     if (token.length === 0) {
       CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
     } else {
       console.log(hasLiked ? `You have unlike track - ${albumData.name}` : `You have like track - ${albumData.name}`);
-      setHasLiked(!hasLiked)
       fetchLikeAction(albumData._id)
     }
   }
@@ -52,19 +58,24 @@ const AlbumItem = ({
         : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/like/album/${albumId}`;
 
     try {
-      await fetch(url, {
+      const result = await fetch(url, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       })
+
+      if (result.ok) {
+        const data = await result.json();
+        updateFollowedAlbums(data.userData);
+      }
+
     }
     catch (err) {
       console.log();
     }
   }
-
 
   return (
       <Pressable
@@ -80,9 +91,6 @@ const AlbumItem = ({
                     width: imageWidth,
                     height: imageHeight,
                     borderRadius: 20,
-                    shadowColor: "black",
-                    shadowOffset: { width: 1, height: -1 },
-                    shadowRadius: 1,
                   },
                 ]}
             />
@@ -128,7 +136,7 @@ const AlbumItem = ({
             </View>
           </View>
           {shownOnResultList && <View style={{ flexGrow: 3 }}></View> }
-          {shownOnResultList && (
+          {shownOnResultList && userId && (
               <Pressable onPress={() => handleLike(albumData)}>
                 <View style={[styles.followBtn, {borderColor: hasLiked ? "red" : "grey"}]}>
                   <Text style={[styles.followText, {color: hasLiked ? "red" : "grey"}]}>{ hasLiked ? "Unlike" : "Like"}</Text>
@@ -205,11 +213,6 @@ const styles = StyleSheet.create({
 
   albumImage: {
     marginTop: 10,
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: -1 },
-    shadowRadius: 1,
-    shadowOpacity: 0.8, // Add shadowOpacity for better control
-    elevation: 5,
   },
   followBtn: {
     borderRadius: 20,

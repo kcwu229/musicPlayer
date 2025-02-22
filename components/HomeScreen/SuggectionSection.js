@@ -82,11 +82,6 @@ const styles = StyleSheet.create({
     height: getSize(height * 0.33, height * 0.25,height * 0.25),
     width: getSize(height * 0.4, height * 0.2,height * 0.2),
     borderRadius: 20,
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: -1 },
-    shadowRadius: 1,
-    shadowOpacity: 0.8, // Add shadowOpacity for better control
-    elevation: 5,
   },
   spacing: {
     flexGrow: 2,
@@ -118,9 +113,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: -1 },
-    shadowRadius: 1,
   },
 });
 

@@ -8,8 +8,8 @@ import getSize from "@/components/AdjustSizeByScreenSize";
 
 
 const CommentSection = ({likeUserId, trackId, likeCount}) => {
-  const {userId, token} = useUserContext();
-  const [isLiked, setIsLiked] = useState(likeUserId.toString().includes(userId));
+  const {userId, token, followedTracks, updateFollowedTracks} = useUserContext();
+  const [isLiked, setIsLiked] = useState(followedTracks !== undefined && followedTracks.includes(trackId));
   const { commentCount, setCommentCount } = useMusicPlayer();
   const [_likeCount, setLikeCount] = useState(likeCount)
 
@@ -32,19 +32,21 @@ const CommentSection = ({likeUserId, trackId, likeCount}) => {
         ? process.env.EXPO_PUBLIC_BASE_URL + `user/like/track/${trackId}`
         : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/like/track/${trackId}`;
 
-    console.log(url)
-
     try {
-      await fetch(url, {
+      const result = await fetch(url, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       })
+     if (result.ok) {
+       const data = await result.json();
+       updateFollowedTracks(data.userData)
+     }
     }
     catch (err) {
-      console.log();
+      console.log(err);
     }
   }
 
