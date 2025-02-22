@@ -1,9 +1,7 @@
 import {
     View,
     Text,
-    ImageBackground,
     StyleSheet,
-    TextInput,
     Pressable,
     Platform,
     Image,
@@ -19,7 +17,7 @@ import CreateAlert from "@/components/AlertComponent";
 const ArtistListScreen = ({ navigation }) => {
     const [followedArtist, setFollowedArtist] = useState([]);
     const [hasFollowed, setHasFollowed] = useState([])
-    const {userId, token} = useUserContext();
+    const {userId, token, updateFollowedArtists} = useUserContext();
 
     const handleNavigateToArtistInfo = (artistData) => {
         navigation.navigate("ArtistInfo", {
@@ -51,13 +49,19 @@ const ArtistListScreen = ({ navigation }) => {
             : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/follow/${artistId}`;
 
         try {
-            await fetch(url, {
+            const result = await fetch(url, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
             })
+
+            if (result.ok) {
+                const data = await result.json();
+                updateFollowedArtists(data.userData)
+            }
+
         }
         catch (err) {
             console.log();

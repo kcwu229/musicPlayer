@@ -11,7 +11,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, {useState} from "react";
 import {useNavigation} from "@react-navigation/native";
 
-const backgroundImage = require("../assets/images/signUpBG.png");
+const backgroundImage = require("../assets/images/signUpBG.jpg");
 import getSize from "../components/AdjustSizeByScreenSize";
 import {BlurView} from "expo-blur";
 const SignUpScreen = () => {
@@ -108,11 +108,11 @@ const SignUpScreen = () => {
                         <Text style={styles.heading}>SIGN UP</Text>
                         <View style={{ flexGrow: 1 }}></View>
                         <View>
-                            <TextInput style={styles.textField} placeholder="Username" placeholderTextColor="rgba(0,0,0,0.8)" value={username} onChangeText={handleInputUsername} />
+                            <TextInput style={styles.textField} placeholder="Username" placeholderTextColor="rgba(255,255,255,0.9)" value={username} onChangeText={handleInputUsername} />
                             { usernameFail ? <Text style={[styles.errorText, {color: "pink"}]}>* {errors.username}</Text> : null }
                         </View>
                         <View style={{marginTop: 20}}>
-                            <TextInput style={styles.textField} placeholder="Password" placeholderTextColor="rgba(0,0,0,0.8)"
+                            <TextInput style={styles.textField} placeholder="Password" placeholderTextColor="rgba(255,255,255,0.9)"
                                        value={password} onChangeText={handleInputPassword} secureTextEntry/>
                             { passwordFail ? <Text style={[styles.errorText,{color: "pink"}]}>* {errors.password}</Text> : null }
                         </View>
@@ -151,20 +151,20 @@ const styles = StyleSheet.create({
 
     },
     blurContainer: {
-        backgroundColor: "rgba(255,255,255,0.08)",
+        backgroundColor: "rgba(0,0,0,0.2)",
         paddingHorizontal: 70,
         paddingVertical: 20,
         borderRadius: 20,
     },
     heading: {
-        color: "rgba(0,0,0,0.9)",
+        color: "rgba(255,255,255,0.9)",
         fontWeight: "bold",
         textAlign:"center",
         fontSize: getSize(25, 40, 40),
         zIndex: 2,
     },
     smallFont: {
-        color: "rgba(0,0,0,0.9)",
+        color: "rgba(255,255,255,0.9)",
         fontWeight: "300",
         fontSize: getSize(12, 18, 18),
         zIndex: 2,
@@ -175,19 +175,19 @@ const styles = StyleSheet.create({
         zIndex: 2
     },
     subHeading: {
-        color: "rgba(0,0,0,0.9)",
+        color: "rgba(255,255,255,0.9)",
         fontWeight: "400",
         fontSize: getSize(10, 16,30),
         zIndex: 2
     },
     submitBtn: {
-        color: "white",
+        color: "black",
         fontWeight: "bold", // Add this line
         fontSize: getSize(15,17, 17),
         zIndex: 2,
         textAlign:"center",
         borderRadius: 20,
-        backgroundColor: "rgba(0,0,0,0.9)",
+        backgroundColor: "rgba(255,255,255,0.9)",
         paddingVertical: getSize(9, 10, 10),
         paddingHorizontal: getSize("20%", "20%","20%"),
     },
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         backgroundColor: "rgba(255, 255, 255, 0.14)",
         width: getSize("98%", "98%", "98%"),
-        borderColor: "rgba(0,0,0,0.9)",
+        borderColor: "rgba(255,255,255,0.9)",
         borderWidth:1,
         paddingHorizontal:getSize(10,15,20) ,
         paddingVertical: 8,

@@ -17,14 +17,18 @@ const SearchScreen = ({navigation}) => {
     handleMinimizedScreen,
   } = useMusicPlayer();
 
-  const data = [{ key: 'search' }, { key: 'searchBar' }, { key: 'searchResultPage' }, { key: 'spacer' }];
+  const [inputting, setInputting] = useState(false);
+  console.log(inputting)
+  const data = [{ key: 'search' }, { key: 'searchBar' }, {key:"ttt"},{ key: 'searchResultPage' }, { key: 'spacer' }];
 
   const renderItem = ({ item }) => {
     switch (item.key) {
       case 'search':
         return <Text style={styles.search}>Search</Text>;
+      case 'ttt':
+        return <Text style={{color: "black"}}>{inputting ? "true" :" false"}</Text>;
       case 'searchBar':
-        return <SearchBar />;
+        return <SearchBar inputting={inputting} setInputting={setInputting}/>;
       case 'searchResultPage':
         return <SearchResultPage setSelectedTrack={setSelectedTrack} navigation={navigation} />;
       case 'spacer':

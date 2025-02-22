@@ -4,7 +4,7 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
-  Dimensions,
+  Dimensions, Text,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -12,9 +12,11 @@ import { useState } from "react";
 
 const { height, width } = Dimensions.get("window");
 
-const SearchBar = () => {
+const SearchBar = (
+    {  inputting, setInputting }
+) => {
+  const [isInputting, setIsInputting] = useState(inputting)
   const [searchValue, setSearchValue] = useState("");
-
   const handleSearchChange = (value) => {
     setSearchValue(value);
   };
@@ -31,20 +33,44 @@ const SearchBar = () => {
 
   return (
     <View style={styles.searchBar}>
-      <FontAwesome name="search" size={20} style={styles.searchIcon} />
-      <TextInput
-        placeholder="What you want to listen to ..."
-        placeholderTextColor="grey"
-        marginLeft={maginLeftCalculator()}
-        value={searchValue}
-        onChangeText={handleSearchChange}
-        style={styles.searchField}
-      ></TextInput>
-      {searchValue.length > 0 ? (
-        <Pressable onPress={clearSearch} style={styles.closeIcon}>
-          <AntDesign name="closecircle" size={20} />
-        </Pressable>
-      ) : null}
+      {isInputting ? (
+          <>
+            <FontAwesome name="search" size={20} style={styles.searchIcon} />
+            <TextInput
+                onFocus={() => {
+                  console.log(inputting)
+                  setIsInputting(!inputting)
+                  setInputting(!inputting)
+                }}
+                onBlur={() => console.log("focus lost") }
+                placeholder="What you want to listen to ..."
+                placeholderTextColor="grey"
+                marginLeft={maginLeftCalculator()}
+                value={searchValue}
+                onChangeText={handleSearchChange}
+                style={styles.searchField}
+            ></TextInput>
+          </>
+      ) : (
+          <>
+            <FontAwesome name="search" size={20} style={styles.searchIcon} />
+            <TextInput
+                onFocus={() => setIsInputting(!isInputting)}
+                onBlur={() => console.log("focus lost") }
+                placeholder="What you want to listen to ..."
+                placeholderTextColor="grey"
+                marginLeft={maginLeftCalculator()}
+                value={searchValue}
+                onChangeText={handleSearchChange}
+                style={styles.searchField}
+            ></TextInput>
+            {searchValue.length > 0 ? (
+                <Pressable onPress={clearSearch} style={styles.closeIcon}>
+                  <AntDesign name="closecircle" size={20} />
+                </Pressable>
+            ) : null}
+          </>
+      )}
     </View>
   );
 };

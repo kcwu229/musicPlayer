@@ -22,6 +22,7 @@ import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
 // todo
 const AlbumListScreen = ({ navigation }) => {
     const [likedAlbumList, setLikedAlbumList] = useState([]);
+    console.log(likedAlbumList)
     const [albumNameList, setAlbumNameList] = useState([]);
     const {userId, token} = useUserContext();
 
@@ -73,7 +74,7 @@ const AlbumListScreen = ({ navigation }) => {
     }, [])
 
     return(
-        <>
+        <View style={{flex: 1, backgroundColor: "white"}}>
             <FlatList
                 data={likedAlbumList}
                 contentContainerStyle={{paddingBottom: 100}}
@@ -94,6 +95,7 @@ const AlbumListScreen = ({ navigation }) => {
                         </View>
                     </Pressable>)}
             />
+            <View style={{flexGrow: 2}}></View>
             {selectedTrack && (
                 <View
                     style={
@@ -111,7 +113,8 @@ const AlbumListScreen = ({ navigation }) => {
                     />
                 </View>
             )}
-        </>
+        </View>
+
     );
 };
 

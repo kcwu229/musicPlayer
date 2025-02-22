@@ -4,37 +4,15 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="56c3ad27-a434-498a-9bf9-26eb89ddac39" name="Changes" comment="fixed that ios no sound on playing audio">
-      <change afterPath="$PROJECT_DIR$/assets/images/signUpBG.png" afterDir="false" />
+    <list default="true" id="56c3ad27-a434-498a-9bf9-26eb89ddac39" name="Changes" comment="1. pretiffy the layout">
+      <change afterPath="$PROJECT_DIR$/assets/images/signUpBG.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/loginBg.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/loginBg.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/signUpBG.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/AlbumItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/AlbumItem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ArtistItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/ArtistItem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/HomeScreen/PopularArtistSection.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/HomeScreen/PopularArtistSection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/HomeScreen/SuggectionSection.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/HomeScreen/SuggectionSection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MusicPlayerPage/AlbumInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/MusicPlayerPage/AlbumInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MusicPlayerPage/ButtonGroup.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/MusicPlayerPage/ButtonGroup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MusicPlayerPage/CommentSection.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/MusicPlayerPage/CommentSection.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MusicPlayerPage/MusicPlayerContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/MusicPlayerPage/MusicPlayerContent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/signUpBG.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/HomeScreen/SearchBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/HomeScreen/SearchBar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/MusicPlayerPage/MusicPlayerHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/MusicPlayerPage/MusicPlayerHeader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/SearchScreen/SearchResultPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/SearchScreen/SearchResultPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/TrackItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/TrackItem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/context/MusicPlayerContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/context/MusicPlayerContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/context/UserContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/context/UserContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/AlbumInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/AlbumInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/ArtistInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/ArtistInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/ChartInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/ChartInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/HomeScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screen/Library/AlbumListScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/Library/AlbumListScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screen/Library/ArtistListScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/Library/ArtistListScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/Library/GenreListScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/Library/GenreListScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/Library/GenreResultPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/Library/GenreResultPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/Library/PlayListScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/Library/PlayListScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screen/Library/TrackListScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/Library/TrackListScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/LibraryScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/LibraryScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/LoginScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/LoginScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screen/SearchScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/SearchScreen.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screen/SignUpScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/SignUpScreen.js" afterDir="false" />
     </list>
@@ -130,7 +108,7 @@
       <workItem from="1739728671726" duration="6670000" />
       <workItem from="1739786857947" duration="1138000" />
       <workItem from="1739788295977" duration="10102000" />
-      <workItem from="1739798427294" duration="52342000" />
+      <workItem from="1739798427294" duration="56988000" />
     </task>
     <task id="LOCAL-00001" summary="1. make the android and ios build successfully&#10;2. added the app logo on ios">
       <option name="closed" value="true" />
@@ -164,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739787919278</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="1. added the sync on follow artist , and album, tracks">
+      <option name="closed" value="true" />
+      <created>1740211843702</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740211843702</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,6 +161,8 @@
     <MESSAGE value="1. added the navigation on library screen and login , signup page" />
     <MESSAGE value="1. updated the AlbumListScreen.js , TrackListScreen.js, ArtistListScreen.js&#10;2. Prettify thr format on title among albums, tracks and artists." />
     <MESSAGE value="fixed that ios no sound on playing audio" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed that ios no sound on playing audio" />
+    <MESSAGE value="1. added the sync on follow artist , and album, tracks" />
+    <MESSAGE value="1. pretiffy the layout" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. pretiffy the layout" />
   </component>
 </project>

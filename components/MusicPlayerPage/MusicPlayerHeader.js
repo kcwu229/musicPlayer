@@ -33,9 +33,9 @@ exports.MinimizedMusicPlayerHeader = ({
 
   return (
     <Pressable onPress={handleMinimizedScreen}>
-      <View style={[styles.minimizedTopBanner, style]}>
+      <View style={[styles.minimizedTopBanner, style, {width: width}]}>
         <Image source={{uri: imageUrl}} style={styles.minimizedImage} />
-        <Text style={styles.minimizedTitle}>{name.toUpperCase()}</Text>
+        <Text style={[styles.minimizedTitle, {width: width * 0.5}]} numberOfLines={1} ellipsizeMode={"tail"}>{name.toUpperCase()}</Text>
         <View style={styles.space}></View>
         <Pressable onPress={() => handlePlaying(trackData.soundTrackUrl)}>
         {isPlaying ? (
@@ -72,16 +72,6 @@ exports.FullScreenMusicPlayerHeader = ({ handleMinimizedScreen }) => {
           paddingTop: height < 800 ? 40 : 80,
         }}
       >
-        {/*<View style={styles.topBanner}>
-          <View style={{ flexGrow: 1 }}></View>
-          <Pressable onPress={handleMinimizedScreen}>
-            <FontAwesome
-              name="chevron-down"
-              size={width > 800 ? 26 : 16}
-              style={styles.btnColor}
-            />
-          </Pressable>
-        </View>*/}
         <View
           style={[
             styles.horizontalBar,

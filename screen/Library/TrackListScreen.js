@@ -70,45 +70,46 @@ const TrackListScreen = ({ navigation }) => {
     }, []) // todo find a more effective and less waste resource method
 
     return(
-        <View style={{backgroundColor: "white"}}>
-        <FlatList
-            data={likedTrackList}
-            style={{backgroundColor: "white", paddingHorizontal: 20}}
-            contentContainerStyle={{paddingBottom: 100}}
-            renderItem={({ item, index }) => (
-                    <Pressable
-                        onPress={() => handlePlayMusic(item)}
-                    >
-                        <View>
-                            <TrackItem
-                                trackData={item}
-                                selectedTrack={selectedTrack}
-                                imageWidth={getSize(60, 80, 100)}
-                                imageHeight={getSize(60, 80, 100)}
-                                shownOnResultList={true}
-                                showViewAndDuration={true}
-                                setSelectedTrack={selectedTrack}
-                            />
-                        </View>
-                    </Pressable>)}
-            />
-    {selectedTrack && (
-        <View
-            style={
-                isMinimized
-                    ? styles.minimizedScreenContainer
-                    : styles.fullScreenContainer
-            }
-        >
-            <MusicPlayerScreen
-                trackData={selectedTrack}
-                isMinimized={isMinimized}
-                handleMinimizedScreen={handleMinimizedScreen}
-                isPlaying={isPlaying}
-                setIsPlaying={setIsPlaying}
-            />
-        </View>
-    )}
+        <View style={{flex: 1, backgroundColor: "white"}}>
+            <View style={{backgroundColor: "white"}}>
+                <FlatList
+                    data={likedTrackList}
+                    style={{backgroundColor: "white", paddingHorizontal: 20}}
+                    contentContainerStyle={{paddingBottom: 100}}
+                    renderItem={({ item, index }) => (
+                        <Pressable onPress={() => handlePlayMusic(item)}>
+                            <View>
+                                <TrackItem
+                                    trackData={item}
+                                    selectedTrack={selectedTrack}
+                                    imageWidth={getSize(60, 80, 100)}
+                                    imageHeight={getSize(60, 80, 100)}
+                                    shownOnResultList={true}
+                                    showViewAndDuration={true}
+                                    setSelectedTrack={selectedTrack}
+                                />
+                            </View>
+                        </Pressable>
+                    )}
+                />
+            </View>
+            {selectedTrack && (
+                <View
+                    style={
+                        isMinimized
+                            ? styles.minimizedScreenContainer
+                            : styles.fullScreenContainer
+                    }
+                >
+                    <MusicPlayerScreen
+                        trackData={selectedTrack}
+                        isMinimized={isMinimized}
+                        handleMinimizedScreen={handleMinimizedScreen}
+                        isPlaying={isPlaying}
+                        setIsPlaying={setIsPlaying}
+                    />
+                </View>
+            )}
         </View>
     );
 };
@@ -193,6 +194,24 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         alignContent: "center",
         width: "auto",
+    },
+    fullScreenContainer: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1,
+        width: "100%",
+    },
+    minimizedScreenContainer: {
+        flexDirection: "row",
+        position: "absolute",
+        bottom: 0,
+        width: "100%",
+        flex: 1,
+        zindex: 1,
+        backgroundColor: "black",
     },
 });
 
