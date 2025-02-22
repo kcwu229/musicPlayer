@@ -1,11 +1,5 @@
 # Demo
-
-
-https://github.com/user-attachments/assets/1a4e8ba9-741e-462c-9b33-c4ea1d630e01
-
-
-
-
+https://github.com/user-attachments/assets/2bc96b7c-214b-4d74-8af8-38f0cb28a1d6
 
 # Welcome to your Expo app 👋
 
@@ -45,61 +39,15 @@ npm run reset-project
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
 
-### API form last.fm to imort to Database
-<img width="366" alt="image" src="https://github.com/user-attachments/assets/249c6469-2cba-4dbf-9dbc-1a1aa809abcd" />
+### API form spotify to imort to Database
+<img width="296" alt="image" src="https://github.com/user-attachments/assets/33516afd-ad6c-464f-982b-952b66af2353" />
 
 
 ### Schema Design (will change into NOSQL later)
-![image](https://github.com/user-attachments/assets/47a88071-4267-492e-b9b5-4a1ad00173fb)
+<img width="278" alt="image" src="https://github.com/user-attachments/assets/d6cbcdbc-e3a7-4441-ae93-f829443d8ed3" />
+
 
 ### MongoDB
-
-#### Following table structure just for reference
-1. Artist Document
-```bash
-{
-  "artist_id": "1",
-  "artist_name": "Artist Name",
-  "artist_listeners": 1000,
-  "artist_summary": "Summary about the artist.",
-  "artist_play_count": 500,
-  "albums": [
-    {
-      "album_id": "1",
-      "album_name": "First Album",
-      "album_summary": "Summary of the album.",
-      "album_publish_year": 2020,
-      "album_listeners": 500,
-      "tracks": [
-        {
-          "track_id": "1",
-          "track_title": "First Track",
-          "track_duration": 180,
-          "record_tags": ["tag1", "tag2"]
-        },
-        {
-          "track_id": "2",
-          "track_title": "Second Track",
-          "track_duration": 210,
-          "record_tags": ["tag1"]
-        }
-      ]
-    }
-  ]
-}
-```
-
-2. Artist Document
-```bash
-{
-  "tag_id": "1",
-  "tag_name": "tag1"
-}
-```
-
-
-
-
 
 Join our community of developers creating universal apps.
 
