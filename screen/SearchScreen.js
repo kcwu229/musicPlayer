@@ -28,7 +28,6 @@ const SearchScreen = ({ navigation }) => {
   } = useMusicPlayer();
 
   const [inputting, setInputting] = useState(false);
-  console.log(inputting);
   const data = [
     { key: "search" },
     { key: "searchBar" },
