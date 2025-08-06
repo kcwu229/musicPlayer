@@ -1,5 +1,13 @@
-import React, {useEffect, useState} from "react";
-import {View, Text, StyleSheet, Dimensions, StatusBar, Platform, FlatList} from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  StatusBar,
+  Platform,
+  FlatList,
+} from "react-native";
 import SearchBar from "@/components/HomeScreen/SearchBar";
 import SearchResultPage from "@/components/SearchScreen/SearchResultPage";
 import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
@@ -7,9 +15,9 @@ import { useMusicPlayer } from "../context/MusicPlayerContext";
 import { ScrollView } from "react-native-gesture-handler";
 import getSize from "../components/AdjustSizeByScreenSize";
 const { height } = Dimensions.get("window");
-import {useUserContext} from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 
-const SearchScreen = ({navigation}) => {
+const SearchScreen = ({ navigation }) => {
   const {
     selectedTrack,
     setSelectedTrack,
@@ -18,20 +26,28 @@ const SearchScreen = ({navigation}) => {
   } = useMusicPlayer();
 
   const [inputting, setInputting] = useState(false);
-  console.log(inputting)
-  const data = [{ key: 'search' }, { key: 'searchBar' }, {key:"ttt"},{ key: 'searchResultPage' }, { key: 'spacer' }];
+  console.log(inputting);
+  const data = [
+    { key: "search" },
+    { key: "searchBar" },
+    { key: "searchResultPage" },
+    { key: "spacer" },
+  ];
 
   const renderItem = ({ item }) => {
     switch (item.key) {
-      case 'search':
+      case "search":
         return <Text style={styles.search}>Search</Text>;
-      case 'ttt':
-        return <Text style={{color: "black"}}>{inputting ? "true" :" false"}</Text>;
-      case 'searchBar':
-        return <SearchBar inputting={inputting} setInputting={setInputting}/>;
-      case 'searchResultPage':
-        return <SearchResultPage setSelectedTrack={setSelectedTrack} navigation={navigation} />;
-      case 'spacer':
+      case "searchBar":
+        return <SearchBar inputting={inputting} setInputting={setInputting} />;
+      case "searchResultPage":
+        return (
+          <SearchResultPage
+            setSelectedTrack={setSelectedTrack}
+            navigation={navigation}
+          />
+        );
+      case "spacer":
         return <View style={{ marginTop: 150 }} />;
       default:
         return null;
@@ -41,11 +57,11 @@ const SearchScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.key}
-          contentContainerStyle={{ padding: 24 }}
-          showsVerticalScrollIndicator={false}
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.key}
+        contentContainerStyle={{ padding: 24 }}
+        showsVerticalScrollIndicator={false}
       />
 
       <View style={{ flex: 1 }}>
@@ -85,7 +101,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   fullScreenContainer: {
     position: "absolute",

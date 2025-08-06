@@ -6,14 +6,15 @@ import {
   StyleSheet,
   Pressable,
   Dimensions,
-  ScrollView, Platform,
+  ScrollView,
+  Platform,
 } from "react-native";
 import getSize from "../components/AdjustSizeByScreenSize";
 
 import TrackItem from "@/components/TrackItem";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
-import {LinearGradient} from "expo-linear-gradient";
+import { LinearGradient } from "expo-linear-gradient";
 import albumItem from "@/components/AlbumItem";
 
 const ChartInfo = ({ route }) => {
@@ -25,8 +26,8 @@ const ChartInfo = ({ route }) => {
     handleMinimizedScreen,
     isPlaying,
     setIsPlaying,
-      setTrackUrl,
-      handlePlayTrack,
+    setTrackUrl,
+    handlePlayTrack,
   } = useMusicPlayer();
   const [trackList, setTrackList] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
@@ -35,7 +36,8 @@ const ChartInfo = ({ route }) => {
 
   const formatplayCount = (count) => {
     if (count < 1000) return count.toString();
-    if (count >= 1000 && count < 1000000) return (count / 1000).toFixed(1) + "K";
+    if (count >= 1000 && count < 1000000)
+      return (count / 1000).toFixed(1) + "K";
     if (count >= 1000000) return (count / 1000000).toFixed(1) + "M";
     return count.toString();
   };
@@ -52,18 +54,15 @@ const ChartInfo = ({ route }) => {
       setIsPlaying(!isPlaying);
       setSelectedTrack(data);
       handlePlayTrack(data.soundTrackUrl);
-    }
-    else if (trackListItems.length > 1) {
+    } else if (trackListItems.length > 1) {
       let data = trackListItems[0];
       setHasPlayedInthisPage(true);
       setIsPlaying(!isPlaying);
       setSelectedTrack(data);
       handlePlayTrack(data.soundTrackUrl);
+    } else {
+      console.error("Error: trackList is null or undefined");
     }
-    else {
-        console.error("Error: trackList is null or undefined");
-    }
-
   };
 
   const handlePlayMusic = (data) => {
@@ -72,7 +71,7 @@ const ChartInfo = ({ route }) => {
     setSelectedTrack(data);
     setTrackUrl(data.soundTrackUrl);
     handlePlayTrack(data.soundTrackUrl);
-  }
+  };
 
   const handleLike = (name) => {
     if (isLiked === true) {
@@ -84,27 +83,28 @@ const ChartInfo = ({ route }) => {
     }
   };
 
-
   useEffect(() => {
     const fetchTrackList = async (countryName) => {
       const resultLimit = 50;
 
-      const url = Platform.OS === "ios"
-          ? process.env.EXPO_PUBLIC_BASE_URL + `track/country/${countryName}?limit=${resultLimit}`
-          : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `track/country/${countryName}?limit=${resultLimit}`;
+      const url =
+        Platform.OS === "ios"
+          ? process.env.EXPO_PUBLIC_BASE_URL +
+            `track/country/${countryName}?limit=${resultLimit}`
+          : process.env.EXPO_PUBLIC_ANDROID_BASE_URL +
+            `track/country/${countryName}?limit=${resultLimit}`;
 
       try {
         const result = await fetch(url);
         const data = await result.json();
         setTrackList(data.data);
-
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
-    }
+    };
 
-    fetchTrackList(countryData)
-  }, [])
+    fetchTrackList(countryData);
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -114,10 +114,13 @@ const ChartInfo = ({ route }) => {
       >
         <View>
           <View style={styles.container}>
-            <View
-                style={[styles.chartItem, { backgroundColor: colorData }]}
-            >
-              <View style={[styles.chartImage, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
+            <View style={[styles.chartItem, { backgroundColor: colorData }]}>
+              <View
+                style={[
+                  styles.chartImage,
+                  { justifyContent: "center", alignItems: "center", flex: 1 },
+                ]}
+              >
                 <Text style={styles.title}>Top 50</Text>
                 <Text style={styles.region}>{countryData}</Text>
               </View>
@@ -129,74 +132,68 @@ const ChartInfo = ({ route }) => {
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
                 <Pressable onPress={() => handleLike(albumItem)}>
                   {isLiked === true ? (
-                      <View style={[styles.unLikeBtn]}>
-                        <Text style={styles.unLikeText}>
-                          UNLIKE
-                        </Text>
-                      </View>
+                    <View style={[styles.unLikeBtn]}>
+                      <Text style={styles.unLikeText}>UNLIKE</Text>
+                    </View>
                   ) : (
-                      <View style={styles.likeBtn}>
-                        <Text style={styles.likeText}>
-                          LIKE
-                        </Text>
-                      </View>
+                    <View style={styles.likeBtn}>
+                      <Text style={styles.likeText}>LIKE</Text>
+                    </View>
                   )}
                 </Pressable>
               </View>
-              
+
               <View style={{ width: "10%" }}></View>
               <Pressable onPress={handleRandomPlaying}>
-                <FontAwesome name="random" size={getSize(18, 22, 30)} style={styles.btn} />
+                <FontAwesome
+                  name="random"
+                  size={getSize(18, 22, 30)}
+                  style={styles.btn}
+                />
               </Pressable>
 
               <Pressable onPress={() => handlePlaying(trackList)}>
-              {isPlaying === true && hasPlayedInthisPage === true? (
+                {isPlaying === true && hasPlayedInthisPage === true ? (
                   <FontAwesome
                     name="pause-circle"
                     size={getSize(50, 65, 80)}
                     style={styles.btn}
                   />
-
-              ) : (
-
+                ) : (
                   <FontAwesome
                     name="play-circle"
                     size={getSize(50, 65, 80)}
                     style={styles.btn}
                   />
-
-              )}
+                )}
               </Pressable>
             </View>
           </View>
 
-
           <View style={{ margin: 24 }}>
-            <View style={{ flexDirection: "row", alignItems:"center"}}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={styles.popularText}>Tracks</Text>
-              <View style={{ flexGrow: 1}}></View>
+              <View style={{ flexGrow: 1 }}></View>
             </View>
 
-            { trackList &&
-                trackList.map((track) => (
-                    <Pressable
-                        key={track._id}
-                        onPress={() => handlePlayMusic(track)}
-                    >
-                      <TrackItem
-                          trackData={track}
-                          selectedTrack={selectedTrack}
-                          imageWidth={getSize(60, 90, 140)}
-                          imageHeight={getSize(60, 89, 140)}
-                          shownOnResultList={true}
-                          showViewAndDuration={true}
-                          setSelectedTrack={setSelectedTrack}
-                      />
-                    </Pressable>)
-                )}
-
+            {trackList &&
+              trackList.map((track) => (
+                <Pressable
+                  key={track._id}
+                  onPress={() => handlePlayMusic(track)}
+                >
+                  <TrackItem
+                    trackData={track}
+                    selectedTrack={selectedTrack}
+                    imageWidth={getSize(60, 90, 140)}
+                    imageHeight={getSize(60, 89, 140)}
+                    shownOnResultList={true}
+                    showViewAndDuration={true}
+                    setSelectedTrack={setSelectedTrack}
+                  />
+                </Pressable>
+              ))}
           </View>
-
         </View>
       </ScrollView>
 
@@ -209,7 +206,7 @@ const ChartInfo = ({ route }) => {
           }
         >
           <MusicPlayerScreen
-              isPlaying={isPlaying}
+            isPlaying={isPlaying}
             trackData={selectedTrack}
             isMinimized={isMinimized}
             handleMinimizedScreen={handleMinimizedScreen}
@@ -218,10 +215,7 @@ const ChartInfo = ({ route }) => {
       )}
     </View>
   );
-
 };
-
-
 
 const styles = StyleSheet.create({
   title: {
@@ -251,7 +245,7 @@ const styles = StyleSheet.create({
   seeAll: {
     color: "gray",
     marginTop: 10,
-    fontSize: getSize(17, 20 , 25),
+    fontSize: getSize(17, 20, 25),
     fontWeight: "thin",
   },
   fullScreen: {
@@ -290,18 +284,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     alignSelf: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 
   name: {
     fontWeight: "bold",
-    marginTop: getSize(10,15,20),
-    fontSize: getSize(30,35,45),
+    marginTop: getSize(10, 15, 20),
+    fontSize: getSize(30, 35, 45),
   },
 
   playCount: {
     fontWeight: "200",
-    marginTop: getSize(10,15,20),
+    marginTop: getSize(10, 15, 20),
     fontSize: getSize(16, 22, 28),
   },
 
@@ -314,19 +308,19 @@ const styles = StyleSheet.create({
   },
   image: {
     marginTop: "8%",
-    height: getSize(160, 200,250),
-    width: getSize(160, 200,250),
+    height: getSize(160, 200, 250),
+    width: getSize(160, 200, 250),
     borderRadius: 20,
     marginBottom: "3%",
   },
 
   likeText: {
     color: "grey",
-    fontSize: getSize(16, 18,22)
+    fontSize: getSize(16, 18, 22),
   },
   unLikeText: {
     color: "red",
-    fontSize: getSize(16, 18,22)
+    fontSize: getSize(16, 18, 22),
   },
   likeBtn: {
     borderRadius: 20,
@@ -343,7 +337,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
 });
-
-
 
 export default ChartInfo;
