@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,12 +6,13 @@ import {
   Pressable,
   Image,
   Button,
-  Dimensions, Platform,
+  Dimensions,
+  Platform,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import getSize from "./AdjustSizeByScreenSize";
-import {useMusicPlayer} from "@/context/MusicPlayerContext";
-import {useUserContext} from "@/context/UserContext";
+import { useMusicPlayer } from "@/context/MusicPlayerContext";
+import { useUserContext } from "@/context/UserContext";
 import CreateAlert from "@/components/AlertComponent";
 
 const { height, width } = Dimensions.get("window");
@@ -19,7 +20,7 @@ const { height, width } = Dimensions.get("window");
 const formatDuration = (durationInSeconds) => {
   const minutes = Math.floor(durationInSeconds / 60);
   const seconds = Math.floor(durationInSeconds % 60);
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 };
 
 const formatplayCount = (count) => {
@@ -29,7 +30,6 @@ const formatplayCount = (count) => {
   return count.toString();
 };
 
-
 const TrackItem = ({
   trackData,
   allowOptionButton = false,
@@ -38,64 +38,76 @@ const TrackItem = ({
   imageWidth,
   imageHeight,
   artistFontSize,
-    selectedTrack,
+  selectedTrack,
   titleFontSize,
   setSelectedTrack,
 }) => {
+  const { isPlaying, setIsPlaying, handlePlayTrack } = useMusicPlayer();
 
-  const {
-    isPlaying,
-    setIsPlaying,
-    handlePlayTrack,
-  } = useMusicPlayer();
-
-  const { userId, token, followedTracks, updateFollowedTracks,} = useUserContext();
+  const { userId, token, followedTracks, updateFollowedTracks } =
+    useUserContext();
   const { name, playCount, imageUrl, duration, _id } = trackData;
-  const [hasLiked,setHasLiked] = useState(followedTracks !== undefined && followedTracks.includes(_id))
+  const [hasLiked, setHasLiked] = useState(
+    followedTracks !== undefined && followedTracks.includes(_id)
+  );
 
-  useEffect(()=> {
-    if (followedTracks != undefined && followedTracks.includes(_id) !== hasLiked) {
+  useEffect(() => {
+    if (
+      followedTracks != undefined &&
+      followedTracks.includes(_id) !== hasLiked
+    ) {
       setHasLiked(followedTracks.includes(_id));
     }
-  }, [followedTracks])
+  }, [followedTracks]);
 
   const handlePlaying = (data) => {
     isPlaying === true ? console.log("now play") : console.log("paused !");
     setSelectedTrack(data);
     handlePlayTrack(data.soundTrackUrl);
-  }
+  };
 
-  const handleLike= (trackData) => {
+  const handleLike = (trackData) => {
     if (token.length === 0) {
-      CreateAlert("Authentication Error", "Require login to follow artist", "authIssue", navigation);
+      CreateAlert(
+        "Authentication Error",
+        "Require login to follow artist",
+        "authIssue",
+        navigation
+      );
     } else {
-      console.log(hasLiked ? `You have unlike track - ${trackData.name}` : `You have like track - ${trackData.name}`);
-      fetchLikeAction(trackData._id)
+      console.log(
+        hasLiked
+          ? `You have unlike track - ${trackData.name}`
+          : `You have like track - ${trackData.name}`
+      );
+      fetchLikeAction(trackData._id);
     }
-  }
+  };
 
   const fetchLikeAction = async (trackId) => {
-    const url = Platform.OS === "ios"
+    const url =
+      Platform.OS === "ios"
         ? process.env.EXPO_PUBLIC_BASE_URL + `user/like/track/${trackId}`
-        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL + `user/like/track/${trackId}`;
+        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL +
+          `user/like/track/${trackId}`;
 
     try {
       const result = await fetch(url, {
         method: "PUT",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      })
+      });
 
       if (result.ok) {
         const data = await result.json();
-        updateFollowedTracks(data.userData)
-      }    }
-    catch (err) {
+        updateFollowedTracks(data.userData);
+      }
+    } catch (err) {
       console.log();
     }
-  }
+  };
 
   return (
     <View style={shownOnResultList ? styles.TrackItemOnList : styles.TrackItem}>
@@ -106,7 +118,7 @@ const TrackItem = ({
       >
         <View style={styles.trackImage}>
           <Image
-            source={{ uri: imageUrl}}
+            source={{ uri: imageUrl }}
             style={[
               styles.trackImage,
               {
@@ -117,16 +129,30 @@ const TrackItem = ({
             ]}
           />
         </View>
-        { (selectedTrack !== null) && (selectedTrack.name === name) ?
-            (<View style={styles.isPlayingShield}>
-              <Text style={{ color: "grey", textAlign: "center", fontSize: height * 0.02, fontWeight: "bold" }}>Now playing</Text>
-            </View>)
-            : null}
+        {selectedTrack !== null && selectedTrack.name === name ? (
+          <View style={styles.isPlayingShield}>
+            <Text
+              style={{
+                color: "grey",
+                textAlign: "center",
+                fontSize: height * 0.02,
+                fontWeight: "bold",
+              }}
+            >
+              Now playing
+            </Text>
+          </View>
+        ) : null}
       </Pressable>
-      <View style={[shownOnResultList ? styles.viewOnList : null, { width: userId ?"50%" : "70%"}]}>
+      <View
+        style={[
+          shownOnResultList ? styles.viewOnList : null,
+          { width: userId ? "50%" : "70%" },
+        ]}
+      >
         <Text
-            numberOfLines={1}
-            ellipsizeMode={"tail"}
+          numberOfLines={1}
+          ellipsizeMode={"tail"}
           style={
             shownOnResultList
               ? styles.titleOnList
@@ -151,24 +177,43 @@ const TrackItem = ({
         <View style={shownOnResultList ? styles.playCountAndDuration : null}>
           {playCount != null && showViewAndDuration ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <FontAwesome name="play" size={getSize(15, 18,20)} style={styles.play} />
+              <FontAwesome
+                name="play"
+                size={getSize(15, 18, 20)}
+                style={styles.play}
+              />
               <Text style={styles.playCount}>{formatplayCount(playCount)}</Text>
             </View>
           ) : null}
           {duration != null && showViewAndDuration ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <FontAwesome name="circle" size={getSize(10, 12,15)} style={styles.circle} />
+              <FontAwesome
+                name="circle"
+                size={getSize(10, 12, 15)}
+                style={styles.circle}
+              />
               <Text style={styles.duration}>{formatDuration(duration)}</Text>
             </View>
           ) : null}
         </View>
       </View>
       {shownOnResultList ? <View style={{ flexGrow: 3 }}></View> : null}
-      { userId.length > 0 && (<Pressable onPress={() => handleLike(trackData)}>
-        <View style={[styles.followBtn, {borderColor: hasLiked ? "red" : "grey"}]}>
-          <Text style={[styles.followText, {color: hasLiked ? "red" : "grey"}]}>{hasLiked ? "Unlike" : "Like"}</Text>
-        </View>
-      </Pressable>)}
+      {userId.length > 0 && (
+        <Pressable onPress={() => handleLike(trackData)}>
+          <View
+            style={[
+              styles.followBtn,
+              { borderColor: hasLiked ? "red" : "grey" },
+            ]}
+          >
+            <Text
+              style={[styles.followText, { color: hasLiked ? "red" : "grey" }]}
+            >
+              {hasLiked ? "Unlike" : "Like"}
+            </Text>
+          </View>
+        </Pressable>
+      )}
     </View>
   );
 };
@@ -191,31 +236,31 @@ const styles = StyleSheet.create({
   artistOnList: {
     marginVertical: 3,
     color: "grey",
-    fontSize: getSize(10, 15,23),
+    fontSize: getSize(10, 15, 23),
   },
   playCountAndDuration: {
     flexDirection: "row",
     alignItems: "center",
   },
   viewOnList: {
-    marginLeft: getSize(10, 15,20),
+    marginLeft: getSize(10, 15, 20),
     marginTop: 10,
-    gap: getSize(1, 2,4),
+    gap: getSize(1, 2, 4),
   },
   playCount: {
     color: "grey",
     marginLeft: 8,
-    fontSize: getSize(15, 18,20),
+    fontSize: getSize(15, 18, 20),
   },
   duration: {
     marginLeft: 10,
-    fontSize: getSize(15, 18,20),
+    fontSize: getSize(15, 18, 20),
   },
 
   TrackItem: {
     flexDirection: "column",
     marginRight: 20,
-    marginTop: getSize(3, 5,8),
+    marginTop: getSize(3, 5, 8),
   },
 
   TrackItemOnList: {
@@ -233,20 +278,20 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: getSize(14, 14,22),
+    fontSize: getSize(14, 14, 22),
     color: "black",
     marginTop: 10,
   },
 
   titleOnList: {
-    fontSize: getSize(25, 21,32),
+    fontSize: getSize(25, 21, 32),
     color: "black",
   },
 
   artist: {
     marginTop: 10,
     color: "gray",
-    fontSize: getSize(12, 14,18),
+    fontSize: getSize(12, 14, 18),
   },
 
   trackImage: {
@@ -259,7 +304,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   followText: {
-    fontSize: getSize(15, 16,22),
+    fontSize: getSize(15, 16, 22),
   },
 });
 

@@ -18,6 +18,8 @@ const { height } = Dimensions.get("window");
 import { useUserContext } from "@/context/UserContext";
 
 const SearchScreen = ({ navigation }) => {
+  const [searchKeyWord, setSearchKeyWord] = useState("");
+
   const {
     selectedTrack,
     setSelectedTrack,
@@ -39,11 +41,17 @@ const SearchScreen = ({ navigation }) => {
       case "search":
         return <Text style={styles.search}>Search</Text>;
       case "searchBar":
-        return <SearchBar inputting={inputting} setInputting={setInputting} />;
+        return (
+          <SearchBar
+            inputting={inputting}
+            setInputting={setInputting}
+            setSearchKeyWord={setSearchKeyWord}
+          />
+        );
       case "searchResultPage":
         return (
           <SearchResultPage
-            setSelectedTrack={setSelectedTrack}
+            searchKeyWord={searchKeyWord}
             navigation={navigation}
           />
         );
@@ -63,7 +71,6 @@ const SearchScreen = ({ navigation }) => {
         contentContainerStyle={{ padding: 24 }}
         showsVerticalScrollIndicator={false}
       />
-
       <View style={{ flex: 1 }}>
         {selectedTrack && (
           <View
