@@ -9,12 +9,12 @@ import {
   Text,
 } from "react-native";
 import ArtistItem from "@/components/ArtistItem";
-import { useFocusEffect } from "@react-navigation/native";
 import AlbumItem from "@/components/AlbumItem";
 import TrackItem from "@/components/TrackItem";
 import getSize from "@/components/AdjustSizeByScreenSize";
 import { useMusicPlayer } from "@/context/MusicPlayerContext";
 import { useUserContext } from "@/context/UserContext";
+import LoadingScreen from "../LoadingScreen";
 
 const { height } = Dimensions.get("window");
 
@@ -24,24 +24,14 @@ const SearchResultPage = ({ navigation, searchKeyWord }) => {
   const {
     selectedTrack,
     setSelectedTrack,
-    isMinimized,
-    handleMinimizedScreen,
     isPlaying,
     setIsPlaying,
     setTrackUrl,
     handlePlayTrack,
   } = useMusicPlayer();
 
-  const {
-    username,
-    token,
-    userId,
-    logout,
-    fetchUserData,
-    followedArtists,
-    updateFollowedArtists,
-    setFollowedArtists,
-  } = useUserContext();
+  const { followedArtists, updateFollowedArtists, setFollowedArtists } =
+    useUserContext();
   const navigateToArtistInfoPage = (selectedArtistData) => {
     navigation.navigate("ArtistInfo", {
       artistData: { selectedArtistData },
@@ -51,6 +41,7 @@ const SearchResultPage = ({ navigation, searchKeyWord }) => {
   const [albumList, setAlbumList] = useState([]);
   const [artistList, setArtistList] = useState([]);
   const [trackList, setTrackList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handlePlayMusic = (data) => {
     setIsPlaying(!isPlaying);
@@ -59,79 +50,67 @@ const SearchResultPage = ({ navigation, searchKeyWord }) => {
     handlePlayTrack(data.soundTrackUrl);
   };
 
-  const fetchData = (
+  const fetchData = async (
     albumCount = null,
     trackCount = null,
     artistCount = null
   ) => {
     const getAlbumListUrl =
       Platform.OS === "ios"
-        ? process.env.EXPO_PUBLIC_BASE_URL +
-          `album` +
-          (albumCount !== null ? `?limit=${albumCount}` : ``)
-        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL +
-          `album` +
-          (albumCount ? `?limit=${albumCount}` : ``);
+        ? `${process.env.EXPO_PUBLIC_BASE_URL}album${
+            albumCount ? `?limit=${albumCount}` : ``
+          }`
+        : `${process.env.EXPO_PUBLIC_ANDROID_BASE_URL}album${
+            albumCount ? `?limit=${albumCount}` : ``
+          }`;
 
     const getArtistListUrl =
       Platform.OS === "ios"
-        ? process.env.EXPO_PUBLIC_BASE_URL +
-          `artist` +
-          (artistCount !== null ? `?limit=${artistCount}` : ``)
-        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL +
-          `artist` +
-          (artistCount ? `?limit=${artistCount}` : ``);
+        ? `${process.env.EXPO_PUBLIC_BASE_URL}artist${
+            artistCount ? `?limit=${artistCount}` : ``
+          }`
+        : `${process.env.EXPO_PUBLIC_ANDROID_BASE_URL}artist${
+            artistCount ? `?limit=${artistCount}` : ``
+          }`;
 
     const getTrackListUrl =
       Platform.OS === "ios"
-        ? process.env.EXPO_PUBLIC_BASE_URL +
-          `track` +
-          (trackCount !== null ? `?limit=${trackCount}` : ``)
-        : process.env.EXPO_PUBLIC_ANDROID_BASE_URL +
-          `track` +
-          (trackCount ? `?limit=${trackCount}` : ``);
+        ? `${process.env.EXPO_PUBLIC_BASE_URL}track${
+            trackCount ? `?limit=${trackCount}` : ``
+          }`
+        : `${process.env.EXPO_PUBLIC_ANDROID_BASE_URL}track${
+            trackCount ? `?limit=${trackCount}` : ``
+          }`;
 
     try {
-      const fetchResultArtists = async () => {
-        try {
-          const result = await fetch(getArtistListUrl);
-          const data = await result.json();
-          setArtistList(data.data);
-        } catch (err) {
-          console.log(err);
-        }
-      };
+      const [artistsResponse, albumsResponse, tracksResponse] =
+        await Promise.all([
+          fetch(getArtistListUrl),
+          fetch(getAlbumListUrl),
+          fetch(getTrackListUrl),
+        ]);
 
-      const fetchResultTracks = async () => {
-        try {
-          const result = await fetch(getTrackListUrl);
-          const data = await result.json();
-          setTrackList(data.data);
-        } catch (err) {
-          console.log(err);
-        }
-      };
+      const artistsData = await artistsResponse.json();
+      const albumsData = await albumsResponse.json();
+      const tracksData = await tracksResponse.json();
 
-      const fetchResultAlbums = async () => {
-        try {
-          const result = await fetch(getAlbumListUrl);
-          const data = await result.json();
-          setAlbumList(data.data);
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      fetchResultTracks();
-      fetchResultArtists();
-      fetchResultAlbums();
+      setArtistList(artistsData.data);
+      setAlbumList(albumsData.data);
+      setTrackList(tracksData.data);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false); // Set loading to false after all fetches
     }
   };
 
   useEffect(() => {
     fetchData(8, 8, 8);
   }, []);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <View style={styles.container}>

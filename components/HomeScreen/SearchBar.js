@@ -19,7 +19,6 @@ const SearchBar = ({ inputting, setInputting, setSearchKeyWord }) => {
   const handleSearchChange = (value) => {
     setSearchKeyWord(value);
     setSearchValue(value);
-    console.log(value);
   };
 
   const clearSearch = (value) => {
@@ -35,42 +34,21 @@ const SearchBar = ({ inputting, setInputting, setSearchKeyWord }) => {
 
   return (
     <View style={styles.searchBar}>
-      {isInputting ? (
-        <>
-          <FontAwesome name="search" size={20} style={styles.searchIcon} />
-          <TextInput
-            onFocus={() => {
-              setIsInputting(!inputting);
-              setInputting(!inputting);
-            }}
-            onBlur={() => console.log("focus lost")}
-            placeholder="What you want to listen to ..."
-            placeholderTextColor="grey"
-            marginLeft={maginLeftCalculator()}
-            value={searchValue}
-            onChangeText={handleSearchChange}
-            style={styles.searchField}
-          ></TextInput>
-        </>
-      ) : (
-        <>
-          <FontAwesome name="search" size={20} style={styles.searchIcon} />
-          <TextInput
-            onFocus={() => setIsInputting(!isInputting)}
-            onBlur={() => console.log("focus lost")}
-            placeholder="What you want to listen to ..."
-            placeholderTextColor="grey"
-            marginLeft={maginLeftCalculator()}
-            value={searchValue}
-            onChangeText={handleSearchChange}
-            style={styles.searchField}
-          ></TextInput>
-          {searchValue.length > 0 ? (
-            <Pressable onPress={clearSearch} style={styles.closeIcon}>
-              <AntDesign name="closecircle" size={20} />
-            </Pressable>
-          ) : null}
-        </>
+      <FontAwesome name="search" size={20} style={styles.searchIcon} />
+      <TextInput
+        onFocus={() => setIsInputting(true)} // Set to true only
+        onBlur={() => console.log("focus lost")}
+        placeholder="What you want to listen to ..."
+        placeholderTextColor="grey"
+        marginLeft={maginLeftCalculator()}
+        value={searchValue}
+        onChangeText={handleSearchChange}
+        style={styles.searchField}
+      />
+      {searchValue.length > 0 && (
+        <Pressable onPress={clearSearch} style={styles.closeIcon}>
+          <AntDesign name="closecircle" size={20} />
+        </Pressable>
       )}
     </View>
   );

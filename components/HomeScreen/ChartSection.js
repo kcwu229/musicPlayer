@@ -10,6 +10,7 @@ import {
 import RandomColor from "../../components/RandomColor";
 import { useNavigation } from "@react-navigation/native";
 import getSize from "../AdjustSizeByScreenSize";
+import LoadingScreen from "../LoadingScreen";
 
 const ChartSection = () => {
   const navigation = useNavigation();
@@ -31,6 +32,7 @@ const ChartSection = () => {
 
   const [topTrackByCountryList, setTopTrackByCountryList] = useState([]);
   const [chartColor, setChartColor] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchChartTrack = async () => {
@@ -50,6 +52,7 @@ const ChartSection = () => {
           if (data && Array.isArray(resultData)) {
             setTopTrackByCountryList(resultData);
             setChartColor(resultData.map((data) => RandomColor()));
+            setLoading(!loading);
           } else {
             console.error("Invalid data structure:", data);
           }
@@ -65,56 +68,64 @@ const ChartSection = () => {
     <View>
       <View style={styles.topHeading}>
         <Text style={styles.heading}>Charts</Text>
-        <Pressable
-          onPress={() =>
-            navigateToShowAllResults(topTrackByCountryList, chartColor)
-          }
-        >
-          <Text style={styles.seeAll}>See all</Text>
-        </Pressable>
+        {loading ? (
+          <></>
+        ) : (
+          <Pressable
+            onPress={() =>
+              navigateToShowAllResults(topTrackByCountryList, chartColor)
+            }
+          >
+            <Text style={styles.seeAll}>See all</Text>
+          </Pressable>
+        )}
       </View>
-      <ScrollView
-        style={([styles.chartList], { overflow: "visible" })}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-      >
-        {topTrackByCountryList.map((data, index) => {
-          return (
-            <View key={data._id}>
-              <Pressable
-                onPress={() =>
-                  navigateToAlbumInfoPage(data.countryItem, chartColor[index])
-                }
-              >
-                <View
-                  style={[
-                    styles.chartItem,
-                    { backgroundColor: chartColor[index] },
-                  ]}
+      {loading ? (
+        <LoadingScreen />
+      ) : (
+        <ScrollView
+          style={([styles.chartList], { overflow: "visible" })}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
+          {topTrackByCountryList.map((data, index) => {
+            return (
+              <View key={data._id}>
+                <Pressable
+                  onPress={() =>
+                    navigateToAlbumInfoPage(data.countryItem, chartColor[index])
+                  }
                 >
                   <View
                     style={[
-                      styles.chartImage,
-                      {
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                      },
+                      styles.chartItem,
+                      { backgroundColor: chartColor[index] },
                     ]}
                   >
-                    <Text style={styles.title}>Top 50</Text>
-                    <Text style={styles.region}>{data.countryItem}</Text>
+                    <View
+                      style={[
+                        styles.chartImage,
+                        {
+                          justifyContent: "center",
+                          alignItems: "center",
+                          flex: 1,
+                        },
+                      ]}
+                    >
+                      <Text style={styles.title}>Top 50</Text>
+                      <Text style={styles.region}>{data.countryItem}</Text>
+                    </View>
                   </View>
+                </Pressable>
+                <View>
+                  <Text style={styles.subscription}>Monthly chart-toppers</Text>
+                  <Text style={styles.status}>update</Text>
                 </View>
-              </Pressable>
-              <View>
-                <Text style={styles.subscription}>Monthly chart-toppers</Text>
-                <Text style={styles.status}>update</Text>
               </View>
-            </View>
-          );
-        })}
-      </ScrollView>
+            );
+          })}
+        </ScrollView>
+      )}
     </View>
   );
 };

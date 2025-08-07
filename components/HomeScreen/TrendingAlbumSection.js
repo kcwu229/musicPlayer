@@ -9,6 +9,7 @@ import {
   Platform,
 } from "react-native";
 import AlbumItem from "@/components/AlbumItem";
+import LoadingScreen from "@/components/LoadingScreen";
 import getSize from "../AdjustSizeByScreenSize";
 import { useNavigation } from "@react-navigation/native";
 
@@ -18,6 +19,7 @@ const TrendingAlbumSection = () => {
   const navigation = useNavigation();
   const albumsLimit = 8;
   const [albumList, setAlbumList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const navigateToShowAllResults = () => {
     navigation.navigate("Results", {
@@ -40,6 +42,7 @@ const TrendingAlbumSection = () => {
         if (result.ok) {
           const data = await result.json();
           setAlbumList(data.data);
+          setLoading(!loading);
         }
       };
       fetchTrendingAlbums();
@@ -52,27 +55,35 @@ const TrendingAlbumSection = () => {
     <View>
       <View style={styles.topHeading}>
         <Text style={styles.heading}>Trending albums</Text>
-        <Pressable onPress={() => navigateToShowAllResults()}>
-          <Text style={styles.seeAll}>See all</Text>
-        </Pressable>
+        {loading ? (
+          <></>
+        ) : (
+          <Pressable onPress={() => navigateToShowAllResults()}>
+            <Text style={styles.seeAll}>See all</Text>
+          </Pressable>
+        )}
       </View>
-      <ScrollView
-        style={([styles.artistList], { overflow: "visible" })}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-      >
-        {albumList.slice(0, albumsLimit).map((data) => {
-          return (
-            <AlbumItem
-              key={data._id}
-              albumData={data}
-              imageWidth={getSize(100, 120, 160)}
-              imageHeight={getSize(100, 120, 160)}
-              style={styles.albumItem}
-            />
-          );
-        })}
-      </ScrollView>
+      {loading ? (
+        <LoadingScreen></LoadingScreen>
+      ) : (
+        <ScrollView
+          style={([styles.artistList], { overflow: "visible" })}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
+          {albumList.slice(0, albumsLimit).map((data) => {
+            return (
+              <AlbumItem
+                key={data._id}
+                albumData={data}
+                imageWidth={getSize(100, 120, 160)}
+                imageHeight={getSize(100, 120, 160)}
+                style={styles.albumItem}
+              />
+            );
+          })}
+        </ScrollView>
+      )}
     </View>
   );
 };

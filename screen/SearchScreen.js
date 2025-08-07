@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -12,20 +12,14 @@ import SearchBar from "@/components/HomeScreen/SearchBar";
 import SearchResultPage from "@/components/SearchScreen/SearchResultPage";
 import MusicPlayerScreen from "@/components/MusicPlayerPage/MusicPlayerScreen";
 import { useMusicPlayer } from "../context/MusicPlayerContext";
-import { ScrollView } from "react-native-gesture-handler";
 import getSize from "../components/AdjustSizeByScreenSize";
 const { height } = Dimensions.get("window");
-import { useUserContext } from "@/context/UserContext";
 
 const SearchScreen = ({ navigation }) => {
   const [searchKeyWord, setSearchKeyWord] = useState("");
 
-  const {
-    selectedTrack,
-    setSelectedTrack,
-    isMinimized,
-    handleMinimizedScreen,
-  } = useMusicPlayer();
+  const { selectedTrack, isMinimized, handleMinimizedScreen } =
+    useMusicPlayer();
 
   const [inputting, setInputting] = useState(false);
   const data = [

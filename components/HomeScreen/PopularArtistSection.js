@@ -11,6 +11,7 @@ import {
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import getSize from "../AdjustSizeByScreenSize";
 import { useUserContext } from "@/context/UserContext";
+import LoadingScreen from "../LoadingScreen";
 
 import ArtistItem from "@/components/ArtistItem";
 
@@ -18,8 +19,10 @@ const { height, width } = Dimensions.get("window");
 
 const PopularArtistSection = ({ navigation }) => {
   const [artistList, setArtistList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { followedArtists, updateFollowedArtists, setFollowedArtists } =
     useUserContext();
+
   const artistsLimit = 8;
 
   useEffect(() => {
@@ -33,6 +36,7 @@ const PopularArtistSection = ({ navigation }) => {
         const result = await fetch(url);
         const data = await result.json();
         setArtistList(data.data);
+        setLoading(!loading);
       } catch (err) {
         console.log(err);
       }
@@ -62,32 +66,40 @@ const PopularArtistSection = ({ navigation }) => {
     <View>
       <View style={styles.topHeading}>
         <Text style={styles.heading}>Popular artists</Text>
-        <Pressable onPress={() => navigateToShowAllResults()}>
-          <Text style={styles.seeAll}>See all</Text>
-        </Pressable>
+        {loading ? (
+          <></>
+        ) : (
+          <Pressable onPress={() => navigateToShowAllResults()}>
+            <Text style={styles.seeAll}>See all</Text>
+          </Pressable>
+        )}
       </View>
-      <ScrollView
-        style={[styles.artistList, { overflow: "visible" }]}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-      >
-        {artistList.slice(0, artistsLimit).map((data) => {
-          return (
-            <ArtistItem
-              updateFollowedArtists={updateFollowedArtists}
-              followedArtists={followedArtists}
-              key={data._id}
-              navigation={navigation}
-              artistData={data}
-              allowFollowButton={true}
-              setFollowedArtists={setFollowedArtists}
-              imageWidth={getSize(100, 120, 160)}
-              imageHeight={getSize(100, 120, 160)}
-              displayFollower={false}
-            />
-          );
-        })}
-      </ScrollView>
+      {loading ? (
+        <LoadingScreen />
+      ) : (
+        <ScrollView
+          style={[styles.artistList, { overflow: "visible" }]}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
+          {artistList.slice(0, artistsLimit).map((data) => {
+            return (
+              <ArtistItem
+                updateFollowedArtists={updateFollowedArtists}
+                followedArtists={followedArtists}
+                key={data._id}
+                navigation={navigation}
+                artistData={data}
+                allowFollowButton={true}
+                setFollowedArtists={setFollowedArtists}
+                imageWidth={getSize(100, 120, 160)}
+                imageHeight={getSize(100, 120, 160)}
+                displayFollower={false}
+              />
+            );
+          })}
+        </ScrollView>
+      )}
     </View>
   );
 };
