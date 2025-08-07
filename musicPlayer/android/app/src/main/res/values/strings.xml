@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Music Player</string>
+    <string name="welcome_message">Welcome to the Music Player App!</string>
+    <string name="error_message">An error has occurred. Please try again.</string>
+</resources>
