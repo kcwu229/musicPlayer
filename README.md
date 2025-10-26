@@ -1,12 +1,14 @@
 # Demo
 https://github.com/user-attachments/assets/2bc96b7c-214b-4d74-8af8-38f0cb28a1d6
 
-# Welcome to your Expo app 👋
+# App download link (android):
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# Download QR code
+<img width="274" height="306" alt="image" src="https://github.com/user-attachments/assets/271f3f32-6eea-4a82-90c0-0c7f195f35b6" />
 
-App download link (android):
+# Or click this link
 https://drive.google.com/drive/folders/1fcwymlTKmp_pmPJDogOUARDi4KWHJbDv?usp=sharing
+
 
 
 ### API form spotify to imort to Database
